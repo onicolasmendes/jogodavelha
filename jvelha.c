@@ -138,13 +138,19 @@ int main(int argc, char const *argv[])
                 }
 
                 // Rodada do game
+
                 int vitoria = 0; // Variável que determinará se houve vitória ou não
                 int empate = 0;  // Variável que determinará se houve empate ou não
                 int coordenadaLinha, coordenadaColuna;
+
                 char **matriz;
                 matriz = criaMatriz(3, 3);
+                inicializaMatriz(&matriz, 3, 3);
+                imprimeMatriz(matriz, 3, 3);
+
                 int contRodada = 1;         // Contará o número de rodadas e servirá para determinar quem joga
                 while (!vitoria && !empate) // O jogo roda enquanto não houver vitoria ou empate
+
                 {
                     char comandoGeral[64], comandoPrincipal[6], parametroDoComandoPrincipal[64];
 
@@ -154,11 +160,28 @@ int main(int argc, char const *argv[])
                         fgets(comandoGeral, 64, stdin);
                         captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
 
-                        if(validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresTemp, 0) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinha, &coordenadaColuna, comandoPrincipal) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal)) ) //Valida comando principal - marcar, voltar e salvar
+                        if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresTemp, 0) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinha, &coordenadaColuna, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
                         {
-                          printf("X = %d \n\n Y = %d \n", coordenadaLinha, coordenadaColuna);  
+                            marcarPosicao(&matriz, coordenadaLinha, coordenadaColuna, contRodada);
+                            imprimeMatriz(matriz, 3, 3);
+                            contRodada++; //Incrementa a rodada
                         }
                         
+                        
+                    }
+                    else // Vez do player 2
+                    {
+                        printf("%s, digite o comando: ", jogadoresTemp[1].nome);
+                        fgets(comandoGeral, 64, stdin);
+                        captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
+
+                        if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresTemp, 1) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinha, &coordenadaColuna, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
+                        {
+                            
+                            marcarPosicao(&matriz, coordenadaLinha, coordenadaColuna, contRodada);
+                            imprimeMatriz(matriz, 3, 3);
+                            contRodada++;
+                        }
                     }
                 }
             }
