@@ -162,12 +162,24 @@ int main(int argc, char const *argv[])
 
                         if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresTemp, 0) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinha, &coordenadaColuna, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
                         {
-                            marcarPosicao(&matriz, coordenadaLinha, coordenadaColuna, contRodada);
-                            imprimeMatriz(matriz, 3, 3);
-                            contRodada++; //Incrementa a rodada
+                            if (strcmp(comandoPrincipal, "marcar") == 0) // Comando marcar
+                            {
+                                marcarPosicao(&matriz, coordenadaLinha, coordenadaColuna, contRodada);
+                                imprimeMatriz(matriz, 3, 3);
+                                contRodada++; // Incrementa a rodada
+
+                               /* if(verificaVitoria(matriz, 3, 3) == 1)
+                                {
+                                    printf("Parabéns, %s!!! Você ganhou\n\n\n", jogadoresTemp[0].nome);
+                                }
+                                */
+
+                            }
+                            else if(strcmp(comandoPrincipal, "voltar") == 0) //Comando voltar
+                            {
+                                break; //Volta ao menu
+                            }
                         }
-                        
-                        
                     }
                     else // Vez do player 2
                     {
@@ -177,10 +189,16 @@ int main(int argc, char const *argv[])
 
                         if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresTemp, 1) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinha, &coordenadaColuna, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
                         {
-                            
-                            marcarPosicao(&matriz, coordenadaLinha, coordenadaColuna, contRodada);
-                            imprimeMatriz(matriz, 3, 3);
-                            contRodada++;
+                            if (strcmp(comandoPrincipal, "marcar") == 0) // Comando marcar
+                            {
+                                marcarPosicao(&matriz, coordenadaLinha, coordenadaColuna, contRodada); // Marca a posição na matriz, cuja a validação da disponibilidade foi feita no if anterior
+                                imprimeMatriz(matriz, 3, 3);
+                                contRodada++; // Incrementa a rodada
+                            }
+                            else if(strcmp(comandoPrincipal, "voltar") == 0) //Comando voltar
+                            {
+                                break; //Volta ao menu
+                            }
                         }
                     }
                 }

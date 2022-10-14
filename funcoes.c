@@ -200,13 +200,13 @@ int validaParametroDoMarcar(char *parametroDoComandoPrincipal, int *coordenadaLi
 
             if ((*coordenadaLinha) >= 1 && (*coordenadaLinha) <= 3 && (*coordenadaColuna) >= 1 && (*coordenadaColuna) <= 3)
             {
-                if (verificaPosicaoDisponivel(matriz, *coordenadaLinha, *coordenadaColuna))
+                if (verificaPosicaoDisponivel(matriz, *coordenadaLinha, *coordenadaColuna)) // Verifica se a posição informada está disponível para jogar
                 {
                     return 1;
                 }
-                else
+                else // Caso em que a posição está indisponível
                 {
-                    printf("A posição não está disponível!\n");
+                    printf("\nA posição não está disponível!\n\n");
                     return 0;
                 }
             }
@@ -239,7 +239,7 @@ int validaParametroDoSalvar(char *parametroDoComandoPrincipal, char *comandoPrin
         printf("%s\n\n", extensaoTxt);
         if (strcmp(extensaoTxt, ".txt") == 0) // Verifica se a extensão do parâmetro possui .txt no final
         {
-            
+
             if (verificaSeHaCaractereEspecial(parametroDoComandoPrincipal)) // Caso em que não há caracteres especiais no nome do arquivo
             {
                 return 1;
@@ -268,12 +268,12 @@ int validaParametroDoVoltar(char *parametroDoComandoPrincipal, char *comandoPrin
     {
         if (parametroDoComandoPrincipal[0] == '\0') // Verifica se não foi passado nenhum parâmetro
         {
-
             return 1;
         }
         else // Caso em que o comando foi digitado corretamente, mas foi passado algum parâmetro, o que invalida a chamada do comando
         {
 
+            printf("\nERRO - O comando voltar foi passado com algum parametro\n\n");
             return 0;
         }
     }
@@ -311,7 +311,7 @@ void inicializaMatriz(char ***matriz, int n, int m)
 
 int verificaPosicaoDisponivel(char **matriz, int linha, int coluna)
 {
-    linha--; //Para o user as posições começam a partir do 1, mas a matriz começa do 0, pra coluna e pra linha
+    linha--; // Para o user as posições começam a partir do 1, mas a matriz começa do 0, pra coluna e pra linha
     coluna--;
     if (matriz[linha][coluna] == '-') // Caso tenha um x ou o nessa posição a função retorna 0, caso não, a função retorna 1
     {
@@ -323,7 +323,7 @@ int verificaPosicaoDisponivel(char **matriz, int linha, int coluna)
 
 void marcarPosicao(char ***matriz, int linha, int coluna, int contRodada)
 {
-    coluna--; //Para o user as posições começam a partir do 1, mas a matriz começa do 0, pra coluna e pra linha
+    coluna--; // Para o user as posições começam a partir do 1, mas a matriz começa do 0, pra coluna e pra linha
     linha--;
     if (contRodada % 2 != 0) // Jogador 1 - Joga o x
     {
@@ -340,39 +340,109 @@ void imprimeMatriz(char **matriz, int n, int m)
 
     printf("\n");
     printf("  1 2 3\n");
-    printf(" "TAB_TL   TAB_HOR   TAB_TJ   TAB_HOR   TAB_TJ   TAB_HOR   TAB_TR   "\n");
-    printf("1"TAB_VER "%c" TAB_VER "%c" TAB_VER "%c" TAB_VER "\n", imprimeElemento(matriz, 0, 0),imprimeElemento(matriz, 0, 1),imprimeElemento(matriz, 0, 2));
-    printf(" "TAB_ML TAB_HOR TAB_MJ TAB_HOR TAB_MJ TAB_HOR TAB_MR "\n");
-    printf("2"TAB_VER "%c" TAB_VER "%c" TAB_VER "%c" TAB_VER "\n", imprimeElemento(matriz, 1, 0),imprimeElemento(matriz, 1, 1),imprimeElemento(matriz, 1, 2));
-    printf(" "TAB_ML TAB_HOR TAB_MJ TAB_HOR TAB_MJ TAB_HOR TAB_MR "\n");
-    printf("3"TAB_VER "%c" TAB_VER "%c" TAB_VER "%c" TAB_VER "\n",imprimeElemento(matriz, 2, 0),imprimeElemento(matriz, 2, 1),imprimeElemento(matriz, 2, 2 ));
-    printf(" "TAB_BL TAB_HOR TAB_BJ TAB_HOR TAB_BJ TAB_HOR TAB_BR "\n");
+    printf(" " TAB_TL TAB_HOR TAB_TJ TAB_HOR TAB_TJ TAB_HOR TAB_TR "\n");
+    printf("1" TAB_VER "%c" TAB_VER "%c" TAB_VER "%c" TAB_VER "\n", imprimeElemento(matriz, 0, 0), imprimeElemento(matriz, 0, 1), imprimeElemento(matriz, 0, 2));
+    printf(" " TAB_ML TAB_HOR TAB_MJ TAB_HOR TAB_MJ TAB_HOR TAB_MR "\n");
+    printf("2" TAB_VER "%c" TAB_VER "%c" TAB_VER "%c" TAB_VER "\n", imprimeElemento(matriz, 1, 0), imprimeElemento(matriz, 1, 1), imprimeElemento(matriz, 1, 2));
+    printf(" " TAB_ML TAB_HOR TAB_MJ TAB_HOR TAB_MJ TAB_HOR TAB_MR "\n");
+    printf("3" TAB_VER "%c" TAB_VER "%c" TAB_VER "%c" TAB_VER "\n", imprimeElemento(matriz, 2, 0), imprimeElemento(matriz, 2, 1), imprimeElemento(matriz, 2, 2));
+    printf(" " TAB_BL TAB_HOR TAB_BJ TAB_HOR TAB_BJ TAB_HOR TAB_BR "\n");
     printf("\n");
 }
 
 char imprimeElemento(char **matriz, int linha, int coluna)
 {
-    if(matriz[linha][coluna] == '-')
+    if (matriz[linha][coluna] == '-')
     {
-        return ' '; //Troca o elemento neutro por espaço - feita para ser chamada na função de impressão da matriz
+        return ' '; // Troca o elemento neutro por espaço - feita para ser chamada na função de impressão da matriz
     }
     else
     {
-        return matriz[linha][coluna]; //Caso não seja o elemento neutro, a função retorna X ou O
+        return matriz[linha][coluna]; // Caso não seja o elemento neutro, a função retorna X ou O
     }
 }
 
-int verificaVitoriaEEmpate(char **matriz, int n, int m)
+int verificaVitoria(char **matriz, int n, int m) //Função retorna 1, caso player 1 ganhe, 2, caso player 2 ganhe, 0, case nenhum ganhe
 {
-    char vitoriaPlayer1[3] = "XXX";
-    char vitoriaPlayer2[3] = "OOO";
-    char teste[3];
-    for(int i = 0; i < n; i++)
-    {
-        for(int j = 0; j < m; j++)
-        {
+    char vitoriaPlayer1[4] = "XXX";
+    char vitoriaPlayer2[4] = "OOO";
+    char teste[4];
+    int cont = 0;
+    // Verificação por linha
 
+    for (int i = 0; i < n; i++)
+    {
+        cont = 0;
+        for (int j = 0; j < m; j++)
+        {
+            teste[cont] = matriz[i][j];
+            cont++;
+        }
+        teste[cont] = '\0';
+        printf("%s\n\n", teste);
+        if (strcmp(teste, vitoriaPlayer1) == 0) // Caso em que o player 1 ganha
+        {
+            return 1;
+        }
+        else if (strcmp(teste, vitoriaPlayer2) == 0) // Caso em que o player 2 ganha
+        {
+            return 2;
+        }
+    }
+    
+    // Verificação por coluna
+    for (int i = 0; i < n; i++)
+    {
+        cont = 0;
+        for (int j = 0; j < m; j++)
+        {
+            teste[cont] = matriz[j][i];
+            cont++;
+        }
+        teste[cont] = '\0';
+        if (strcmp(teste, vitoriaPlayer1) == 0) // Caso em que o player 1 ganha
+        {
+            return 1;
+        }
+        else if (strcmp(teste, vitoriaPlayer2) == 0) // Caso em que o player 2 ganha
+        {
+            return 2;
         }
     }
 
+    // Verificação da diagonal principal
+    cont = 0;
+    for (int i = 0; i < n; i++)
+    {
+        teste[cont] = matriz[i][i];
+        cont++;
+    }
+    teste[cont] = '\0';
+    if (strcmp(teste, vitoriaPlayer1) == 0) // Caso em que o player 1 ganha
+    {
+        return 1;
+    }
+    else if (strcmp(teste, vitoriaPlayer2) == 0) // Caso em que o player 2 ganha
+    {
+        return 2;
+    }
+
+    // Verificação da diagonal secundaria
+    int cont2 = 0;
+    for (int i = n - 1; i >= 0; i--)
+    {
+        teste[cont2] = matriz[i][i];
+        cont2++;
+    }
+    teste[cont2] = '\0';
+    if (strcmp(teste, vitoriaPlayer1) == 0) // Caso em que o player 1 ganha
+    {
+        return 1;
+    }
+    else if (strcmp(teste, vitoriaPlayer2) == 0) // Caso em que o player 2 ganha
+    {
+        return 2;
+    }
+
+    return 0;
 }

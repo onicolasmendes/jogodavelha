@@ -29,7 +29,7 @@ void inicializaMatriz(char ***matriz, int n, int m);
 void marcarPosicao(char ***matriz, int linha, int coluna, int contRodada);
 void imprimeMatriz(char **matriz, int n, int m);
 char imprimeElemento(char **matriz, int linha, int coluna);
-int verificaVitoriaEEmpate(char **matriz, int n, int m);
+int verificaVitoria(char **matriz, int n, int m);
 
 
 #endif
