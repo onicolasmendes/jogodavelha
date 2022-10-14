@@ -99,17 +99,17 @@ int verificaPlayerNoIni(char *nome, int nJogadores)
 void adicionaNovoPlayer(Jogador *jogadores, Jogador *jogadoresTemp, int *nJogadores, int *posicaoPlayer, int nPlayer)
 {
     jogadores[(*nJogadores)] = jogadoresTemp[nPlayer];
-    jogadores[(*nJogadores)].vitorias = 0; 
+    jogadores[(*nJogadores)].vitorias = 0;
     jogadores[(*nJogadores)].empates = 0;
     jogadores[(*nJogadores)].derrotas = 0;
     *posicaoPlayer = *nJogadores;
-    *nJogadores = *nJogadores + 1; 
+    *nJogadores = *nJogadores + 1;
 }
 
-char ** criaMatriz(int n, int m)
+char **criaMatriz(int n, int m)
 {
-    char **matriz = malloc(n * sizeof(char*));
-    for(int i = 0; i < n; i++)
+    char **matriz = malloc(n * sizeof(char *));
+    for (int i = 0; i < n; i++)
     {
         matriz[i] = malloc(m * sizeof(char));
     }
@@ -118,7 +118,7 @@ char ** criaMatriz(int n, int m)
 
 void liberaMatriz(char **A, int n)
 {
-    for(int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
         free(A[i]);
     }
@@ -128,23 +128,152 @@ void liberaMatriz(char **A, int n)
 void captaComando(char *comandoGeral, char *comandoPrincipal, char *parametroDoComandoPrincipal)
 {
     int cont = 0;
-    while(comandoGeral[cont] != ' ') //captação do primeiro comando
+    while (comandoGeral[cont] != ' ' && comandoGeral[cont] != '\n') // captação do primeiro comando
     {
         comandoPrincipal[cont] = comandoGeral[cont];
         cont++;
     }
     comandoPrincipal[cont] = '\0';
-    cont++;
-    int novoCont = 0;
-    
-    while (comandoGeral[cont] != ' ' && comandoGeral[cont] != '\n') //captação do parametro
+
+    int contMaisUm = cont + 1;
+
+    if (comandoGeral[cont] == '\n') //Caso em que não há nenhum parâmetro, somente o comando - comando voltar
     {
-        parametroDoComandoPrincipal[novoCont] = comandoGeral[cont];
+        parametroDoComandoPrincipal[0] = '\0';
+    }
+    else if(comandoGeral[contMaisUm] != '\n') //Verifica se o próximo caracter corresponde ao final do comando e dos parametros informados
+    {
         cont++;
-        novoCont++;
+        int novoCont = 0;
+
+        while (comandoGeral[cont] != '\n') // captação do parametro
+        {
+            parametroDoComandoPrincipal[novoCont] = comandoGeral[cont];
+            cont++;
+            novoCont++;
+        }
+
+        parametroDoComandoPrincipal[novoCont] = '\0';
+    }
+    else //Caso em que foi passado apenas um caracter como parametro, como nenhum dos comandos usam apenas um caracter como parametro, atribui-se '1' ao parametroDoComandoPrincipal - valor aleatório - esse '1', sozinho, tbm não é um parametro que sera utilizado em nenhum outro comando
+    {
+        parametroDoComandoPrincipal[0] = '1';
+        parametroDoComandoPrincipal[1] = '\0';
+    }
+}
+
+int validaComando(char *comandoPrincipal, char *parametroDoComandoPrincipal, char *comandoGeral, Jogador *jogadoresTemp, int posicaoPlayer)
+{
+    while (strcmp(comandoPrincipal, "marcar") != 0 && strcmp(comandoPrincipal, "voltar") != 0 && strcmp(comandoPrincipal, "salvar") != 0)
+    {
+        printf("\nERRO - comando inválido\n\n%s, digite o comando: ", jogadoresTemp[posicaoPlayer].nome);
+        fgets(comandoGeral, 64, stdin);
+        captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
+    }
+    return 1;
+}
+
+int validaParametroDoMarcar(char *parametroDoComandoPrincipal, int *coordenadaLinha, int *coordenadaColuna, char *comandoPrincipal)
+{
+    if (strcmp(comandoPrincipal, "marcar") == 0) // O comando digitado deve ser o "marcar"
+    {
+        if (strlen(parametroDoComandoPrincipal) != 2)
+        {
+            printf("\nERRO - Comando inválido\n\n");
+            return 0;
+        }
+        else
+        {
+            *coordenadaLinha = converteCharPraInt(parametroDoComandoPrincipal[0]);
+            *coordenadaColuna = converteCharPraInt(parametroDoComandoPrincipal[1]);
+
+            if ((*coordenadaLinha) >= 1 && (*coordenadaLinha) <= 3 && (*coordenadaColuna) >= 1 && (*coordenadaColuna) <= 3)
+            {
+                return 1;
+            }
+            else
+            {
+                printf("\nERRO - Comando inválido\n\n");
+                return 0;
+            }
+        }
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int validaParametroDoSalvar(char *parametroDoComandoPrincipal, char *comandoPrincipal)
+{
+    if (strcmp(comandoPrincipal, "salvar") == 0)
+    {
+        int tamanhhoDoParametro = (int)strlen(parametroDoComandoPrincipal) - 1;
+        char extensaoTxt[4]; // Armazena a extensão do arquivo, que deve ser um .txt
+        int cont = 0;
+        for (int i = tamanhhoDoParametro - 3; i <= tamanhhoDoParametro; i++)
+        {
+            extensaoTxt[cont] = parametroDoComandoPrincipal[i];
+            cont++;
+        }
+        extensaoTxt[cont] = '\0';
+        if (strcmp(extensaoTxt, ".txt") == 0) // Verifica se a extensão do parâmetro possui .txt no final
+        {
+            if(verificaSeHaCaractereEspecial(parametroDoComandoPrincipal)) //Caso em que não há caracteres especiais no nome do arquivo
+            {
+                return 1;
+            }
+            else //Caso em que há caracteres especiais no nome do arquivo
+            {
+                printf("\nERRO - Caracter especial detectado no nome do arquivo!\n\n");
+                return 0;
+            }
+        }
+        else // Caso em que o parametro não possui .txt ao final
+        {
+            printf("\nERRO - Comando inválido\n\n");
+            return 0;
+        }
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int validaParametroDoVoltar(char *parametroDoComandoPrincipal, char *comandoPrincipal)
+{
+    if (strcmp(comandoPrincipal, "voltar") == 0) // Verifica se o comando em questão é o voltar
+    {
+        if (parametroDoComandoPrincipal[0] == '\0') //Verifica se não foi passado nenhum parâmetro
+        {
+            
+            return 1;
+        }
+        else //Caso em que o comando foi digitado corretamente, mas foi passado algum parâmetro, o que invalida a chamada do comando
+        {
+            
+            return 0;
+        }
+        
+    }
+    else //Caso em que o comando digitado não foi o voltar
+    {
+        return 0;
+    }
+}
+
+int verificaSeHaCaractereEspecial(char *parametroDoComandoPrincipal)
+{
+    int tamanho = strlen(parametroDoComandoPrincipal) - 4; //Posições antes do .txt
+    for (int i = 0; i < tamanho; i++)
+    {
+        if((int) parametroDoComandoPrincipal[i] == 92 || (int)parametroDoComandoPrincipal[i] == 47 || (int)parametroDoComandoPrincipal[i] == 124 || (int)parametroDoComandoPrincipal[i] == 60 || (int)parametroDoComandoPrincipal[i] == 62 || (int)parametroDoComandoPrincipal[i] == 42 || (int)parametroDoComandoPrincipal[i] == 58 || (int)parametroDoComandoPrincipal[i] == 34 || (int)parametroDoComandoPrincipal[i] == 63) //Todos os caracteres especiais que não podem existir em nome de arquivos
+        {
+            
+            return 0;
+        }
     }
 
-    parametroDoComandoPrincipal[novoCont] = '\0';
-    
-
+    return 1;   
 }

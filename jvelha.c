@@ -110,77 +110,75 @@ int main(int argc, char const *argv[])
                 printf("Digite o nome do jogador 1:");
                 fgets(jogadoresTemp[0].nome, 64, stdin);
                 jogadoresTemp[0].nome[strlen(jogadoresTemp[0].nome) - 1] = '\0'; // Removendo \n
-                if (nJogadoresRodadaConvertido == 2)                     // 2 players
+                if (nJogadoresRodadaConvertido == 2)                             // 2 players
                 {
                     printf("Digite o nome do jogador 2:");
                     fgets(jogadoresTemp[1].nome, 64, stdin);
                     jogadoresTemp[1].nome[strlen(jogadoresTemp[1].nome) - 1] = '\0'; // Removendo \n
                 }
-                else //1 player
+                else // 1 player
                 {
-                   strcpy(jogadoresTemp[1].nome, "Computador"); // Player 2 = Computador 
+                    strcpy(jogadoresTemp[1].nome, "Computador"); // Player 2 = Computador
                 }
-                
-                //Verificando se os players informados já estão no .ini
+
+                // Verificando se os players informados já estão no .ini
                 int posicaoPlayer1, posicaoPlayer2;
-                posicaoPlayer1 = verificaPlayerNoIni(jogadoresTemp[0].nome, nJogadores); //Retorna a posição do player no ini, caso exista, senão, retorna -1
+                posicaoPlayer1 = verificaPlayerNoIni(jogadoresTemp[0].nome, nJogadores); // Retorna a posição do player no ini, caso exista, senão, retorna -1
                 posicaoPlayer2 = verificaPlayerNoIni(jogadoresTemp[1].nome, nJogadores);
 
-                //Caso em que o nome não está no ini
-                if(posicaoPlayer1 == -1) //Nome do player 1 não está no .ini
+                // Caso em que o nome não está no ini
+                if (posicaoPlayer1 == -1) // Nome do player 1 não está no .ini
                 {
-                    adicionaNovoPlayer(jogadores, jogadoresTemp, &nJogadores, &posicaoPlayer1, 0); 
+                    adicionaNovoPlayer(jogadores, jogadoresTemp, &nJogadores, &posicaoPlayer1, 0);
                 }
 
-                if(posicaoPlayer2 == -1) //Nome do player 2 não está no .ini
+                if (posicaoPlayer2 == -1) // Nome do player 2 não está no .ini
                 {
-                    adicionaNovoPlayer(jogadores, jogadoresTemp, &nJogadores, &posicaoPlayer2, 1); 
+                    adicionaNovoPlayer(jogadores, jogadoresTemp, &nJogadores, &posicaoPlayer2, 1);
                 }
-                
-                //Rodada do game
-                int vitoria = 0;
+
+                // Rodada do game
+                int vitoria = 0; // Variável que determinará se houve vitória ou não
+                int empate = 0;  // Variável que determinará se houve empate ou não
+                int coordenadaLinha, coordenadaColuna;
                 char **matriz;
-                matriz = criaMatriz(3,3);
-                int contRodada = 1; //Contará o número de rodadas e servirá para determinar quem joga
-                while (!vitoria)
+                matriz = criaMatriz(3, 3);
+                int contRodada = 1;         // Contará o número de rodadas e servirá para determinar quem joga
+                while (!vitoria && !empate) // O jogo roda enquanto não houver vitoria ou empate
                 {
-                    if(contRodada % 2 != 0)//Vez do player 1
+                    char comandoGeral[64], comandoPrincipal[6], parametroDoComandoPrincipal[64];
+
+                    if (contRodada % 2 != 0) // Vez do player 1
                     {
                         printf("%s, digite o comando: ", jogadoresTemp[0].nome);
-                        char comandoGeral[64], comandoPrincipal[6], parametroDoComandoPrincipal[64];
                         fgets(comandoGeral, 64, stdin);
                         captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
-                        
-                        
+
+                        if(validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresTemp, 0) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinha, &coordenadaColuna, comandoPrincipal) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal)) ) //Valida comando principal - marcar, voltar e salvar
+                        {
+                          printf("X = %d \n\n Y = %d \n", coordenadaLinha, coordenadaColuna);  
+                        }
                         
                     }
-
                 }
-                
-                
-                
-
-
-
-               
             }
-        
-        break;
 
-    case '2': // Continuar um jogo salvo
+            break;
 
-        break;
+        case '2': // Continuar um jogo salvo
 
-    case '3': // Continuar o jogo atual
+            break;
 
-        break;
+        case '3': // Continuar o jogo atual
 
-    case '4': // Exibir o ranking
+            break;
 
-        break;
-    default:
-        break;
+        case '4': // Exibir o ranking
+
+            break;
+        default:
+            break;
+        }
     }
-}
-return 0;
+    return 0;
 }

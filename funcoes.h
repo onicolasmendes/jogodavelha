@@ -19,7 +19,11 @@ void adicionaNovoPlayer(Jogador*jogadores, Jogador *jogadoresTemp, int *nJogador
 char ** criaMatriz(int n, int m);
 void liberaMatriz(char **A, int n);
 void captaComando(char *comandoGeral, char *comandoPrincipal, char *parametroDoComandoPrincipal);
-
+int validaComando(char *comandoPrincipal, char *parametroDoComandoPrincipal, char *comandoGeral, Jogador *jogadoresTemp, int posicaoPlayer);
+int validaParametroDoMarcar(char *parametroDoComandoPrincipal, int *coordenadaLinha, int *coordenadaColuna, char *comandoPrincipal);
+int validaParametroDoSalvar(char *parametroDoComandoPrincipal, char *comandoPrincipal);
+int validaParametroDoVoltar(char *parametroDoComandoPrincipal, char *comandoPrincipal);
+int verificaSeHaCaractereEspecial(char *parametroDoComandoPrincipal);
 
 
 #endif
