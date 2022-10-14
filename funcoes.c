@@ -128,7 +128,7 @@ void liberaMatriz(char **A, int n)
 void captaComando(char *comandoGeral, char *comandoPrincipal, char *parametroDoComandoPrincipal)
 {
     int cont = 0;
-    while(comandoGeral[cont] != ' ')
+    while(comandoGeral[cont] != ' ') //captação do primeiro comando
     {
         comandoPrincipal[cont] = comandoGeral[cont];
         cont++;
@@ -137,7 +137,7 @@ void captaComando(char *comandoGeral, char *comandoPrincipal, char *parametroDoC
     cont++;
     int novoCont = 0;
     
-    while (comandoGeral[cont] != ' ' && comandoGeral[cont] != '\n')
+    while (comandoGeral[cont] != ' ' && comandoGeral[cont] != '\n') //captação do parametro
     {
         parametroDoComandoPrincipal[novoCont] = comandoGeral[cont];
         cont++;

@@ -150,7 +150,8 @@ int main(int argc, char const *argv[])
                         char comandoGeral[64], comandoPrincipal[6], parametroDoComandoPrincipal[64];
                         fgets(comandoGeral, 64, stdin);
                         captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
-                        printf("%s %s\n\n", comandoPrincipal, parametroDoComandoPrincipal);
+                        
+                        
                         
                     }
 
