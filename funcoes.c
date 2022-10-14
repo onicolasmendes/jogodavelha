@@ -51,5 +51,100 @@ void printMenu()
 void limpaBuffer()
 {
     char c;
-    while ((c = getchar()) != '\n' && c != EOF);
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
+}
+
+int verificaArquivoExistente(char *nomeArquivo)
+{
+    FILE *arquivo;
+    if (arquivo = fopen(nomeArquivo, "r"))
+    {
+        fclose(arquivo);
+        return 1;
+    }
+
+    return 0;
+}
+
+int converteCharPraInt(char c)
+{
+    int num = c - '0';
+    return num;
+}
+
+int verificaPlayerNoIni(char *nome, int nJogadores)
+{
+    FILE *arquivoIni = fopen("velha.ini", "r+");
+    int lixo; // Variável para pegar o numero de jogadores
+    fscanf(arquivoIni, "%d\n", &lixo);
+    char nomeComparacao[64];
+    for (int i = 0; i < nJogadores; i++)
+    {
+        fgets(nomeComparacao, 64, arquivoIni);
+        nomeComparacao[strlen(nomeComparacao) - 1] = '\0';
+        if (!strcmp(nome, nomeComparacao)) // Caso ele tenha identificado o nome do player no .ini
+        {
+            fclose(arquivoIni);
+            return i;
+        }
+        // Pulando os dados de vitorias, empates e derrotas
+        int lixo1, lixo2, lixo3;
+        fscanf(arquivoIni, "%d %d %d\n", &lixo1, &lixo2, &lixo3);
+    }
+    fclose(arquivoIni);
+    return -1;
+}
+
+void adicionaNovoPlayer(Jogador *jogadores, Jogador *jogadoresTemp, int *nJogadores, int *posicaoPlayer, int nPlayer)
+{
+    jogadores[(*nJogadores)] = jogadoresTemp[nPlayer];
+    jogadores[(*nJogadores)].vitorias = 0; 
+    jogadores[(*nJogadores)].empates = 0;
+    jogadores[(*nJogadores)].derrotas = 0;
+    *posicaoPlayer = *nJogadores;
+    *nJogadores = *nJogadores + 1; 
+}
+
+char ** criaMatriz(int n, int m)
+{
+    char **matriz = malloc(n * sizeof(char*));
+    for(int i = 0; i < n; i++)
+    {
+        matriz[i] = malloc(m * sizeof(char));
+    }
+    return matriz;
+}
+
+void liberaMatriz(char **A, int n)
+{
+    for(int i = 0; i < n; i++)
+    {
+        free(A[i]);
+    }
+    free(A);
+}
+
+void captaComando(char *comandoGeral, char *comandoPrincipal, char *parametroDoComandoPrincipal)
+{
+    int cont = 0;
+    while(comandoGeral[cont] != ' ')
+    {
+        comandoPrincipal[cont] = comandoGeral[cont];
+        cont++;
+    }
+    comandoPrincipal[cont] = '\0';
+    cont++;
+    int novoCont = 0;
+    
+    while (comandoGeral[cont] != ' ' && comandoGeral[cont] != '\n')
+    {
+        parametroDoComandoPrincipal[novoCont] = comandoGeral[cont];
+        cont++;
+        novoCont++;
+    }
+
+    parametroDoComandoPrincipal[novoCont] = '\0';
+    
+
 }
