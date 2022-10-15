@@ -65,6 +65,19 @@ int main(int argc, char const *argv[])
         {
         case '0': // Sair do jogo
             
+            if(verificaArquivoExistente("velha.ini"))
+            {
+                //Atualiza .ini
+                FILE *arquivoIni = fopen("velha.ini", "w");
+                fprintf(arquivoIni, "%d\n", nJogadores);
+                for (int i = 0; i < nJogadores; i++)
+                {
+                    fprintf(arquivoIni, "%s\n", jogadores[i].nome);
+                    fprintf(arquivoIni, "%d %d %d\n", jogadores[i].vitorias, jogadores[i].empates, jogadores[i].derrotas);
+                }
+                fclose(arquivoIni);   
+            }
+            
             return 0;
             break;
 
