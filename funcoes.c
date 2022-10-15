@@ -446,3 +446,11 @@ int verificaVitoria(char **matriz, int n, int m) //Função retorna 1, caso play
 
     return 0;
 }
+
+void copiaVetorStruct(Jogador *copiado, Jogador *copia, int tam)
+{
+    for(int i = 0; i < tam; i++)
+    {
+        copia[i] = copiado[i];
+    }
+}
