@@ -9,11 +9,12 @@ int main(int argc, char const *argv[])
     // Arquivo .ini
     printNomeDoJogo();
     printf("Bora jogar um jogo da velha?\n\n");
+    Jogador *jogaoresCopia = malloc(12 * sizeof(Jogador)); //Cópia parar armazenar dados ao longo do programa
     while (1)
     {
         int condArquivo;
         int nJogadores;
-        Jogador *jogadores = malloc(11 * sizeof(Jogador)); // Um a mais que o limite de jogadores
+        Jogador *jogadores = malloc(12 * sizeof(Jogador)); // Dois a mais que o limite de jogadores
         if (verificaArquivoExistente("velha.ini"))
         {
             FILE *arquivoIni = fopen("velha.ini", "r+");
@@ -87,6 +88,7 @@ int main(int argc, char const *argv[])
                 {
                     strcpy(jogadoresNovoIni[1].nome, "Computador"); // Player 2 = Computador
                 }
+                //Inicializa arquivo
                 int nJogadoresNovos = 2;
                 jogadoresNovoIni[0].vitorias = 0;
                 jogadoresNovoIni[0].empates = 0;
@@ -110,7 +112,8 @@ int main(int argc, char const *argv[])
                 printf("Digite o nome do jogador 1:");
                 fgets(jogadoresTemp[0].nome, 64, stdin);
                 jogadoresTemp[0].nome[strlen(jogadoresTemp[0].nome) - 1] = '\0'; // Removendo \n
-                if (nJogadoresRodadaConvertido == 2)                             // 2 players
+
+                if (nJogadoresRodadaConvertido == 2) // 2 players
                 {
                     printf("Digite o nome do jogador 2:");
                     fgets(jogadoresTemp[1].nome, 64, stdin);
@@ -152,6 +155,7 @@ int main(int argc, char const *argv[])
                 while (!vitoria && !empate) // O jogo roda enquanto não houver vitoria ou empate
 
                 {
+
                     char comandoGeral[64], comandoPrincipal[6], parametroDoComandoPrincipal[64];
 
                     if (contRodada % 2 != 0) // Vez do player 1
@@ -167,17 +171,10 @@ int main(int argc, char const *argv[])
                                 marcarPosicao(&matriz, coordenadaLinha, coordenadaColuna, contRodada);
                                 imprimeMatriz(matriz, 3, 3);
                                 contRodada++; // Incrementa a rodada
-
-                               /* if(verificaVitoria(matriz, 3, 3) == 1)
-                                {
-                                    printf("Parabéns, %s!!! Você ganhou\n\n\n", jogadoresTemp[0].nome);
-                                }
-                                */
-
                             }
-                            else if(strcmp(comandoPrincipal, "voltar") == 0) //Comando voltar
+                            else if (strcmp(comandoPrincipal, "voltar") == 0) // Comando voltar
                             {
-                                break; //Volta ao menu
+                                break; // Volta ao menu
                             }
                         }
                     }
@@ -195,12 +192,37 @@ int main(int argc, char const *argv[])
                                 imprimeMatriz(matriz, 3, 3);
                                 contRodada++; // Incrementa a rodada
                             }
-                            else if(strcmp(comandoPrincipal, "voltar") == 0) //Comando voltar
+                            else if (strcmp(comandoPrincipal, "voltar") == 0) // Comando voltar
                             {
-                                break; //Volta ao menu
+                                break; // Volta ao menu
                             }
                         }
                     }
+                    // Verifica se alguém ganhou ou se deu empate
+                    if (verificaVitoria(matriz, 3, 3) == 1) // Vitória do player 1
+                    {
+                        printf("Parabens, %s ! Você ganhou a rodada!\n", jogadores[posicaoPlayer1].nome);
+                        jogadores[posicaoPlayer1].vitorias++; // Incrementa o número de vitórias do player
+                        jogadores[posicaoPlayer2].derrotas++;
+                        vitoria = 1;
+                    }
+                    else if (verificaVitoria(matriz, 3, 3) == 2) // Vitória do player 2
+                    {
+                        printf("Parabens, %s ! Você ganhou a rodada!\n", jogadores[posicaoPlayer2].nome);
+                        jogadores[posicaoPlayer2].vitorias++;
+                        jogadores[posicaoPlayer1].derrotas++;
+                        vitoria = 1;
+                    }
+                    else if (verificaVitoria(matriz, 3, 3) == 0 && contRodada == 10) // Jogo deu velha
+                    {
+                        printf("O game deu velha! Ambos empataram!\n");
+                        jogadores[posicaoPlayer1].empates++;
+                        jogadores[posicaoPlayer2].empates++;
+                        empate = 1;
+                    }
+
+                    printf("%s %d %d %d\n\n\n", jogadores[posicaoPlayer1].nome, jogadores[posicaoPlayer1].vitorias, jogadores[posicaoPlayer1].empates, jogadores[posicaoPlayer1].derrotas);
+                    printf("%s %d %d %d\n\n\n", jogadores[posicaoPlayer2].nome, jogadores[posicaoPlayer2].vitorias, jogadores[posicaoPlayer2].empates, jogadores[posicaoPlayer2].derrotas);
                 }
             }
 

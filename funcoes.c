@@ -379,7 +379,6 @@ int verificaVitoria(char **matriz, int n, int m) //Função retorna 1, caso play
             cont++;
         }
         teste[cont] = '\0';
-        printf("%s\n\n", teste);
         if (strcmp(teste, vitoriaPlayer1) == 0) // Caso em que o player 1 ganha
         {
             return 1;
@@ -428,13 +427,14 @@ int verificaVitoria(char **matriz, int n, int m) //Função retorna 1, caso play
     }
 
     // Verificação da diagonal secundaria
-    int cont2 = 0;
+    cont = 0;
     for (int i = n - 1; i >= 0; i--)
     {
-        teste[cont2] = matriz[i][i];
-        cont2++;
+        teste[cont] = matriz[cont][i];
+        cont++;
     }
-    teste[cont2] = '\0';
+    teste[cont] = '\0';
+    printf("%s\n\n\n", teste);
     if (strcmp(teste, vitoriaPlayer1) == 0) // Caso em que o player 1 ganha
     {
         return 1;
