@@ -7,25 +7,35 @@ Matricula: 22.1.4028
 int main(int argc, char const *argv[])
 {
     // Arquivo .ini
+
+    int unicaVez = 0;
     printNomeDoJogo();
     printf("Bora jogar um jogo da velha?\n\n");
-    Jogador *jogaoresCopia = malloc(12 * sizeof(Jogador)); //Cópia parar armazenar dados ao longo do programa
+    Jogador *jogadoresCopia = malloc(12 * sizeof(Jogador)); // Cópia parar armazenar dados ao longo do programa
+    Jogador *jogadores = malloc(12 * sizeof(Jogador));      // Dois a mais que o limite de jogadores
+    int condArquivo;
+    int nJogadores;
     while (1)
     {
-        int condArquivo;
-        int nJogadores;
-        Jogador *jogadores = malloc(12 * sizeof(Jogador)); // Dois a mais que o limite de jogadores
         if (verificaArquivoExistente("velha.ini"))
         {
-            FILE *arquivoIni = fopen("velha.ini", "r+");
-            fscanf(arquivoIni, "%d\n", &nJogadores); // Armazena o número de jogadores
-            for (int i = 0; i < nJogadores; i++)     // Armazenará os dados dos jogadores no vetor de struct
+            if (unicaVez == 0)
             {
-                fgets(jogadores[i].nome, 64, arquivoIni);
-                jogadores[i].nome[strlen(jogadores[i].nome) - 1] = '\0'; // Removendo \n
-                fscanf(arquivoIni, "%d %d %d\n", &jogadores[i].vitorias, &jogadores[i].empates, &jogadores[i].derrotas);
+                FILE *arquivoIni = fopen("velha.ini", "r+");
+
+                fscanf(arquivoIni, "%d\n", &nJogadores); // Armazena o número de jogadores
+                for (int i = 0; i < nJogadores; i++)     // Armazenará os dados dos jogadores no vetor de struct
+                {
+                    fgets(jogadores[i].nome, 64, arquivoIni);
+                    jogadores[i].nome[strlen(jogadores[i].nome) - 1] = '\0'; // Removendo \n
+                    fscanf(arquivoIni, "%d %d %d\n", &jogadores[i].vitorias, &jogadores[i].empates, &jogadores[i].derrotas);
+                }
+
+                fclose(arquivoIni);
             }
-            fclose(arquivoIni);
+
+            unicaVez++;
+
             condArquivo = 1; // Variável para saber a condição do arquivo .ini; 1 caso o arquivo já exista e 0 caso o arquivo seja novo
         }
         else
@@ -88,7 +98,7 @@ int main(int argc, char const *argv[])
                 {
                     strcpy(jogadoresNovoIni[1].nome, "Computador"); // Player 2 = Computador
                 }
-                //Inicializa arquivo
+                // Inicializa arquivo
                 int nJogadoresNovos = 2;
                 jogadoresNovoIni[0].vitorias = 0;
                 jogadoresNovoIni[0].empates = 0;
@@ -96,6 +106,7 @@ int main(int argc, char const *argv[])
                 jogadoresNovoIni[1].vitorias = 0;
                 jogadoresNovoIni[1].empates = 0;
                 jogadoresNovoIni[1].derrotas = 0;
+
                 FILE *arquivoIni = fopen("velha.ini", "r+"); // Gravação dos primeiros dados do .ini recém criado
                 fprintf(arquivoIni, "%d\n", nJogadoresNovos);
                 for (int i = 0; i < 2; i++)
@@ -104,6 +115,9 @@ int main(int argc, char const *argv[])
                     fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
                 }
                 fclose(arquivoIni);
+
+                
+                
             }
 
             else // Arquivo .ini existente
@@ -205,6 +219,7 @@ int main(int argc, char const *argv[])
                         jogadores[posicaoPlayer1].vitorias++; // Incrementa o número de vitórias do player
                         jogadores[posicaoPlayer2].derrotas++;
                         vitoria = 1;
+                        // Cópia para o vetor jogadoresCopia
                     }
                     else if (verificaVitoria(matriz, 3, 3) == 2) // Vitória do player 2
                     {
