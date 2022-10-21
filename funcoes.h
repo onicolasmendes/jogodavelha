@@ -41,5 +41,8 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
 int jogoMultiplayerJogoAtual(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, int posicaoPlayer1, int posicaoPlayer2, int contRodada, int nJogadores);
 void copiaMatriz(char ***A, char **B);
 int jogoMultiplayerCarregado(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, int posicaoPlayer1, int posicaoPlayer2, int contRodada, int nJogadores);
+int validaNomeArquivo(char *nomeArquivo);
+int lerArquivo(char *nomeArquivo, char ***matrizJogoCarregado, Jogador *jogadoresTempJogoCarregado, int *contRodadaJogoCarregado, int *nJogadoresJogoCarregado);
+int verificaNomeNoVetorPrincipal(Jogador *jogadores, char *nomePlayer, int nJogadores);
 
 #endif

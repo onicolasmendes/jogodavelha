@@ -178,7 +178,7 @@ int main(int argc, char const *argv[])
                 inicializaMatriz(&matriz, 3, 3);
                 imprimeMatriz(matriz, 3, 3);
 
-                int contRodadaNew = 1;                                                                   // Contará o número de rodadas e servirá para determinar quem joga
+                int contRodadaNew = 1;                                                                                                                                                                                                             // Contará o número de rodadas e servirá para determinar quem joga
                 jogoMultiplayerArquivoIniNovo(matriz, jogadoresNovoIni, contRodadaNew, nJogadoresNovos, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual); // Função que roda o game
             }
 
@@ -217,8 +217,8 @@ int main(int argc, char const *argv[])
 
                 // Verificando se os players informados já estão no .ini
                 int posicaoPlayer1, posicaoPlayer2;
-                posicaoPlayer1 = verificaPlayerNoIni(jogadoresTemp[0].nome, nJogadores); // Retorna a posição do player no ini, caso exista, senão, retorna -1
-                posicaoPlayer2 = verificaPlayerNoIni(jogadoresTemp[1].nome, nJogadores);
+                posicaoPlayer1 = verificaNomeNoVetorPrincipal(jogadores, jogadoresTemp[0].nome, nJogadores); // Retorna a posição do player no ini, caso exista, senão, retorna -1
+                posicaoPlayer2 = verificaNomeNoVetorPrincipal(jogadores, jogadoresTemp[1].nome, nJogadores);
 
                 // Caso em que o nome não está no ini
                 if (posicaoPlayer1 == -1) // Nome do player 1 não está no .ini
@@ -236,23 +236,63 @@ int main(int argc, char const *argv[])
                 inicializaMatriz(&matriz, 3, 3);
                 imprimeMatriz(matriz, 3, 3);
 
-                int contRodada = 1;                                                                                                        // Contará o número de rodadas e servirá para determinar quem joga
+                int contRodada = 1;                                                                                                                                                                                                                                                  // Contará o número de rodadas e servirá para determinar quem joga
                 jogoMultiplayer(matriz, jogadoresTemp, jogadores, posicaoPlayer1, posicaoPlayer2, contRodada, nJogadoresRodadaConvertido, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual); // Função que roda o game
             }
 
             break;
         case '2': // Continuar um jogo salvo
-            
+            printf("Digite o nome do arquivo que contém o jogo salvo: ");
+            char nomeArquivo[128];
+            fgets(nomeArquivo, 128, stdin);
+            int tamanhoNomeArquivo = strlen(nomeArquivo);
+            nomeArquivo[tamanhoNomeArquivo - 1] = '\0';
+
+            // Validação do nome do arquivo
+            while (!validaNomeArquivo(nomeArquivo))
+            {
+                printf("Digite o nome do arquivo que contém o jogo salvo: ");
+                fgets(nomeArquivo, 128, stdin);
+                int tamanhoNomeArquivo1 = strlen(nomeArquivo);
+                nomeArquivo[tamanhoNomeArquivo1 - 1] = '\0';
+            }
+
+            // Variáveis que serão extraídas do arquivo
+            char **matrizJogoCarregado;
+            matrizJogoCarregado = criaMatriz(3, 3);
+            Jogador *jogadoresTempJogoCarregado = malloc(2 * sizeof(Jogador));
+            int posicaoPlayer1JogoCarregado, posicaoPlayer2JogoCarregado = -1, contRodadaJogoCarregado, nJogadoresJogoCarregado;
+
+            lerArquivo(nomeArquivo, &matrizJogoCarregado, jogadoresTempJogoCarregado, &contRodadaJogoCarregado, &nJogadoresJogoCarregado);
+
+            posicaoPlayer1JogoCarregado = verificaNomeNoVetorPrincipal(jogadores, jogadoresTempJogoCarregado[0].nome, nJogadores); // Retorna a posição do player no ini, caso exista, senão, retorna -1
+            posicaoPlayer2JogoCarregado = verificaNomeNoVetorPrincipal(jogadores, jogadoresTempJogoCarregado[1].nome, nJogadores);
+
+            // Caso em que o nome não está no ini
+            if (posicaoPlayer1JogoCarregado == -1) // Nome do player 1 não está no .ini
+            {
+                adicionaNovoPlayer(jogadores, jogadoresTempJogoCarregado, &nJogadores, &posicaoPlayer1JogoCarregado, 0);
+            }
+
+            if (posicaoPlayer2JogoCarregado == -1) // Nome do player 2 não está no .ini
+            {
+                adicionaNovoPlayer(jogadores, jogadoresTempJogoCarregado, &nJogadores, &posicaoPlayer2JogoCarregado, 1);
+            }
+
+            imprimeMatriz(matrizJogoCarregado, 3, 3);
+            jogoMultiplayer(matrizJogoCarregado, jogadoresTempJogoCarregado, jogadores, posicaoPlayer1JogoCarregado, posicaoPlayer2JogoCarregado, contRodadaJogoCarregado, nJogadoresJogoCarregado, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual);
+
+            printf("NUMERO DE JOGADORES = %d\n\n", nJogadores);
             break;
 
         case '3': // Continuar o jogo atual
 
-            if(posicaoPlayer2JogoAtual != -1) //Caso em que algum jogo foi iniciado, ou seja, o valor da variável posicaoPlayer2JogoAtual é diferente de -1, que é o valor que foi atribuido no início do programa 
+            if (posicaoPlayer2JogoAtual != -1) // Caso em que algum jogo foi iniciado, ou seja, o valor da variável posicaoPlayer2JogoAtual é diferente de -1, que é o valor que foi atribuido no início do programa
             {
                 imprimeMatriz(matrizJogoAtual, 3, 3);
                 jogoMultiplayer(matrizJogoAtual, jogadoresTempJogoAtual, jogadores, posicaoPlayer1JogoAtual, posicaoPlayer2JogoAtual, contRodadaJogoAtual, nJogadoresJogoAtual, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual);
             }
-            else //Caso em que nenhum jogo foi iniciado
+            else // Caso em que nenhum jogo foi iniciado
             {
                 printf("\nErro - Nenhum jogo foi iniciado, portanto, não há como continuar jogo atual.\n\n");
             }

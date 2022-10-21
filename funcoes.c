@@ -955,3 +955,91 @@ int jogoMultiplayerCarregado(char **matriz, Jogador *jogadoresTemp, Jogador *jog
     printf("%s %d %d %d\n\n\n", jogadores[posicaoPlayer2].nome, jogadores[posicaoPlayer2].vitorias, jogadores[posicaoPlayer2].empates, jogadores[posicaoPlayer2].derrotas);
     return 0;
 }
+
+int validaNomeArquivo(char *nomeArquivo)
+{
+    if (verificaArquivoExistente(nomeArquivo))
+    {
+        FILE *arquivo = fopen(nomeArquivo, "r");
+        int teste;
+        if (fscanf(arquivo, "%d\n", &teste)) // Verifica o primeiro número do arquivo se é um int
+        {
+            if (teste == 1 || teste == 2) // Valor inválido
+            {
+                fclose(arquivo);
+                return 1;
+            }
+            else
+            {
+                fclose(arquivo);
+                printf("\nErro - Arquivo existe mas não apresenta o formato desejado\n\n");
+                return 0;
+            }
+        }
+        else
+        {
+            fclose(arquivo);
+            printf("Erro - Arquivo inválido\n\n");
+        }
+    }
+    else
+    {
+        printf("\nErro - O arquivo não existe\n\n");
+        return 0;
+    }
+}
+
+int lerArquivo(char *nomeArquivo, char ***matrizJogoCarregado, Jogador *jogadoresTempJogoCarregado, int *contRodadaJogoCarregado, int *nJogadoresJogoCarregado)
+{
+    // Lendo as variáveis
+    FILE *arquivo = fopen(nomeArquivo, "r");
+    fscanf(arquivo, "%d\n", nJogadoresJogoCarregado);
+
+    // Ler nome do player 1
+    fgets(jogadoresTempJogoCarregado[0].nome, 64, arquivo);
+    jogadoresTempJogoCarregado[0].nome[strlen(jogadoresTempJogoCarregado[0].nome) - 1] = '\0';
+
+    if (*nJogadoresJogoCarregado == 2) // 2 players no arquivo
+    {
+        fgets(jogadoresTempJogoCarregado[1].nome, 64, arquivo);
+        jogadoresTempJogoCarregado[1].nome[strlen(jogadoresTempJogoCarregado[1].nome) - 1] = '\0';
+    }
+    else // Caso em que é 1 player
+    {
+        strcpy(jogadoresTempJogoCarregado[1].nome, "Computador");
+    }
+
+    //Ler matriz
+    int contElementosMatriz = 0;
+
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            char elemento;
+            fscanf(arquivo, "%c ", &elemento);
+            if(elemento == 'X' || elemento == 'O')
+            {
+                contElementosMatriz++;
+            }
+            (*matrizJogoCarregado)[i][j]  = elemento;
+        }
+        fscanf(arquivo, "\n");
+    }
+    
+    *contRodadaJogoCarregado = contElementosMatriz + 1;
+    return 0;
+}
+
+int verificaNomeNoVetorPrincipal(Jogador *jogadores, char *nomePlayer, int nJogadores)
+{
+    for (int i = 0; i < nJogadores; i++)
+    {
+        if(strcmp(jogadores[i].nome, nomePlayer) == 0)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
