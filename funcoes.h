@@ -31,6 +31,15 @@ void imprimeMatriz(char **matriz, int n, int m);
 char imprimeElemento(char **matriz, int linha, int coluna);
 int verificaVitoria(char **matriz, int n, int m);
 void copiaVetorStruct(Jogador *copiado, Jogador *copia, int tam);
+int validaNomePlayer2(char *nomePlayer1, char *nomePlayer2);
+int validaNomePlayer1(char *nomePlayer1);
+int validaNJogadoresRodada(char *comandoNJogadores, char *nJogadoresRodada);
+int validaOp(char *comandoOp, char *op);
+int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, int posicaoPlayer1, int posicaoPlayer2, int contRodada, int nJogadores, char ***matrizJogoAtual, Jogador *jogadoresTempJogoAtual, int *posicaoPlayer1JogoAtual, int *posicaoPlayer2JogoAtual, int *contRodadaJogoAtual, int *nJogadoresJogoAtual);
+int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int contRodadaNew, int nJogadoresNovos, char ***matrizJogoAtual, Jogador *jogadoresTempJogoAtual, int *posicaoPlayer1JogoAtual, int *posicaoPlayer2JogoAtual, int *contRodadaJogoAtual, int *nJogadoresJogoAtual);
 
+int jogoMultiplayerJogoAtual(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, int posicaoPlayer1, int posicaoPlayer2, int contRodada, int nJogadores);
+void copiaMatriz(char ***A, char **B);
+int jogoMultiplayerCarregado(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, int posicaoPlayer1, int posicaoPlayer2, int contRodada, int nJogadores);
 
 #endif

@@ -10,10 +10,12 @@ Matricula: 22.1.4028
 #define ANSI_RESET "\x1b[0m"
 #define ANSI_BG_COLOR_CYAN "\x1b[46m"
 #define ANSI_COLOR_CYAN "\x1b[36m"
+#define ANSI_COLOR_GREEN "\x1b[32m"
 #define ANSI_BOLD "\x1b[1m"
 #define BG_CYAN(string) ANSI_BG_COLOR_CYAN string ANSI_RESET
 #define BG_BLUE(string) ANSI_BG_COLOR_BLUE string ANSI_RESET
 #define WHITE(string) ANSI_COLOR_WHITE string ANSI_RESET
+#define GREEN(string) ANSI_COLOR_GREEN string ANSI_RESET
 #define BOLD(string) ANSI_BOLD string ANSI_RESET
 #define TAB_HOR "\u2501" // ━ (horizontal)
 #define TAB_VER "\u2503" // ┃ (vertical)
@@ -362,7 +364,7 @@ char imprimeElemento(char **matriz, int linha, int coluna)
     }
 }
 
-int verificaVitoria(char **matriz, int n, int m) //Função retorna 1, caso player 1 ganhe, 2, caso player 2 ganhe, 0, case nenhum ganhe
+int verificaVitoria(char **matriz, int n, int m) // Função retorna 1, caso player 1 ganhe, 2, caso player 2 ganhe, 0, case nenhum ganhe
 {
     char vitoriaPlayer1[4] = "XXX";
     char vitoriaPlayer2[4] = "OOO";
@@ -388,7 +390,7 @@ int verificaVitoria(char **matriz, int n, int m) //Função retorna 1, caso play
             return 2;
         }
     }
-    
+
     // Verificação por coluna
     for (int i = 0; i < n; i++)
     {
@@ -449,8 +451,507 @@ int verificaVitoria(char **matriz, int n, int m) //Função retorna 1, caso play
 
 void copiaVetorStruct(Jogador *copiado, Jogador *copia, int tam)
 {
-    for(int i = 0; i < tam; i++)
+    for (int i = 0; i < tam; i++)
     {
         copia[i] = copiado[i];
     }
+}
+
+int validaNomePlayer1(char *nomePlayer1) // Validação do nome do player 1
+{
+    if (strcmp(nomePlayer1, "Computador") == 0 || strcmp(nomePlayer1, "computador") == 0) // Condição em que o nome é igual ao "Computador"
+    {
+        printf("\nErro - O nome do jogador 1 é um nome reservado ao Computador\n\n");
+        return 0;
+    }
+
+    if (strcmp(nomePlayer1, " ") == 0) // O nome é um espaço
+    {
+        printf("\nERRO - O nome do jogador 1 não pode ser um espaço\n\n");
+        return 0;
+    }
+
+    int tamanhoNomePlayer1 = (int)strlen(nomePlayer1);
+
+    if (tamanhoNomePlayer1 == 0) // Condição em que o usuário apenas aperta enter e não informa um nome
+    {
+        printf("\nErro - Insira um nome válido com um ou mais de um caractere, diferente de um espaço, para o jogador 1\n\n");
+        return 0;
+    }
+
+    return 1;
+}
+
+int validaNomePlayer2(char *nomePlayer1, char *nomePlayer2) // Validação do nome do player 2
+{
+    if (strcmp(nomePlayer1, nomePlayer2) == 0) // Condição em que um mesmo nome é inserido duas vezes
+    {
+        printf("\nErro - O nome do jogador 2 é igual ao nome do jogador 1\n\n");
+        return 0;
+    }
+
+    if (strcmp(nomePlayer2, "Computador") == 0 || strcmp(nomePlayer2, "computador") == 0) // Condição em que o nome é igual ao "Computador"
+    {
+        printf("\nErro - O nome do jogador 2 é um nome reservado ao Computador\n\n");
+        return 0;
+    }
+
+    if (strcmp(nomePlayer2, " ") == 0) // O nome é um espaço
+    {
+        printf("\nERRO - O nome do jogador 2 não pode ser um espaço\n\n");
+        return 0;
+    }
+
+    int tamanhoNomePlayer2 = (int)strlen(nomePlayer2);
+
+    if (tamanhoNomePlayer2 == 0) // Condição em que o usuário apenas aperta um enter e não informa o nome
+    {
+        printf("\nErro - Insira um nome válido com um ou mais de um caractere para o jogador 2\n\n");
+        return 0;
+    }
+
+    return 1;
+}
+
+int validaNJogadoresRodada(char *comandoNJogadores, char *nJogadoresRodada)
+{
+    int tamanhoComando = strlen(comandoNJogadores);
+    if (tamanhoComando == 1)
+    {
+        *nJogadoresRodada = comandoNJogadores[0];
+        return 1;
+    }
+    else
+    {
+        printf("\nERRO - Número de jogadores inválido\n\n");
+        return 0;
+    }
+}
+
+int validaOp(char *comandoOp, char *op)
+{
+    int tamanhoComando = strlen(comandoOp);
+    char comandoTamanhoCorreto;
+
+    if (tamanhoComando == 1)
+    {
+        *op = comandoOp[0];
+    }
+    else
+    {
+        printf("\nERRO - Opção inválida\n\n");
+        return 0;
+    }
+}
+
+int salvarJogo(char **matriz, int nJogadores, Jogador *jogadoresTemp, int contRodada, char *parametroDoComandoPrincipal)
+{
+    FILE *arquivo = fopen(parametroDoComandoPrincipal, "w");
+
+    // Numero de jogadores e nome dos jogadores
+    if (nJogadores == 2)
+    {
+        fprintf(arquivo, "%d\n", 2);
+        fprintf(arquivo, "%s\n", jogadoresTemp[0].nome);
+        fprintf(arquivo, "%s\n", jogadoresTemp[1].nome);
+    }
+    else
+    {
+        fprintf(arquivo, "%d\n", 1);
+        fprintf(arquivo, "%s\n", jogadoresTemp[0].nome);
+        fprintf(arquivo, "%s\n", "Computador");
+    }
+
+    // Matriz
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            fprintf(arquivo, "%c ", matriz[i][j]);
+        }
+
+        fprintf(arquivo, "\n");
+    }
+
+    // Ultimo player que jogou
+    if (contRodada % 2 != 0) // Se está na vez do player 1 é porque o últio a jogar foi o player 2 e vice-versa
+    {
+        fprintf(arquivo, "%d", 2);
+    }
+    else
+    {
+        fprintf(arquivo, "%d", 1);
+    }
+
+    fclose(arquivo);
+}
+
+int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, int posicaoPlayer1, int posicaoPlayer2, int contRodada, int nJogadores, char ***matrizJogoAtual, Jogador *jogadoresTempJogoAtual, int *posicaoPlayer1JogoAtual, int *posicaoPlayer2JogoAtual, int *contRodadaJogoAtual, int *nJogadoresJogoAtual)
+{
+    int vitoria = 0; // Variável que determinará se houve vitória ou não
+    int empate = 0;  // Variável que determinará se houve empate ou não
+    int coordenadaLinha, coordenadaColuna;
+
+    while (!vitoria && !empate) // O jogo roda enquanto não houver vitoria ou empate
+    {
+
+        char comandoGeral[64], comandoPrincipal[6], parametroDoComandoPrincipal[64];
+
+        if (contRodada % 2 != 0) // Vez do player 1
+        {
+            printf("%s, digite o comando: ", jogadoresTemp[0].nome);
+            fgets(comandoGeral, 64, stdin);
+            captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
+
+            if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresTemp, 0) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinha, &coordenadaColuna, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
+            {
+                if (strcmp(comandoPrincipal, "marcar") == 0) // Comando marcar
+                {
+                    marcarPosicao(&matriz, coordenadaLinha, coordenadaColuna, contRodada);
+                    imprimeMatriz(matriz, 3, 3);
+                    contRodada++; // Incrementa a rodada
+                }
+                else if (strcmp(comandoPrincipal, "voltar") == 0) // Comando voltar
+                {
+                    if (contRodada == 1) // Salva todos os dados do jogo na primeira rodada do game, caso os mesmos sejam requisitados na opção 3 do menu para carregar o jogo
+                    {
+
+                        copiaMatriz(matrizJogoAtual, matriz);
+                        for (int i = 0; i < 2; i++)
+                        {
+                            jogadoresTempJogoAtual[i] = jogadoresTemp[i];
+                        }
+                        *posicaoPlayer1JogoAtual = posicaoPlayer1;
+                        *posicaoPlayer2JogoAtual = posicaoPlayer2;
+                        *contRodadaJogoAtual = contRodada;
+                        *nJogadoresJogoAtual = nJogadores;
+                        *posicaoPlayer2JogoAtual = posicaoPlayer2;
+                    }
+                    break; // Volta ao menu
+                }
+                else if (strcmp(comandoPrincipal, "salvar") == 0) // Comando salvar
+                {
+                    salvarJogo(matriz, nJogadores, jogadoresTemp, contRodada, parametroDoComandoPrincipal);
+                    printf(BOLD(GREEN("Arquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
+                }
+            }
+        }
+        else // Vez do player 2
+        {
+            printf("%s, digite o comando: ", jogadoresTemp[1].nome);
+            fgets(comandoGeral, 64, stdin);
+            captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
+
+            if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresTemp, 1) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinha, &coordenadaColuna, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
+            {
+                if (strcmp(comandoPrincipal, "marcar") == 0) // Comando marcar
+                {
+                    marcarPosicao(&matriz, coordenadaLinha, coordenadaColuna, contRodada); // Marca a posição na matriz, cuja a validação da disponibilidade foi feita no if anterior
+                    imprimeMatriz(matriz, 3, 3);
+                    contRodada++; // Incrementa a rodada
+                }
+                else if (strcmp(comandoPrincipal, "voltar") == 0) // Comando voltar
+                {
+                    break; // Volta ao menu
+                }
+                else if (strcmp(comandoPrincipal, "salvar") == 0) // Comando salvar
+                {
+                    salvarJogo(matriz, nJogadores, jogadoresTemp, contRodada, parametroDoComandoPrincipal);
+                    printf(BOLD(GREEN("Arquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
+                }
+            }
+        }
+        // Verifica se alguém ganhou ou se deu empate
+        if (verificaVitoria(matriz, 3, 3) == 1) // Vitória do player 1
+        {
+            printf("Parabens, %s ! Você ganhou a rodada!\n", jogadores[posicaoPlayer1].nome);
+            jogadores[posicaoPlayer1].vitorias++; // Incrementa o número de vitórias do player
+            jogadores[posicaoPlayer2].derrotas++;
+            vitoria = 1;
+            *posicaoPlayer2JogoAtual = -1; // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
+            break;
+        }
+        else if (verificaVitoria(matriz, 3, 3) == 2) // Vitória do player 2
+        {
+            printf("Parabens, %s ! Você ganhou a rodada!\n", jogadores[posicaoPlayer2].nome);
+            jogadores[posicaoPlayer2].vitorias++;
+            jogadores[posicaoPlayer1].derrotas++;
+            vitoria = 1;
+            *posicaoPlayer2JogoAtual = -1; // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
+            break;
+        }
+        else if (verificaVitoria(matriz, 3, 3) == 0 && contRodada == 10) // Jogo deu velha
+        {
+            printf("O game deu velha! Ambos empataram!\n");
+            jogadores[posicaoPlayer1].empates++;
+            jogadores[posicaoPlayer2].empates++;
+            empate = 1;
+            *posicaoPlayer2JogoAtual = -1; // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
+            break;
+        }
+
+        // Salva todos os dados do jogo, caso ele seja recarregado na opção 3 do menu
+        copiaMatriz(matrizJogoAtual, matriz);
+        // Copiando o vetor jogadoresTemp
+        for (int i = 0; i < 2; i++)
+        {
+            jogadoresTempJogoAtual[i] = jogadoresTemp[i];
+        }
+        *posicaoPlayer1JogoAtual = posicaoPlayer1;
+        *posicaoPlayer2JogoAtual = posicaoPlayer2;
+        *contRodadaJogoAtual = contRodada;
+        *nJogadoresJogoAtual = nJogadores;
+    }
+    printf("%s %d %d %d\n\n\n", jogadores[posicaoPlayer1].nome, jogadores[posicaoPlayer1].vitorias, jogadores[posicaoPlayer1].empates, jogadores[posicaoPlayer1].derrotas);
+    printf("%s %d %d %d\n\n\n", jogadores[posicaoPlayer2].nome, jogadores[posicaoPlayer2].vitorias, jogadores[posicaoPlayer2].empates, jogadores[posicaoPlayer2].derrotas);
+    return 0;
+}
+
+int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int contRodadaNew, int nJogadoresNovos, char ***matrizJogoAtual, Jogador *jogadoresTempJogoAtual, int *posicaoPlayer1JogoAtual, int *posicaoPlayer2JogoAtual, int *contRodadaJogoAtual, int *nJogadoresJogoAtual)
+{
+    int vitoriaNew = 0;
+    int empateNew = 0;
+    int coordenadaLinhaNew, coordenadaColunaNew;
+
+    while (!vitoriaNew && !empateNew) // O jogo roda enquanto não houver vitoria ou empate
+    {
+        char comandoGeral[64], comandoPrincipal[6], parametroDoComandoPrincipal[64];
+
+        if (contRodadaNew % 2 != 0) // Vez do player 1
+        {
+            printf("%s, digite o comando: ", jogadoresNovoIni[0].nome);
+            fgets(comandoGeral, 64, stdin);
+            captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
+
+            if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresNovoIni, 0) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinhaNew, &coordenadaColunaNew, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
+            {
+                if (strcmp(comandoPrincipal, "marcar") == 0) // Comando marcar
+                {
+                    marcarPosicao(&matriz, coordenadaLinhaNew, coordenadaColunaNew, contRodadaNew);
+                    imprimeMatriz(matriz, 3, 3);
+                    contRodadaNew++; // Incrementa a rodada
+                }
+                else if (strcmp(comandoPrincipal, "voltar") == 0) // Comando voltar
+                {
+                    if (contRodadaNew == 1) // Salva todos os dados do jogo na primeira rodada do game, caso os mesmos sejam requisitados na opção 3 do menu para carregar o jogo
+                    {
+
+                        copiaMatriz(matrizJogoAtual, matriz);
+                        for (int i = 0; i < 2; i++)
+                        {
+                            jogadoresTempJogoAtual[i] = jogadoresNovoIni[i];
+                        }
+                        *posicaoPlayer1JogoAtual = 0;
+                        *posicaoPlayer2JogoAtual = 1;
+                        *contRodadaJogoAtual = contRodadaNew;
+                        *nJogadoresJogoAtual = nJogadoresNovos;
+                    }
+                    break; // Volta ao menu
+                }
+                else if (strcmp(comandoPrincipal, "salvar") == 0) // Comando salvar
+                {
+                    salvarJogo(matriz, nJogadoresNovos, jogadoresNovoIni, contRodadaNew, parametroDoComandoPrincipal);
+                    printf(BOLD(GREEN("Arquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
+                }
+            }
+        }
+        else // Vez do player 2
+        {
+            printf("%s, digite o comando: ", jogadoresNovoIni[1].nome);
+            fgets(comandoGeral, 64, stdin);
+            captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
+
+            if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresNovoIni, 1) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinhaNew, &coordenadaColunaNew, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
+            {
+                if (strcmp(comandoPrincipal, "marcar") == 0) // Comando marcar
+                {
+                    marcarPosicao(&matriz, coordenadaLinhaNew, coordenadaColunaNew, contRodadaNew); // Marca a posição na matriz, cuja a validação da disponibilidade foi feita no if anterior
+                    imprimeMatriz(matriz, 3, 3);
+                    contRodadaNew++; // Incrementa a rodada
+                }
+                else if (strcmp(comandoPrincipal, "voltar") == 0) // Comando voltar
+                {
+                    break; // Volta ao menu
+                }
+                else if (strcmp(comandoPrincipal, "salvar") == 0) // Comando salvar
+                {
+                    salvarJogo(matriz, nJogadoresNovos, jogadoresNovoIni, contRodadaNew, parametroDoComandoPrincipal);
+                    printf(BOLD(GREEN("Arquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
+                }
+            }
+        }
+        // Verifica se alguém ganhou ou se deu empate
+        if (verificaVitoria(matriz, 3, 3) == 1) // Vitória do player 1
+        {
+            printf("Parabens, %s ! Você ganhou a rodada!\n", jogadoresNovoIni[0].nome);
+            jogadoresNovoIni[0].vitorias++; // Incrementa o número de vitórias do player
+            jogadoresNovoIni[1].derrotas++;
+            vitoriaNew = 1;
+            *posicaoPlayer2JogoAtual = -1; // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
+
+            // Grava as informações que serão captadas pelo vetor principal quando verificar a existência do arquivo novamente
+            FILE *arquivoIni = fopen("velha.ini", "w");
+            fprintf(arquivoIni, "%d\n", nJogadoresNovos);
+            for (int i = 0; i < 2; i++)
+            {
+                fprintf(arquivoIni, "%s\n", jogadoresNovoIni[i].nome);
+                fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
+            }
+            fclose(arquivoIni);
+            break;
+        }
+        else if (verificaVitoria(matriz, 3, 3) == 2) // Vitória do player 2
+        {
+            printf("Parabens, %s ! Você ganhou a rodada!\n", jogadoresNovoIni[1].nome);
+            jogadoresNovoIni[1].vitorias++;
+            jogadoresNovoIni[0].derrotas++;
+            vitoriaNew = 1;
+            *posicaoPlayer2JogoAtual = -1; // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
+
+            // Grava as informações que serão captadas pelo vetor principal quando verificar a existência do arquivo novamente
+            FILE *arquivoIni = fopen("velha.ini", "w");
+            fprintf(arquivoIni, "%d\n", nJogadoresNovos);
+            for (int i = 0; i < 2; i++)
+            {
+                fprintf(arquivoIni, "%s\n", jogadoresNovoIni[i].nome);
+                fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
+            }
+            fclose(arquivoIni);
+            break;
+        }
+        else if (verificaVitoria(matriz, 3, 3) == 0 && contRodadaNew == 10) // Jogo deu velha
+        {
+            printf("O game deu velha! Ambos empataram!\n");
+            jogadoresNovoIni[0].empates++;
+            jogadoresNovoIni[1].empates++;
+            empateNew = 1;
+            *posicaoPlayer2JogoAtual = -1; // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
+
+            // Grava as informações que serão captadas pelo vetor principal quando verificar a existência do arquivo novamente
+            FILE *arquivoIni = fopen("velha.ini", "w");
+            fprintf(arquivoIni, "%d\n", nJogadoresNovos);
+            for (int i = 0; i < 2; i++)
+            {
+                fprintf(arquivoIni, "%s\n", jogadoresNovoIni[i].nome);
+                fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
+            }
+            fclose(arquivoIni);
+            break;
+        }
+        // Salva todos os dados do jogo, caso ele seja recarregado na opção 3 do menu
+        copiaMatriz(matrizJogoAtual, matriz);
+        // Copiando o vetor jogadoresTemp
+        for (int i = 0; i < 2; i++)
+        {
+            jogadoresTempJogoAtual[i] = jogadoresNovoIni[i];
+        }
+        *posicaoPlayer1JogoAtual = 0;
+        *posicaoPlayer2JogoAtual = 1;
+        *contRodadaJogoAtual = contRodadaNew;
+        *nJogadoresJogoAtual = nJogadoresNovos;
+
+        printf("%s %d %d %d\n\n\n", jogadoresNovoIni[0].nome, jogadoresNovoIni[0].vitorias, jogadoresNovoIni[0].empates, jogadoresNovoIni[0].derrotas);
+        printf("%s %d %d %d\n\n\n", jogadoresNovoIni[1].nome, jogadoresNovoIni[1].vitorias, jogadoresNovoIni[1].empates, jogadoresNovoIni[1].derrotas);
+    }
+}
+
+void copiaMatriz(char ***A, char **B)
+{
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            (*A)[i][j] = B[i][j];
+        }
+    }
+}
+
+int jogoMultiplayerCarregado(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, int posicaoPlayer1, int posicaoPlayer2, int contRodada, int nJogadores)
+{
+    int vitoria = 0; // Variável que determinará se houve vitória ou não
+    int empate = 0;  // Variável que determinará se houve empate ou não
+    int coordenadaLinha, coordenadaColuna;
+
+    while (!vitoria && !empate) // O jogo roda enquanto não houver vitoria ou empate
+    {
+
+        char comandoGeral[64], comandoPrincipal[6], parametroDoComandoPrincipal[64];
+
+        if (contRodada % 2 != 0) // Vez do player 1
+        {
+            printf("%s, digite o comando: ", jogadoresTemp[0].nome);
+            fgets(comandoGeral, 64, stdin);
+            captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
+
+            if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresTemp, 0) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinha, &coordenadaColuna, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
+            {
+                if (strcmp(comandoPrincipal, "marcar") == 0) // Comando marcar
+                {
+                    marcarPosicao(&matriz, coordenadaLinha, coordenadaColuna, contRodada);
+                    imprimeMatriz(matriz, 3, 3);
+                    contRodada++; // Incrementa a rodada
+                }
+                else if (strcmp(comandoPrincipal, "voltar") == 0) // Comando voltar
+                {
+                    break; // Volta ao menu
+                }
+                else if (strcmp(comandoPrincipal, "salvar") == 0) // Comando salvar
+                {
+                    salvarJogo(matriz, nJogadores, jogadoresTemp, contRodada, parametroDoComandoPrincipal);
+                    printf(BOLD(GREEN("Arquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
+                }
+            }
+        }
+        else // Vez do player 2
+        {
+            printf("%s, digite o comando: ", jogadoresTemp[1].nome);
+            fgets(comandoGeral, 64, stdin);
+            captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
+
+            if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresTemp, 1) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinha, &coordenadaColuna, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
+            {
+                if (strcmp(comandoPrincipal, "marcar") == 0) // Comando marcar
+                {
+                    marcarPosicao(&matriz, coordenadaLinha, coordenadaColuna, contRodada); // Marca a posição na matriz, cuja a validação da disponibilidade foi feita no if anterior
+                    imprimeMatriz(matriz, 3, 3);
+                    contRodada++; // Incrementa a rodada
+                }
+                else if (strcmp(comandoPrincipal, "voltar") == 0) // Comando voltar
+                {
+                    break; // Volta ao menu
+                }
+                else if (strcmp(comandoPrincipal, "salvar") == 0) // Comando salvar
+                {
+                    salvarJogo(matriz, nJogadores, jogadoresTemp, contRodada, parametroDoComandoPrincipal);
+                    printf(BOLD(GREEN("Arquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
+                }
+            }
+        }
+        // Verifica se alguém ganhou ou se deu empate
+        if (verificaVitoria(matriz, 3, 3) == 1) // Vitória do player 1
+        {
+            printf("Parabens, %s ! Você ganhou a rodada!\n", jogadores[posicaoPlayer1].nome);
+            jogadores[posicaoPlayer1].vitorias++; // Incrementa o número de vitórias do player
+            jogadores[posicaoPlayer2].derrotas++;
+            vitoria = 1;
+            // Cópia para o vetor jogadoresCopia
+        }
+        else if (verificaVitoria(matriz, 3, 3) == 2) // Vitória do player 2
+        {
+            printf("Parabens, %s ! Você ganhou a rodada!\n", jogadores[posicaoPlayer2].nome);
+            jogadores[posicaoPlayer2].vitorias++;
+            jogadores[posicaoPlayer1].derrotas++;
+            vitoria = 1;
+        }
+        else if (verificaVitoria(matriz, 3, 3) == 0 && contRodada == 10) // Jogo deu velha
+        {
+            printf("O game deu velha! Ambos empataram!\n");
+            jogadores[posicaoPlayer1].empates++;
+            jogadores[posicaoPlayer2].empates++;
+            empate = 1;
+        }
+    }
+    printf("%s %d %d %d\n\n\n", jogadores[posicaoPlayer1].nome, jogadores[posicaoPlayer1].vitorias, jogadores[posicaoPlayer1].empates, jogadores[posicaoPlayer1].derrotas);
+    printf("%s %d %d %d\n\n\n", jogadores[posicaoPlayer2].nome, jogadores[posicaoPlayer2].vitorias, jogadores[posicaoPlayer2].empates, jogadores[posicaoPlayer2].derrotas);
+    return 0;
 }

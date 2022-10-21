@@ -11,10 +11,16 @@ int main(int argc, char const *argv[])
     int unicaVez = 0;
     printNomeDoJogo();
     printf("Bora jogar um jogo da velha?\n\n");
-    Jogador *jogadoresCopia = malloc(12 * sizeof(Jogador)); // Cópia parar armazenar dados ao longo do programa
-    Jogador *jogadores = malloc(12 * sizeof(Jogador));      // Dois a mais que o limite de jogadores
+    Jogador *jogadores = malloc(40 * sizeof(Jogador)); // Devido ao fato do uso do realloc não ser recomendado, o vetor terá 30 posições a mais do que o máximo do arquivo .ini, infelizmente, impondo tal limitação ao game
     int condArquivo;
     int nJogadores;
+
+    // Variáveis para salvar um jogo atual que será jogado posteriormente - opção 3 do Menu
+    char **matrizJogoAtual;
+    matrizJogoAtual = criaMatriz(3, 3);
+    Jogador *jogadoresTempJogoAtual = malloc(2 * sizeof(Jogador));
+    int posicaoPlayer1JogoAtual, posicaoPlayer2JogoAtual = -1, contRodadaJogoAtual, nJogadoresJogoAtual;
+
     while (1)
     {
 
@@ -49,12 +55,20 @@ int main(int argc, char const *argv[])
         printMenu();
         printf("Escolha uma opção: ");
         char op;
-        scanf("%c", &op); // Lê a opção do usuário
-        limpaBuffer();
+        char comandoOp[128]; // lerá a linha toda do comando
+        fgets(comandoOp, 128, stdin);
+        comandoOp[strlen(comandoOp) - 1] = '\0';
 
-        while (op != '0' && op != '1' && op != '2' && op != '3' && op != '4') // Valida a opção do usuário
+        while (!validaOp(comandoOp, &op)) // Valida o tamanho do comando que foi passado pelo usuário referente a opção
         {
-            printf("\n\nERRO - Opção inválida\n\n");
+            printf("Escolha uma opção: ");
+            fgets(comandoOp, 128, stdin);
+            comandoOp[strlen(comandoOp) - 1] = '\0';
+        }
+
+        while (op != '0' && op != '1' && op != '2' && op != '3' && op != '4') // Valida o conteúdo propriamente dito da opção do usuário
+        {
+            printf("\nERRO - Opção inválida\n\n");
             printMenu();
             printf("Digite uma opção válida: ");
             scanf("%c", &op);
@@ -64,10 +78,10 @@ int main(int argc, char const *argv[])
         switch (op)
         {
         case '0': // Sair do jogo
-            
-            if(verificaArquivoExistente("velha.ini"))
+
+            if (verificaArquivoExistente("velha.ini"))
             {
-                //Atualiza .ini
+                // Atualiza .ini
                 FILE *arquivoIni = fopen("velha.ini", "w");
                 fprintf(arquivoIni, "%d\n", nJogadores);
                 for (int i = 0; i < nJogadores; i++)
@@ -75,23 +89,30 @@ int main(int argc, char const *argv[])
                     fprintf(arquivoIni, "%s\n", jogadores[i].nome);
                     fprintf(arquivoIni, "%d %d %d\n", jogadores[i].vitorias, jogadores[i].empates, jogadores[i].derrotas);
                 }
-                fclose(arquivoIni);   
+                fclose(arquivoIni);
             }
-            
+
             return 0;
             break;
 
         case '1': // Começar um novo jogo
-            printf("\nDigite o número de jogadores (1 ou 2): ");
+            printf("Digite o número de jogadores (1 ou 2): ");
             char nJogadoresRodada;
-            scanf("%c", &nJogadoresRodada);
-            limpaBuffer();
+            char comandoNumJogadores[128]; // Vai ler a linha digitada
+            fgets(comandoNumJogadores, 128, stdin);
+            comandoNumJogadores[strlen(comandoNumJogadores) - 1] = '\0';
 
-            while (nJogadoresRodada != '1' && nJogadoresRodada != '2') // Valida o número de jogadores
+            while (!validaNJogadoresRodada(comandoNumJogadores, &nJogadoresRodada)) // Validação do tamanho do comando prar o nJogadoresRodada inserido pelo usuário
+            {
+                printf("Digite o número de jogadores (1 ou 2): ");
+                fgets(comandoNumJogadores, 128, stdin);
+                comandoNumJogadores[strlen(comandoNumJogadores) - 1] = '\0';
+            }
+
+            while (nJogadoresRodada != '1' && nJogadoresRodada != '2') // Valida o conteúdo que indica o número de jogadores
             {
                 printf("Erro - Valor inválido!\nDigite novamente o número de jogadores (1 ou 2):");
                 scanf("%c", &nJogadoresRodada);
-                limpaBuffer();
             }
 
             int nJogadoresRodadaConvertido = converteCharPraInt(nJogadoresRodada); // Convertendo para int
@@ -103,11 +124,26 @@ int main(int argc, char const *argv[])
                 printf("Digite o nome do jogador 1:");
                 fgets(jogadoresNovoIni[0].nome, 64, stdin);
                 jogadoresNovoIni[0].nome[strlen(jogadoresNovoIni[0].nome) - 1] = '\0'; // Removendo \n
-                if (nJogadoresRodadaConvertido == 2)                                   // 2 players
+
+                while (!validaNomePlayer1(jogadoresNovoIni[0].nome)) // Validação do nome do player 1
+                {
+                    printf("Digite o nome do jogador 1:");
+                    fgets(jogadoresNovoIni[0].nome, 64, stdin);
+                    jogadoresNovoIni[0].nome[strlen(jogadoresNovoIni[0].nome) - 1] = '\0'; // Removendo \n
+                }
+
+                if (nJogadoresRodadaConvertido == 2) // 2 players
                 {
                     printf("Digite o nome do jogador 2:");
                     fgets(jogadoresNovoIni[1].nome, 64, stdin);
                     jogadoresNovoIni[1].nome[strlen(jogadoresNovoIni[1].nome) - 1] = '\0';
+
+                    while (!validaNomePlayer2(jogadoresNovoIni[0].nome, jogadoresNovoIni[1].nome)) // Validação do nome do player 2
+                    {
+                        printf("Digite o nome do jogador 2:");
+                        fgets(jogadoresNovoIni[1].nome, 64, stdin);
+                        jogadoresNovoIni[1].nome[strlen(jogadoresNovoIni[1].nome) - 1] = '\0';
+                    }
                 }
                 else // 1 player
                 {
@@ -142,108 +178,8 @@ int main(int argc, char const *argv[])
                 inicializaMatriz(&matriz, 3, 3);
                 imprimeMatriz(matriz, 3, 3);
 
-                int contRodadaNew = 1;            // Contará o número de rodadas e servirá para determinar quem joga
-                while (!vitoriaNew && !empateNew) // O jogo roda enquanto não houver vitoria ou empate
-                {
-                    char comandoGeral[64], comandoPrincipal[6], parametroDoComandoPrincipal[64];
-
-                    if (contRodadaNew % 2 != 0) // Vez do player 1
-                    {
-                        printf("%s, digite o comando: ", jogadoresNovoIni[0].nome);
-                        fgets(comandoGeral, 64, stdin);
-                        captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
-
-                        if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresNovoIni, 0) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinhaNew, &coordenadaColunaNew, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
-                        {
-                            if (strcmp(comandoPrincipal, "marcar") == 0) // Comando marcar
-                            {
-                                marcarPosicao(&matriz, coordenadaLinhaNew, coordenadaColunaNew, contRodadaNew);
-                                imprimeMatriz(matriz, 3, 3);
-                                contRodadaNew++; // Incrementa a rodada
-                            }
-                            else if (strcmp(comandoPrincipal, "voltar") == 0) // Comando voltar
-                            {
-                                break; // Volta ao menu
-                            }
-                        }
-                    }
-                    else // Vez do player 2
-                    {
-                        printf("%s, digite o comando: ", jogadoresNovoIni[1].nome);
-                        fgets(comandoGeral, 64, stdin);
-                        captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
-
-                        if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresNovoIni, 1) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinhaNew, &coordenadaColunaNew, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
-                        {
-                            if (strcmp(comandoPrincipal, "marcar") == 0) // Comando marcar
-                            {
-                                marcarPosicao(&matriz, coordenadaLinhaNew, coordenadaColunaNew, contRodadaNew); // Marca a posição na matriz, cuja a validação da disponibilidade foi feita no if anterior
-                                imprimeMatriz(matriz, 3, 3);
-                                contRodadaNew++; // Incrementa a rodada
-                            }
-                            else if (strcmp(comandoPrincipal, "voltar") == 0) // Comando voltar
-                            {
-                                break; // Volta ao menu
-                            }
-                        }
-                    }
-                    // Verifica se alguém ganhou ou se deu empate
-                    if (verificaVitoria(matriz, 3, 3) == 1) // Vitória do player 1
-                    {
-                        printf("Parabens, %s ! Você ganhou a rodada!\n", jogadoresNovoIni[0].nome);
-                        jogadoresNovoIni[0].vitorias++; // Incrementa o número de vitórias do player
-                        jogadoresNovoIni[1].derrotas++;
-                        vitoriaNew = 1;
-
-                        // Grava as informações que serão captadas pelo vetor principal quando verificar a existência do arquivo novamente
-                        FILE *arquivoIni = fopen("velha.ini", "w");
-                        fprintf(arquivoIni, "%d\n", nJogadoresNovos);
-                        for (int i = 0; i < 2; i++)
-                        {
-                            fprintf(arquivoIni, "%s\n", jogadoresNovoIni[i].nome);
-                            fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
-                        }
-                        fclose(arquivoIni);
-                    }
-                    else if (verificaVitoria(matriz, 3, 3) == 2) // Vitória do player 2
-                    {
-                        printf("Parabens, %s ! Você ganhou a rodada!\n", jogadoresNovoIni[1].nome);
-                        jogadoresNovoIni[1].vitorias++;
-                        jogadoresNovoIni[0].derrotas++;
-                        vitoriaNew = 1;
-
-                        // Grava as informações que serão captadas pelo vetor principal quando verificar a existência do arquivo novamente
-                        FILE *arquivoIni = fopen("velha.ini", "w");
-                        fprintf(arquivoIni, "%d\n", nJogadoresNovos);
-                        for (int i = 0; i < 2; i++)
-                        {
-                            fprintf(arquivoIni, "%s\n", jogadoresNovoIni[i].nome);
-                            fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
-                        }
-                        fclose(arquivoIni);
-                    }
-                    else if (verificaVitoria(matriz, 3, 3) == 0 && contRodadaNew == 10) // Jogo deu velha
-                    {
-                        printf("O game deu velha! Ambos empataram!\n");
-                        jogadoresNovoIni[0].empates++;
-                        jogadoresNovoIni[1].empates++;
-                        empateNew = 1;
-
-                        // Grava as informações que serão captadas pelo vetor principal quando verificar a existência do arquivo novamente
-                        FILE *arquivoIni = fopen("velha.ini", "w");
-                        fprintf(arquivoIni, "%d\n", nJogadoresNovos);
-                        for (int i = 0; i < 2; i++)
-                        {
-                            fprintf(arquivoIni, "%s\n", jogadoresNovoIni[i].nome);
-                            fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
-                        }
-                        fclose(arquivoIni);
-                    }
-
-                    printf("%s %d %d %d\n\n\n", jogadoresNovoIni[0].nome, jogadoresNovoIni[0].vitorias, jogadoresNovoIni[0].empates, jogadoresNovoIni[0].derrotas);
-                    printf("%s %d %d %d\n\n\n", jogadoresNovoIni[1].nome, jogadoresNovoIni[1].vitorias, jogadoresNovoIni[1].empates, jogadoresNovoIni[1].derrotas);
-                }
-
+                int contRodadaNew = 1;                                                                   // Contará o número de rodadas e servirá para determinar quem joga
+                jogoMultiplayerArquivoIniNovo(matriz, jogadoresNovoIni, contRodadaNew, nJogadoresNovos, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual); // Função que roda o game
             }
 
             else // Arquivo .ini existente
@@ -253,11 +189,26 @@ int main(int argc, char const *argv[])
                 fgets(jogadoresTemp[0].nome, 64, stdin);
                 jogadoresTemp[0].nome[strlen(jogadoresTemp[0].nome) - 1] = '\0'; // Removendo \n
 
+                // Validação do nome do primeiro player
+                while (!validaNomePlayer1(jogadoresTemp[0].nome))
+                {
+                    printf("Digite o nome do jogador 1:");
+                    fgets(jogadoresTemp[0].nome, 64, stdin);
+                    jogadoresTemp[0].nome[strlen(jogadoresTemp[0].nome) - 1] = '\0'; // Removendo \n
+                }
                 if (nJogadoresRodadaConvertido == 2) // 2 players
                 {
                     printf("Digite o nome do jogador 2:");
                     fgets(jogadoresTemp[1].nome, 64, stdin);
                     jogadoresTemp[1].nome[strlen(jogadoresTemp[1].nome) - 1] = '\0'; // Removendo \n
+
+                    // Validação do nome do segundo player
+                    while (!validaNomePlayer2(jogadoresTemp[0].nome, jogadoresTemp[1].nome))
+                    {
+                        printf("Digite o nome do jogador 2:");
+                        fgets(jogadoresTemp[1].nome, 64, stdin);
+                        jogadoresTemp[1].nome[strlen(jogadoresTemp[1].nome) - 1] = '\0'; // Removendo \n
+                    }
                 }
                 else // 1 player
                 {
@@ -280,104 +231,31 @@ int main(int argc, char const *argv[])
                     adicionaNovoPlayer(jogadores, jogadoresTemp, &nJogadores, &posicaoPlayer2, 1);
                 }
 
-                // Rodada do game
-
-                int vitoria = 0; // Variável que determinará se houve vitória ou não
-                int empate = 0;  // Variável que determinará se houve empate ou não
-                int coordenadaLinha, coordenadaColuna;
-
                 char **matriz;
                 matriz = criaMatriz(3, 3);
                 inicializaMatriz(&matriz, 3, 3);
                 imprimeMatriz(matriz, 3, 3);
 
-                int contRodada = 1;         // Contará o número de rodadas e servirá para determinar quem joga
-                while (!vitoria && !empate) // O jogo roda enquanto não houver vitoria ou empate
-
-                {
-
-                    char comandoGeral[64], comandoPrincipal[6], parametroDoComandoPrincipal[64];
-
-                    if (contRodada % 2 != 0) // Vez do player 1
-                    {
-                        printf("%s, digite o comando: ", jogadoresTemp[0].nome);
-                        fgets(comandoGeral, 64, stdin);
-                        captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
-
-                        if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresTemp, 0) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinha, &coordenadaColuna, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
-                        {
-                            if (strcmp(comandoPrincipal, "marcar") == 0) // Comando marcar
-                            {
-                                marcarPosicao(&matriz, coordenadaLinha, coordenadaColuna, contRodada);
-                                imprimeMatriz(matriz, 3, 3);
-                                contRodada++; // Incrementa a rodada
-                            }
-                            else if (strcmp(comandoPrincipal, "voltar") == 0) // Comando voltar
-                            {
-                                break; // Volta ao menu
-                            }
-                        }
-                    }
-                    else // Vez do player 2
-                    {
-                        printf("%s, digite o comando: ", jogadoresTemp[1].nome);
-                        fgets(comandoGeral, 64, stdin);
-                        captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
-
-                        if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresTemp, 1) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinha, &coordenadaColuna, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
-                        {
-                            if (strcmp(comandoPrincipal, "marcar") == 0) // Comando marcar
-                            {
-                                marcarPosicao(&matriz, coordenadaLinha, coordenadaColuna, contRodada); // Marca a posição na matriz, cuja a validação da disponibilidade foi feita no if anterior
-                                imprimeMatriz(matriz, 3, 3);
-                                contRodada++; // Incrementa a rodada
-                            }
-                            else if (strcmp(comandoPrincipal, "voltar") == 0) // Comando voltar
-                            {
-                                break; // Volta ao menu
-                            }
-                        }
-                    }
-                    // Verifica se alguém ganhou ou se deu empate
-                    if (verificaVitoria(matriz, 3, 3) == 1) // Vitória do player 1
-                    {
-                        printf("Parabens, %s ! Você ganhou a rodada!\n", jogadores[posicaoPlayer1].nome);
-                        jogadores[posicaoPlayer1].vitorias++; // Incrementa o número de vitórias do player
-                        jogadores[posicaoPlayer2].derrotas++;
-                        vitoria = 1;
-                        // Cópia para o vetor jogadoresCopia
-                    }
-                    else if (verificaVitoria(matriz, 3, 3) == 2) // Vitória do player 2
-                    {
-                        printf("Parabens, %s ! Você ganhou a rodada!\n", jogadores[posicaoPlayer2].nome);
-                        jogadores[posicaoPlayer2].vitorias++;
-                        jogadores[posicaoPlayer1].derrotas++;
-                        vitoria = 1;
-                    }
-                    else if (verificaVitoria(matriz, 3, 3) == 0 && contRodada == 10) // Jogo deu velha
-                    {
-                        printf("O game deu velha! Ambos empataram!\n");
-                        jogadores[posicaoPlayer1].empates++;
-                        jogadores[posicaoPlayer2].empates++;
-                        empate = 1;
-                    }
-
-                    printf("%s %d %d %d\n\n\n", jogadores[posicaoPlayer1].nome, jogadores[posicaoPlayer1].vitorias, jogadores[posicaoPlayer1].empates, jogadores[posicaoPlayer1].derrotas);
-                    printf("%s %d %d %d\n\n\n", jogadores[posicaoPlayer2].nome, jogadores[posicaoPlayer2].vitorias, jogadores[posicaoPlayer2].empates, jogadores[posicaoPlayer2].derrotas);
-
-                }
-
+                int contRodada = 1;                                                                                                        // Contará o número de rodadas e servirá para determinar quem joga
+                jogoMultiplayer(matriz, jogadoresTemp, jogadores, posicaoPlayer1, posicaoPlayer2, contRodada, nJogadoresRodadaConvertido, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual); // Função que roda o game
             }
-            
 
             break;
-
         case '2': // Continuar um jogo salvo
-
+            
             break;
 
         case '3': // Continuar o jogo atual
 
+            if(posicaoPlayer2JogoAtual != -1) //Caso em que algum jogo foi iniciado, ou seja, o valor da variável posicaoPlayer2JogoAtual é diferente de -1, que é o valor que foi atribuido no início do programa 
+            {
+                imprimeMatriz(matrizJogoAtual, 3, 3);
+                jogoMultiplayer(matrizJogoAtual, jogadoresTempJogoAtual, jogadores, posicaoPlayer1JogoAtual, posicaoPlayer2JogoAtual, contRodadaJogoAtual, nJogadoresJogoAtual, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual);
+            }
+            else //Caso em que nenhum jogo foi iniciado
+            {
+                printf("\nErro - Nenhum jogo foi iniciado, portanto, não há como continuar jogo atual.\n\n");
+            }
             break;
 
         case '4': // Exibir o ranking
