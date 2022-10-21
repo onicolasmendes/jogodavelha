@@ -1163,18 +1163,20 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
 
     // A prioridade máxima do bot é impedir uma vitória nítida do outro jogador, portanto, esses primeiros IFs vão atuar nesse tipo de situação
     // Linha 1
-    if (matriz[1][1] == 'X' && matriz[1][2] == 'X')
+    if (matriz[1][1] == 'X')
     {
-        *coordenadaLinha = 1;
-        *coordenadaColuna = 3;
-        return 0;
-    }
-
-    if (matriz[1][1] == 'X' && matriz[1][3] == 'X')
-    {
-        *coordenadaLinha = 1;
-        *coordenadaColuna = 2;
-        return 0;
+        if (matriz[1][2] == 'X')
+        {
+            *coordenadaLinha = 1;
+            *coordenadaColuna = 3;
+            return 0;
+        }
+        else if (matriz[1][3] == 'X')
+        {
+            *coordenadaLinha = 1;
+            *coordenadaColuna = 2;
+            return 0;
+        }
     }
 
     if (matriz[1][2] == 'X' && matriz[1][3] == 'X')
@@ -1185,18 +1187,20 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
     }
 
     // Linha 2
-    if (matriz[2][1] == 'X' && matriz[2][2] == 'X')
+    if (matriz[2][1] == 'X')
     {
-        *coordenadaLinha = 2;
-        *coordenadaColuna = 3;
-        return 0;
-    }
-
-    if (matriz[2][1] == 'X' && matriz[2][3] == 'X')
-    {
-        *coordenadaLinha = 2;
-        *coordenadaColuna = 2;
-        return 0;
+        if (matriz[2][2] == 'X')
+        {
+            *coordenadaLinha = 2;
+            *coordenadaColuna = 3;
+            return 0;
+        }
+        else if (matriz[2][3] == 'X')
+        {
+            *coordenadaLinha = 2;
+            *coordenadaColuna = 2;
+            return 0;
+        }
     }
 
     if (matriz[2][2] == 'X' && matriz[2][3] == 'X')
@@ -1207,131 +1211,144 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
     }
 
     // Linha 3
-    if (matriz[3][1] == 'X' && matriz[3][2] == 'X')
+    if (matriz[3][1] == 'X')
     {
-        *coordenadaLinha = 3;
-        *coordenadaColuna = 3;
-        return 0;
+        if (matriz[3][2] == 'X')
+        {
+            *coordenadaLinha = 3;
+            *coordenadaColuna = 3;
+            return 0;
+        }
+        else if (matriz[3][3] == 'X')
+        {
+            *coordenadaLinha = 3;
+            *coordenadaColuna = 2;
+            return 0;
+        }
     }
 
-    if (matriz[3][1] == 'X' && matriz[3][3] == 'X')
-    {
-        *coordenadaLinha = 3;
-        *coordenadaColuna = 2;
-        return 0;
-    }
-
-    if(matriz[3][2] == 'X' && matriz[3][3] == 'X')
-    {
-        *coordenadaLinha = 3;
-        *coordenadaColuna = 1;
-        return 0;
-    }
-
-    //Coluna 1
-    if(matriz[1][1] == 'X' && matriz[2][1] == 'X')
+    if (matriz[3][2] == 'X' && matriz[3][3] == 'X')
     {
         *coordenadaLinha = 3;
         *coordenadaColuna = 1;
         return 0;
     }
 
-    if(matriz[1][1] == 'X' && matriz[3][1] == 'X')
+    // Coluna 1
+    if (matriz[1][1] == 'X')
     {
-        *coordenadaLinha = 2;
-        *coordenadaColuna = 1;
-        return 0;
+        if (matriz[2][1] == 'X')
+
+        {
+            *coordenadaLinha = 3;
+            *coordenadaColuna = 1;
+            return 0;
+        }
+        else if (matriz[3][1] == 'X')
+        {
+            *coordenadaLinha = 2;
+            *coordenadaColuna = 1;
+            return 0;
+        }
     }
 
-    if(matriz[2][1] == 'X' && matriz[3][1] == 'X')
+    if (matriz[2][1] == 'X' && matriz[3][1] == 'X')
     {
         *coordenadaLinha = 1;
         *coordenadaColuna = 1;
         return 0;
     }
 
-    //Coluna 2
-    if(matriz[1][2] == 'X' && matriz[2][2] == 'X')
+    // Coluna 2
+    if (matriz[1][2] == 'X')
     {
-        *coordenadaLinha = 3;
-        *coordenadaColuna = 2;
-        return 0;
+        if (matriz[2][2] == 'X')
+        {
+            *coordenadaLinha = 3;
+            *coordenadaColuna = 2;
+            return 0;
+        }
+        else if (matriz[3][2] == 'X')
+        {
+            *coordenadaLinha = 2;
+            *coordenadaColuna = 2;
+            return 0;
+        }
     }
 
-    if(matriz[1][2] == 'X' && matriz[3][2] == 'X')
-    {
-        *coordenadaLinha = 2;
-        *coordenadaColuna = 2;
-        return 0;
-    }
-
-    if(matriz[2][2] == 'X' && matriz[3][2] == 'X')
-    {
-        *coordenadaLinha = 1;
-        *coordenadaColuna = 2;
-        return 0;
-    }
-
-    //Coluna 3
-    if(matriz[1][3] == 'X' && matriz[2][3] == 'X')
-    {
-        *coordenadaLinha = 3;
-        *coordenadaColuna = 3;
-        return 0;
-    }
-
-    if(matriz[1][3] == 'X' && matriz[3][3] == 'X')
-    {
-        *coordenadaLinha = 2;
-        *coordenadaColuna = 3;
-        return 0;
-    }
-
-    if(matriz[2][3] == 'X' && matriz[3][3] == 'X')
+    if (matriz[2][2] == 'X' && matriz[3][2] == 'X')
     {
         *coordenadaLinha = 1;
-        *coordenadaColuna = 3;
-        return 0;
-    }
-
-    //Diagonal principal
-    if(matriz[1][1] == 'X' && matriz[2][2] == 'X')
-    {
-        *coordenadaLinha = 3;
-        *coordenadaColuna = 3;
-        return 0;
-    }
-
-    if(matriz[1][1] == 'X' && matriz[3][3] == 'X')
-    {
-        *coordenadaLinha = 2;
         *coordenadaColuna = 2;
         return 0;
     }
 
-    if(matriz[2][2] == 'X' && matriz[3][3] == 'X')
+    // Coluna 3
+    if (matriz[1][3] == 'X')
+    {
+        if (matriz[2][3] == 'X')
+        {
+            *coordenadaLinha = 3;
+            *coordenadaColuna = 3;
+            return 0;
+        }
+        else if (matriz[3][3] == 'X')
+        {
+            *coordenadaLinha = 2;
+            *coordenadaColuna = 3;
+            return 0;
+        }
+    }
+
+    if (matriz[2][3] == 'X' && matriz[3][3] == 'X')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 3;
+        return 0;
+    }
+
+    // Diagonal principal
+    if (matriz[1][1] == 'X')
+    {
+        if (matriz[2][2] == 'X')
+        {
+            *coordenadaLinha = 3;
+            *coordenadaColuna = 3;
+            return 0;
+        }
+        else if (matriz[3][3] == 'X')
+        {
+            *coordenadaLinha = 2;
+            *coordenadaColuna = 2;
+            return 0;
+        }
+    }
+
+    if (matriz[2][2] == 'X' && matriz[3][3] == 'X')
     {
         *coordenadaLinha = 1;
         *coordenadaColuna = 1;
         return 0;
     }
 
-    //Diagonal secundária
-    if(matriz[1][3] == 'X' && matriz[2][2] == 'X')
+    // Diagonal secundária
+    if (matriz[1][3] == 'X')
     {
-        *coordenadaLinha = 3;
-        *coordenadaColuna = 1;
-        return 0;
+        if (matriz[2][2] == 'X')
+        {
+            *coordenadaLinha = 3;
+            *coordenadaColuna = 1;
+            return 0;
+        }
+        else if (matriz[3][1] == 'X')
+        {
+            *coordenadaLinha = 2;
+            *coordenadaColuna = 2;
+            return 0;
+        }
     }
-
-    if(matriz[1][3] == 'X' && matriz[3][1] == 'X')
-    {
-        *coordenadaLinha = 2;
-        *coordenadaColuna = 2;
-        return 0;
-    }
-
-    if(matriz[2][2] == 'X' && matriz[3][1] == 'X')
+    
+    if (matriz[2][2] == 'X' && matriz[3][1] == 'X')
     {
         *coordenadaLinha = 1;
         *coordenadaColuna = 3;
