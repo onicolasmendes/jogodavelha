@@ -84,7 +84,6 @@ int main(int argc, char const *argv[])
                 // Atualiza .ini
                 atualizaIni(jogadores, nJogadores);
             }
-
             return 0;
             break;
 

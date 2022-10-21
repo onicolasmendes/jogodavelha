@@ -636,7 +636,7 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
                 }
             }
         }
-        else // Vez do player 2
+        else // Vez do player 2 //HEREEEE BOT
         {
             printf("%s, digite o comando: ", jogadoresTemp[1].nome);
             fgets(comandoGeral, 64, stdin);
@@ -758,7 +758,7 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                 }
             }
         }
-        else // Vez do player 2
+        else // Vez do player 2 //HEEREEE BOT
         {
             printf("%s, digite o comando: ", jogadoresNovoIni[1].nome);
             fgets(comandoGeral, 64, stdin);
@@ -1118,10 +1118,11 @@ void exibeRanking(Jogador *jogadores, int nJogadores)
 
 void atualizaIni(Jogador *jogadores, int nJogadores)
 {
-    FILE *arquivo = fopen("velha.ini", "w");
-
+    atualizaRanking(jogadores, nJogadores);
+    
     if(nJogadores <= 10) //10 ou menos player no vetor
     {
+        FILE *arquivo = fopen("velha.ini", "w");
         fprintf(arquivo, "%d\n", nJogadores);
         for (int i = 0; i < nJogadores; i++)
         {
@@ -1134,7 +1135,7 @@ void atualizaIni(Jogador *jogadores, int nJogadores)
     else
     {
         //Forçar computador no top 10
-        int indiceComputador;
+        int indiceComputador = -1;
         for (int i = 0; i < nJogadores; i++)
         {
             if(strcmp(jogadores[i].nome, "Computador") == 0)
@@ -1148,14 +1149,27 @@ void atualizaIni(Jogador *jogadores, int nJogadores)
             jogadores[9] = jogadores[indiceComputador];
         }
 
+        FILE *arquivo = fopen("velha.ini", "w");
         //Atualiza arquivo
-        fprintf(arquivo, "%d\n", 10);
-        for (int i = 0; i < 10; i++)
+        int tamanho = 10;
+        fprintf(arquivo, "%d\n", tamanho);
+        for (int i = 0; i < tamanho; i++)
         {
             fprintf(arquivo, "%s\n", jogadores[i].nome);
             fprintf(arquivo, "%d %d %d\n", jogadores[i].vitorias, jogadores[i].empates, jogadores[i].derrotas);
         }
 
         fclose(arquivo);
+    }
+}
+
+int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
+{
+
+    //A prioridade máxima do bot é impedir uma vitória nítida do outro jogador, portanto, esses primeiros IFs vão atuar nesse tipo de situação
+    //Linha 1
+    if(matriz[1][1] == 'X' && matriz[1][2] == 'X')
+    {
+        
     }
 }
