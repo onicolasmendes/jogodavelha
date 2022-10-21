@@ -668,8 +668,8 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
             jogadores[posicaoPlayer1].vitorias++; // Incrementa o número de vitórias do player
             jogadores[posicaoPlayer2].derrotas++;
             vitoria = 1;
-            *posicaoPlayer2JogoAtual = -1; // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
-            atualizaRanking(jogadores, nJogadores); //Atualiza o ranking ao final da rodada
+            *posicaoPlayer2JogoAtual = -1;          // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
+            atualizaRanking(jogadores, nJogadores); // Atualiza o ranking ao final da rodada
             break;
         }
         else if (verificaVitoria(matriz, 3, 3) == 2) // Vitória do player 2
@@ -678,8 +678,8 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
             jogadores[posicaoPlayer2].vitorias++;
             jogadores[posicaoPlayer1].derrotas++;
             vitoria = 1;
-            *posicaoPlayer2JogoAtual = -1; // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
-            atualizaRanking(jogadores, nJogadores); //Atualiza o ranking ao final da rodada
+            *posicaoPlayer2JogoAtual = -1;          // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
+            atualizaRanking(jogadores, nJogadores); // Atualiza o ranking ao final da rodada
             break;
         }
         else if (verificaVitoria(matriz, 3, 3) == 0 && contRodada == 10) // Jogo deu velha
@@ -688,8 +688,8 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
             jogadores[posicaoPlayer1].empates++;
             jogadores[posicaoPlayer2].empates++;
             empate = 1;
-            *posicaoPlayer2JogoAtual = -1; // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
-            atualizaRanking(jogadores, nJogadores); //Atualiza o ranking ao final da rodada
+            *posicaoPlayer2JogoAtual = -1;          // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
+            atualizaRanking(jogadores, nJogadores); // Atualiza o ranking ao final da rodada
             break;
         }
 
@@ -801,7 +801,7 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                 fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
             }
             fclose(arquivoIni);
-            
+
             break;
         }
         else if (verificaVitoria(matriz, 3, 3) == 2) // Vitória do player 2
@@ -821,7 +821,7 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                 fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
             }
             fclose(arquivoIni);
-            
+
             break;
         }
         else if (verificaVitoria(matriz, 3, 3) == 0 && contRodadaNew == 10) // Jogo deu velha
@@ -841,7 +841,7 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                 fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
             }
             fclose(arquivoIni);
-            
+
             break;
         }
         // Salva todos os dados do jogo, caso ele seja recarregado na opção 3 do menu
@@ -1015,7 +1015,7 @@ int lerArquivo(char *nomeArquivo, char ***matrizJogoCarregado, Jogador *jogadore
         strcpy(jogadoresTempJogoCarregado[1].nome, "Computador");
     }
 
-    //Ler matriz
+    // Ler matriz
     int contElementosMatriz = 0;
 
     for (int i = 0; i < 3; i++)
@@ -1024,15 +1024,15 @@ int lerArquivo(char *nomeArquivo, char ***matrizJogoCarregado, Jogador *jogadore
         {
             char elemento;
             fscanf(arquivo, "%c ", &elemento);
-            if(elemento == 'X' || elemento == 'O')
+            if (elemento == 'X' || elemento == 'O')
             {
                 contElementosMatriz++;
             }
-            (*matrizJogoCarregado)[i][j]  = elemento;
+            (*matrizJogoCarregado)[i][j] = elemento;
         }
         fscanf(arquivo, "\n");
     }
-    
+
     *contRodadaJogoCarregado = contElementosMatriz + 1;
     return 0;
 }
@@ -1041,7 +1041,7 @@ int verificaNomeNoVetorPrincipal(Jogador *jogadores, char *nomePlayer, int nJoga
 {
     for (int i = 0; i < nJogadores; i++)
     {
-        if(strcmp(jogadores[i].nome, nomePlayer) == 0)
+        if (strcmp(jogadores[i].nome, nomePlayer) == 0)
         {
             return i;
         }
@@ -1053,50 +1053,46 @@ int verificaNomeNoVetorPrincipal(Jogador *jogadores, char *nomePlayer, int nJoga
 int atualizaRanking(Jogador *jogadores, int nJogadores)
 {
     Jogador aux;
-    //Ordenando em ordem crescente por vitórias
+    // Ordenando em ordem crescente por vitórias
     for (int i = 0; i < nJogadores; i++)
     {
         for (int j = 0; j < nJogadores; j++)
         {
-            if(jogadores[i].vitorias > jogadores[j].vitorias)
-            {
-                aux = jogadores[j];
-                jogadores[j] = jogadores[i];
-                jogadores[i] = aux; 
-
-            }
-        }
-        
-    }
-
-    //Ordenando levando em consideração o numero de empates como segundo critério
-    for (int i = 0; i < nJogadores; i++)
-    {
-        for (int j = 0; j < nJogadores; j++)
-        {
-            if((jogadores[i].vitorias == jogadores[j].vitorias) && (jogadores[i].empates > jogadores[j].empates))
+            if (jogadores[i].vitorias > jogadores[j].vitorias)
             {
                 aux = jogadores[j];
                 jogadores[j] = jogadores[i];
                 jogadores[i] = aux;
             }
         }
-        
     }
 
-    //ordenando levando em consideração o numero de derrotas como terceiro criterio
+    // Ordenando levando em consideração o numero de empates como segundo critério
     for (int i = 0; i < nJogadores; i++)
     {
         for (int j = 0; j < nJogadores; j++)
         {
-            if((jogadores[i].vitorias == jogadores[j].vitorias) && (jogadores[i].empates == jogadores[j].empates) && (jogadores[i].derrotas < jogadores[j].derrotas))
+            if ((jogadores[i].vitorias == jogadores[j].vitorias) && (jogadores[i].empates > jogadores[j].empates))
             {
                 aux = jogadores[j];
                 jogadores[j] = jogadores[i];
                 jogadores[i] = aux;
             }
         }
-        
+    }
+
+    // ordenando levando em consideração o numero de derrotas como terceiro criterio
+    for (int i = 0; i < nJogadores; i++)
+    {
+        for (int j = 0; j < nJogadores; j++)
+        {
+            if ((jogadores[i].vitorias == jogadores[j].vitorias) && (jogadores[i].empates == jogadores[j].empates) && (jogadores[i].derrotas < jogadores[j].derrotas))
+            {
+                aux = jogadores[j];
+                jogadores[j] = jogadores[i];
+                jogadores[i] = aux;
+            }
+        }
     }
 
     return 0;
@@ -1108,19 +1104,18 @@ void exibeRanking(Jogador *jogadores, int nJogadores)
     printf(" +-------------+-----------------------+---------------+--------------------------+\n");
     printf(" | Posição\tNome\t\t\tVitorias\tEmpates\t\tDerrotas  |\n");
     atualizaRanking(jogadores, nJogadores);
-    for (int i = 0; i < nJogadores; i++) //Imprime de trás pra frente pois a ordenação foi feita em ordem crescente
+    for (int i = 0; i < nJogadores; i++) // Imprime de trás pra frente pois a ordenação foi feita em ordem crescente
     {
-        printf(" |\t%d\t%s\t\t\t %d\t\t %d\t\t %d\t  |\n", i+1, jogadores[i].nome, jogadores[i].vitorias, jogadores[i].empates, jogadores[i].derrotas);
+        printf(" |\t%d\t%s\t\t\t %d\t\t %d\t\t %d\t  |\n", i + 1, jogadores[i].nome, jogadores[i].vitorias, jogadores[i].empates, jogadores[i].derrotas);
     }
     printf(" +-------------+-----------------------+---------------+--------------------------+\n");
-    
 }
 
 void atualizaIni(Jogador *jogadores, int nJogadores)
 {
     atualizaRanking(jogadores, nJogadores);
-    
-    if(nJogadores <= 10) //10 ou menos player no vetor
+
+    if (nJogadores <= 10) // 10 ou menos player no vetor
     {
         FILE *arquivo = fopen("velha.ini", "w");
         fprintf(arquivo, "%d\n", nJogadores);
@@ -1134,23 +1129,23 @@ void atualizaIni(Jogador *jogadores, int nJogadores)
     }
     else
     {
-        //Forçar computador no top 10
+        // Forçar computador no top 10
         int indiceComputador = -1;
         for (int i = 0; i < nJogadores; i++)
         {
-            if(strcmp(jogadores[i].nome, "Computador") == 0)
+            if (strcmp(jogadores[i].nome, "Computador") == 0)
             {
                 indiceComputador = i;
             }
         }
 
-        if(indiceComputador > 9)
+        if (indiceComputador > 9)
         {
             jogadores[9] = jogadores[indiceComputador];
         }
 
         FILE *arquivo = fopen("velha.ini", "w");
-        //Atualiza arquivo
+        // Atualiza arquivo
         int tamanho = 10;
         fprintf(arquivo, "%d\n", tamanho);
         for (int i = 0; i < tamanho; i++)
@@ -1166,10 +1161,180 @@ void atualizaIni(Jogador *jogadores, int nJogadores)
 int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
 {
 
-    //A prioridade máxima do bot é impedir uma vitória nítida do outro jogador, portanto, esses primeiros IFs vão atuar nesse tipo de situação
-    //Linha 1
-    if(matriz[1][1] == 'X' && matriz[1][2] == 'X')
+    // A prioridade máxima do bot é impedir uma vitória nítida do outro jogador, portanto, esses primeiros IFs vão atuar nesse tipo de situação
+    // Linha 1
+    if (matriz[1][1] == 'X' && matriz[1][2] == 'X')
     {
-        
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 3;
+        return 0;
+    }
+
+    if (matriz[1][1] == 'X' && matriz[1][3] == 'X')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    if (matriz[1][2] == 'X' && matriz[1][3] == 'X')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    // Linha 2
+    if (matriz[2][1] == 'X' && matriz[2][2] == 'X')
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 3;
+        return 0;
+    }
+
+    if (matriz[2][1] == 'X' && matriz[2][3] == 'X')
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    if (matriz[2][2] == 'X' && matriz[2][3] == 'X')
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    // Linha 3
+    if (matriz[3][1] == 'X' && matriz[3][2] == 'X')
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 3;
+        return 0;
+    }
+
+    if (matriz[3][1] == 'X' && matriz[3][3] == 'X')
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    if(matriz[3][2] == 'X' && matriz[3][3] == 'X')
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    //Coluna 1
+    if(matriz[1][1] == 'X' && matriz[2][1] == 'X')
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    if(matriz[1][1] == 'X' && matriz[3][1] == 'X')
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    if(matriz[2][1] == 'X' && matriz[3][1] == 'X')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    //Coluna 2
+    if(matriz[1][2] == 'X' && matriz[2][2] == 'X')
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    if(matriz[1][2] == 'X' && matriz[3][2] == 'X')
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    if(matriz[2][2] == 'X' && matriz[3][2] == 'X')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    //Coluna 3
+    if(matriz[1][3] == 'X' && matriz[2][3] == 'X')
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 3;
+        return 0;
+    }
+
+    if(matriz[1][3] == 'X' && matriz[3][3] == 'X')
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 3;
+        return 0;
+    }
+
+    if(matriz[2][3] == 'X' && matriz[3][3] == 'X')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 3;
+        return 0;
+    }
+
+    //Diagonal principal
+    if(matriz[1][1] == 'X' && matriz[2][2] == 'X')
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 3;
+        return 0;
+    }
+
+    if(matriz[1][1] == 'X' && matriz[3][3] == 'X')
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    if(matriz[2][2] == 'X' && matriz[3][3] == 'X')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    //Diagonal secundária
+    if(matriz[1][3] == 'X' && matriz[2][2] == 'X')
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    if(matriz[1][3] == 'X' && matriz[3][1] == 'X')
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    if(matriz[2][2] == 'X' && matriz[3][1] == 'X')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 3;
+        return 0;
     }
 }
