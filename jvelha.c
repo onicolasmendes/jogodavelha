@@ -82,14 +82,7 @@ int main(int argc, char const *argv[])
             if (verificaArquivoExistente("velha.ini"))
             {
                 // Atualiza .ini
-                FILE *arquivoIni = fopen("velha.ini", "w");
-                fprintf(arquivoIni, "%d\n", nJogadores);
-                for (int i = 0; i < nJogadores; i++)
-                {
-                    fprintf(arquivoIni, "%s\n", jogadores[i].nome);
-                    fprintf(arquivoIni, "%d %d %d\n", jogadores[i].vitorias, jogadores[i].empates, jogadores[i].derrotas);
-                }
-                fclose(arquivoIni);
+                atualizaIni(jogadores, nJogadores);
             }
 
             return 0;
@@ -299,7 +292,8 @@ int main(int argc, char const *argv[])
             break;
 
         case '4': // Exibir o ranking
-
+            
+            exibeRanking(jogadores, nJogadores);
             break;
         default:
             break;

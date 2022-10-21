@@ -669,6 +669,7 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
             jogadores[posicaoPlayer2].derrotas++;
             vitoria = 1;
             *posicaoPlayer2JogoAtual = -1; // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
+            atualizaRanking(jogadores, nJogadores); //Atualiza o ranking ao final da rodada
             break;
         }
         else if (verificaVitoria(matriz, 3, 3) == 2) // Vitória do player 2
@@ -678,6 +679,7 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
             jogadores[posicaoPlayer1].derrotas++;
             vitoria = 1;
             *posicaoPlayer2JogoAtual = -1; // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
+            atualizaRanking(jogadores, nJogadores); //Atualiza o ranking ao final da rodada
             break;
         }
         else if (verificaVitoria(matriz, 3, 3) == 0 && contRodada == 10) // Jogo deu velha
@@ -687,6 +689,7 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
             jogadores[posicaoPlayer2].empates++;
             empate = 1;
             *posicaoPlayer2JogoAtual = -1; // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
+            atualizaRanking(jogadores, nJogadores); //Atualiza o ranking ao final da rodada
             break;
         }
 
@@ -798,6 +801,7 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                 fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
             }
             fclose(arquivoIni);
+            
             break;
         }
         else if (verificaVitoria(matriz, 3, 3) == 2) // Vitória do player 2
@@ -817,6 +821,7 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                 fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
             }
             fclose(arquivoIni);
+            
             break;
         }
         else if (verificaVitoria(matriz, 3, 3) == 0 && contRodadaNew == 10) // Jogo deu velha
@@ -836,6 +841,7 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                 fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
             }
             fclose(arquivoIni);
+            
             break;
         }
         // Salva todos os dados do jogo, caso ele seja recarregado na opção 3 do menu
@@ -1042,4 +1048,114 @@ int verificaNomeNoVetorPrincipal(Jogador *jogadores, char *nomePlayer, int nJoga
     }
 
     return -1;
+}
+
+int atualizaRanking(Jogador *jogadores, int nJogadores)
+{
+    Jogador aux;
+    //Ordenando em ordem crescente por vitórias
+    for (int i = 0; i < nJogadores; i++)
+    {
+        for (int j = 0; j < nJogadores; j++)
+        {
+            if(jogadores[i].vitorias > jogadores[j].vitorias)
+            {
+                aux = jogadores[j];
+                jogadores[j] = jogadores[i];
+                jogadores[i] = aux; 
+
+            }
+        }
+        
+    }
+
+    //Ordenando levando em consideração o numero de empates como segundo critério
+    for (int i = 0; i < nJogadores; i++)
+    {
+        for (int j = 0; j < nJogadores; j++)
+        {
+            if((jogadores[i].vitorias == jogadores[j].vitorias) && (jogadores[i].empates > jogadores[j].empates))
+            {
+                aux = jogadores[j];
+                jogadores[j] = jogadores[i];
+                jogadores[i] = aux;
+            }
+        }
+        
+    }
+
+    //ordenando levando em consideração o numero de derrotas como terceiro criterio
+    for (int i = 0; i < nJogadores; i++)
+    {
+        for (int j = 0; j < nJogadores; j++)
+        {
+            if((jogadores[i].vitorias == jogadores[j].vitorias) && (jogadores[i].empates == jogadores[j].empates) && (jogadores[i].derrotas < jogadores[j].derrotas))
+            {
+                aux = jogadores[j];
+                jogadores[j] = jogadores[i];
+                jogadores[i] = aux;
+            }
+        }
+        
+    }
+
+    return 0;
+}
+
+void exibeRanking(Jogador *jogadores, int nJogadores)
+{
+    printf(BG_CYAN(BOLD(" .:RANKING:. ")) "\n");
+    printf(" +-------------+-----------------------+---------------+--------------------------+\n");
+    printf(" | Posição\tNome\t\t\tVitorias\tEmpates\t\tDerrotas  |\n");
+    atualizaRanking(jogadores, nJogadores);
+    for (int i = 0; i < nJogadores; i++) //Imprime de trás pra frente pois a ordenação foi feita em ordem crescente
+    {
+        printf(" |\t%d\t%s\t\t\t %d\t\t %d\t\t %d\t  |\n", i+1, jogadores[i].nome, jogadores[i].vitorias, jogadores[i].empates, jogadores[i].derrotas);
+    }
+    printf(" +-------------+-----------------------+---------------+--------------------------+\n");
+    
+}
+
+void atualizaIni(Jogador *jogadores, int nJogadores)
+{
+    FILE *arquivo = fopen("velha.ini", "w");
+
+    if(nJogadores <= 10) //10 ou menos player no vetor
+    {
+        fprintf(arquivo, "%d\n", nJogadores);
+        for (int i = 0; i < nJogadores; i++)
+        {
+            fprintf(arquivo, "%s\n", jogadores[i].nome);
+            fprintf(arquivo, "%d %d %d\n", jogadores[i].vitorias, jogadores[i].empates, jogadores[i].derrotas);
+        }
+
+        fclose(arquivo);
+    }
+    else
+    {
+        //Forçar computador no top 10
+        int indiceComputador;
+        for (int i = 0; i < nJogadores; i++)
+        {
+            if(strcmp(jogadores[i].nome, "Computador") == 0)
+            {
+                indiceComputador = i;
+            }
+        }
+
+        if(indiceComputador > 9)
+        {
+            jogadores[9] = jogadores[indiceComputador];
+        }
+
+        //Atualiza arquivo
+        fprintf(arquivo, "%d\n", 10);
+        for (int i = 0; i < 10; i++)
+        {
+            fprintf(arquivo, "%s\n", jogadores[i].nome);
+            fprintf(arquivo, "%d %d %d\n", jogadores[i].vitorias, jogadores[i].empates, jogadores[i].derrotas);
+        }
+
+        fclose(arquivo);
+    }
 }

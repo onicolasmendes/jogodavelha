@@ -44,5 +44,8 @@ int jogoMultiplayerCarregado(char **matriz, Jogador *jogadoresTemp, Jogador *jog
 int validaNomeArquivo(char *nomeArquivo);
 int lerArquivo(char *nomeArquivo, char ***matrizJogoCarregado, Jogador *jogadoresTempJogoCarregado, int *contRodadaJogoCarregado, int *nJogadoresJogoCarregado);
 int verificaNomeNoVetorPrincipal(Jogador *jogadores, char *nomePlayer, int nJogadores);
+int atualizaRanking(Jogador *jogadores, int nJogadores);
+void exibeRanking(Jogador *jogadores, int nJogadores);
+void atualizaIni(Jogador *jogadores, int nJogadores);
 
 #endif
