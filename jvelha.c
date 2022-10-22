@@ -274,7 +274,7 @@ int main(int argc, char const *argv[])
             imprimeMatriz(matrizJogoCarregado, 3, 3);
             jogoMultiplayer(matrizJogoCarregado, jogadoresTempJogoCarregado, jogadores, posicaoPlayer1JogoCarregado, posicaoPlayer2JogoCarregado, contRodadaJogoCarregado, nJogadoresJogoCarregado, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual);
 
-            printf("NUMERO DE JOGADORES = %d\n\n", nJogadores);
+            
             break;
 
         case '3': // Continuar o jogo atual

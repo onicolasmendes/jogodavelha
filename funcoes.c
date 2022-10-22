@@ -12,12 +12,17 @@ Matricula: 22.1.4028
 #define ANSI_BG_COLOR_CYAN "\x1b[46m"
 #define ANSI_COLOR_CYAN "\x1b[36m"
 #define ANSI_COLOR_GREEN "\x1b[32m"
+#define ANSI_COLOR_YELLOW "\x1b[33m"
+#define ANSI_COLOR_RED        "\x1b[31m"
 #define ANSI_BOLD "\x1b[1m"
+#define ANSI_BG_COLOR_BLUE    "\x1b[44m"
 #define BG_CYAN(string) ANSI_BG_COLOR_CYAN string ANSI_RESET
 #define BG_BLUE(string) ANSI_BG_COLOR_BLUE string ANSI_RESET
 #define WHITE(string) ANSI_COLOR_WHITE string ANSI_RESET
 #define GREEN(string) ANSI_COLOR_GREEN string ANSI_RESET
 #define BOLD(string) ANSI_BOLD string ANSI_RESET
+#define YELLOW(string) ANSI_COLOR_YELLOW string ANSI_RESET
+#define RED(string)        ANSI_COLOR_RED        string ANSI_RESET
 #define TAB_HOR "\u2501" // ━ (horizontal)
 #define TAB_VER "\u2503" // ┃ (vertical)
 #define TAB_TL "\u250F"  // ┏ (top-left)
@@ -239,7 +244,7 @@ int validaParametroDoSalvar(char *parametroDoComandoPrincipal, char *comandoPrin
             cont++;
         }
         extensaoTxt[cont] = '\0';
-        printf("%s\n\n", extensaoTxt);
+
         if (strcmp(extensaoTxt, ".txt") == 0) // Verifica se a extensão do parâmetro possui .txt no final
         {
 
@@ -342,17 +347,17 @@ void imprimeMatriz(char **matriz, int n, int m)
 {
 
     printf("\n");
-    printf("  1 2 3\n");
-    printf(" " TAB_TL TAB_HOR TAB_TJ TAB_HOR TAB_TJ TAB_HOR TAB_TR "\n");
-    printf("1" TAB_VER "%c" TAB_VER "%c" TAB_VER "%c" TAB_VER "\n", imprimeElemento(matriz, 0, 0), imprimeElemento(matriz, 0, 1), imprimeElemento(matriz, 0, 2));
-    printf(" " TAB_ML TAB_HOR TAB_MJ TAB_HOR TAB_MJ TAB_HOR TAB_MR "\n");
-    printf("2" TAB_VER "%c" TAB_VER "%c" TAB_VER "%c" TAB_VER "\n", imprimeElemento(matriz, 1, 0), imprimeElemento(matriz, 1, 1), imprimeElemento(matriz, 1, 2));
-    printf(" " TAB_ML TAB_HOR TAB_MJ TAB_HOR TAB_MJ TAB_HOR TAB_MR "\n");
-    printf("3" TAB_VER "%c" TAB_VER "%c" TAB_VER "%c" TAB_VER "\n", imprimeElemento(matriz, 2, 0), imprimeElemento(matriz, 2, 1), imprimeElemento(matriz, 2, 2));
-    printf(" " TAB_BL TAB_HOR TAB_BJ TAB_HOR TAB_BJ TAB_HOR TAB_BR "\n");
+    printf(BOLD(GREEN("\t          1  2  3")) "\n");
+    printf(BOLD(RED("\t\t ")));  printf(TAB_TL TAB_HOR TAB_HOR TAB_TJ TAB_HOR TAB_HOR TAB_TJ TAB_HOR TAB_HOR TAB_TR "\n");
+    printf(BOLD(RED("\t\t1"))); printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 0, 0));printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 0, 1)); printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 0, 2)); printf( TAB_VER "\n");
+    printf(BOLD(RED("\t\t "))); printf( TAB_ML TAB_HOR TAB_HOR TAB_MJ TAB_HOR TAB_HOR TAB_MJ TAB_HOR TAB_HOR TAB_MR "\n");
+    printf(BOLD(RED("\t\t2"))); printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 1, 0));printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 1, 1)); printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 1, 2)); printf( TAB_VER "\n");
+    printf(BOLD(RED("\t\t "))); printf( TAB_ML TAB_HOR TAB_HOR TAB_MJ TAB_HOR TAB_HOR TAB_MJ TAB_HOR TAB_HOR TAB_MR "\n");
+    printf(BOLD(RED("\t\t3"))); printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 2, 0));printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 2, 1)); printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 2, 2)); printf( TAB_VER "\n");
+    printf(BOLD(RED("\t\t "))); printf( TAB_BL TAB_HOR  TAB_HOR TAB_BJ TAB_HOR TAB_HOR TAB_BJ TAB_HOR TAB_HOR TAB_BR "\n");
     printf("\n");
-}
 
+}
 char imprimeElemento(char **matriz, int linha, int coluna)
 {
     if (matriz[linha][coluna] == '-')
@@ -560,7 +565,6 @@ int salvarJogo(char **matriz, int nJogadores, Jogador *jogadoresTemp, int contRo
     {
         fprintf(arquivo, "%d\n", 1);
         fprintf(arquivo, "%s\n", jogadoresTemp[0].nome);
-        fprintf(arquivo, "%s\n", "Computador");
     }
 
     // Matriz
@@ -633,7 +637,7 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
                 else if (strcmp(comandoPrincipal, "salvar") == 0) // Comando salvar
                 {
                     salvarJogo(matriz, nJogadores, jogadoresTemp, contRodada, parametroDoComandoPrincipal);
-                    printf(BOLD(GREEN("Arquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
+                    printf(BOLD(GREEN("\nArquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
                 }
             }
         }
@@ -668,7 +672,7 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
                     else if (strcmp(comandoPrincipal, "salvar") == 0) // Comando salvar
                     {
                         salvarJogo(matriz, nJogadores, jogadoresTemp, contRodada, parametroDoComandoPrincipal);
-                        printf(BOLD(GREEN("Arquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
+                        printf(BOLD(GREEN("\nArquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
                     }
                 }
             }
@@ -765,7 +769,7 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                 else if (strcmp(comandoPrincipal, "salvar") == 0) // Comando salvar
                 {
                     salvarJogo(matriz, nJogadoresNovos, jogadoresNovoIni, contRodadaNew, parametroDoComandoPrincipal);
-                    printf(BOLD(GREEN("Arquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
+                    printf(BOLD(GREEN("\nArquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
                 }
             }
         }
@@ -799,7 +803,7 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                     else if (strcmp(comandoPrincipal, "salvar") == 0) // Comando salvar
                     {
                         salvarJogo(matriz, nJogadoresNovos, jogadoresNovoIni, contRodadaNew, parametroDoComandoPrincipal);
-                        printf(BOLD(GREEN("Arquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
+                        printf(BOLD(GREEN("\nArquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
                     }
                 }
             }
@@ -1715,8 +1719,8 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int c
         return 0;
     }
 
-    //Depois da aplicação de todas as estratégias implementadas acima, o BOT jogará aleatoriamente, o que seria necessário numa penúltima ou última rodada, uma vez que, no mínimo, o empate foi assegurado pelas estratégias
-    // Jogada aleatória quando sobram duas ou uma casa, situação em que o empate já foi assegurado em rodadas anteriores
+    // Depois da aplicação de todas as estratégias implementadas acima, o BOT jogará aleatoriamente, o que seria necessário numa penúltima ou última rodada, uma vez que, no mínimo, o empate foi assegurado pelas estratégias
+    //  Jogada aleatória quando sobram duas ou uma casa, situação em que o empate já foi assegurado em rodadas anteriores
     srand(time(NULL));
     int linha1 = (int)(rand() % 3) + 1;
     int coluna1 = (int)(rand() % 3) + 1;
