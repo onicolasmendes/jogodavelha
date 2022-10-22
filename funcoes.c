@@ -25,8 +25,8 @@ Matricula: 22.1.4028
 #define YELLOW(string) ANSI_COLOR_YELLOW string ANSI_RESET
 #define RED(string) ANSI_COLOR_RED string ANSI_RESET
 #define BLUE(string) ANSI_COLOR_BLUE string ANSI_RESET
-#define ANSI_COLOR_MAGENTA    "\x1b[35m"
-#define MAGENTA(string)    ANSI_COLOR_MAGENTA    string ANSI_RESET
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define MAGENTA(string) ANSI_COLOR_MAGENTA string ANSI_RESET
 #define TAB_HOR "\u2501" // ━ (horizontal)
 #define TAB_VER "\u2503" // ┃ (vertical)
 #define TAB_TL "\u250F"  // ┏ (top-left)
@@ -75,6 +75,12 @@ void limpaBuffer()
 {
     char c;
     while ((c = getchar()) != '\n' && c != EOF)
+        ;
+}
+
+void capturaTecla()
+{
+    while (getchar() != '\n')
         ;
 }
 
@@ -716,6 +722,8 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
             vitoria = 1;
             *posicaoPlayer2JogoAtual = -1;          // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
             atualizaRanking(jogadores, nJogadores); // Atualiza o ranking ao final da rodada
+            printf("Digite qualquer tecla para continuar!");
+            capturaTecla();
             break;
         }
         else if (verificaVitoria(matriz, 3, 3) == 2) // Vitória do player 2
@@ -734,6 +742,8 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
             vitoria = 1;
             *posicaoPlayer2JogoAtual = -1;          // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
             atualizaRanking(jogadores, nJogadores); // Atualiza o ranking ao final da rodada
+            printf("Digite qualquer tecla para continuar!");
+            capturaTecla();
             break;
         }
         else if (verificaVitoria(matriz, 3, 3) == 0 && contRodada == 10) // Jogo deu velha
@@ -745,6 +755,8 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
             empate = 1;
             *posicaoPlayer2JogoAtual = -1;          // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
             atualizaRanking(jogadores, nJogadores); // Atualiza o ranking ao final da rodada
+            printf("Digite qualquer tecla para continuar!");
+            capturaTecla();
             break;
         }
 
@@ -867,6 +879,8 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                 fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
             }
             fclose(arquivoIni);
+            printf("Digite qualquer tecla para continuar!");
+            capturaTecla();
 
             break;
         }
@@ -895,7 +909,8 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                 fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
             }
             fclose(arquivoIni);
-
+            printf("Digite qualquer tecla para continuar!");
+            capturaTecla();
             break;
         }
         else if (verificaVitoria(matriz, 3, 3) == 0 && contRodadaNew == 10) // Jogo deu velha
@@ -916,7 +931,8 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                 fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
             }
             fclose(arquivoIni);
-
+            printf("Digite qualquer tecla para continuar!");
+            capturaTecla();
             break;
         }
         // Salva todos os dados do jogo, caso ele seja recarregado na opção 3 do menu

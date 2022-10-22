@@ -5,6 +5,8 @@ Matricula: 22.1.4028
 #ifndef __STRUCT_H__
 #define __STRUCT_H__
 
+//Struct principal do programa
+
 typedef struct
 {
     char nome[64];

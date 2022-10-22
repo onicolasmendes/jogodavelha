@@ -91,6 +91,10 @@ int main(int argc, char const *argv[])
             {
                 // Atualiza .ini
                 atualizaIni(jogadores, nJogadores);
+
+                liberaMatriz(matrizJogoAtual, 3);
+                free(jogadores);
+                free(jogadoresTempJogoAtual);
             }
             return 0;
             break;
@@ -189,6 +193,9 @@ int main(int argc, char const *argv[])
 
                 int contRodadaNew = 1;                                                                                                                                                                                                             // Contará o número de rodadas e servirá para determinar quem joga
                 jogoMultiplayerArquivoIniNovo(matriz, jogadoresNovoIni, contRodadaNew, nJogadoresNovos, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual); // Função que roda o game
+                
+                liberaMatriz(matriz, 3);
+                free(jogadoresNovoIni);
             }
 
             else // Arquivo .ini existente
@@ -247,6 +254,9 @@ int main(int argc, char const *argv[])
 
                 int contRodada = 1;                                                                                                                                                                                                                                                  // Contará o número de rodadas e servirá para determinar quem joga
                 jogoMultiplayer(matriz, jogadoresTemp, jogadores, posicaoPlayer1, posicaoPlayer2, contRodada, nJogadoresRodadaConvertido, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual); // Função que roda o game
+                
+                liberaMatriz(matriz, 3);
+                free(jogadoresTemp);
             }
 
             break;
@@ -290,7 +300,9 @@ int main(int argc, char const *argv[])
 
             imprimeMatriz(matrizJogoCarregado, 3, 3);
             jogoMultiplayer(matrizJogoCarregado, jogadoresTempJogoCarregado, jogadores, posicaoPlayer1JogoCarregado, posicaoPlayer2JogoCarregado, contRodadaJogoCarregado, nJogadoresJogoCarregado, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual);
-
+            
+            liberaMatriz(matrizJogoCarregado, 3);
+            free(jogadoresTempJogoCarregado);
             break;
 
         case '3': // Continuar o jogo atual
