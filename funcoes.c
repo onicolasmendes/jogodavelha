@@ -437,7 +437,7 @@ int verificaVitoria(char **matriz, int n, int m) // Função retorna 1, caso pla
         cont++;
     }
     teste[cont] = '\0';
-    printf("%s\n\n\n", teste);
+
     if (strcmp(teste, vitoriaPlayer1) == 0) // Caso em que o player 1 ganha
     {
         return 1;
@@ -717,8 +717,7 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
         *contRodadaJogoAtual = contRodada;
         *nJogadoresJogoAtual = nJogadores;
     }
-    printf("%s %d %d %d\n\n\n", jogadores[posicaoPlayer1].nome, jogadores[posicaoPlayer1].vitorias, jogadores[posicaoPlayer1].empates, jogadores[posicaoPlayer1].derrotas);
-    printf("%s %d %d %d\n\n\n", jogadores[posicaoPlayer2].nome, jogadores[posicaoPlayer2].vitorias, jogadores[posicaoPlayer2].empates, jogadores[posicaoPlayer2].derrotas);
+
     return 0;
 }
 
@@ -877,9 +876,6 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
         *posicaoPlayer2JogoAtual = 1;
         *contRodadaJogoAtual = contRodadaNew;
         *nJogadoresJogoAtual = nJogadoresNovos;
-
-        printf("%s %d %d %d\n\n\n", jogadoresNovoIni[0].nome, jogadoresNovoIni[0].vitorias, jogadoresNovoIni[0].empates, jogadoresNovoIni[0].derrotas);
-        printf("%s %d %d %d\n\n\n", jogadoresNovoIni[1].nome, jogadoresNovoIni[1].vitorias, jogadoresNovoIni[1].empates, jogadoresNovoIni[1].derrotas);
     }
 }
 
@@ -1577,7 +1573,7 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int c
         return 0;
     }
 
-    //Se o usuário jogar no canto [2][0] ou no canto [2][2], o bot joga no canto [0][2], impedindo-o de tomar um x
+    // Se o usuário jogar no canto [2][0] ou no canto [2][2], o bot joga no canto [0][2], impedindo-o de tomar um x
     if (matriz[1][1] == 'X' && contRodada == 4 && matriz[0][2] == '-' && (matriz[2][0] == 'X' || matriz[2][2] == 'X'))
     {
         *coordenadaLinha = 1;
@@ -1676,9 +1672,50 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int c
     }
 
     // Estratégia 3
+    // Usuário começa jogando pelas bordas e o BOT joga no meio
+    if ((matriz[1][0] == 'X' || matriz[0][1] == 'X' || matriz[1][2] == 'X' || matriz[2][1] == 'X') && contRodada == 2)
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+    // Usuário forma uma linha ou coluna no formato XOX e o bot jogará no canto [0][0] do tabuleiro
+    if ((matriz[1][0] == 'X' && matriz[1][2] == 'X' && contRodada == 4) || (matriz[0][1] == 'X' && matriz[2][1] == 'X' && contRodada == 4))
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+    // Agora o objetivo do BOT é aplicar um "V" contra o usuário, permitinddo duas possibilidades de vitória
+    if (matriz[1][0] == 'X' && matriz[1][2] == 'X' && contRodada == 6 && matriz[0][2] == '-')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 3;
+        return 0;
+    }
 
-    // Estratégia 4
+    if (matriz[1][0] == 'X' && matriz[1][2] == 'X' && contRodada == 6 && matriz[2][0] == '-')
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 1;
+        return 0;
+    }
 
+    if (matriz[0][1] == 'X' && matriz[2][1] == 'X' && contRodada == 6 && matriz[2][0] == '-')
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    if (matriz[0][1] == 'X' && matriz[2][1] == 'X' && contRodada == 6 && matriz[0][2] == '-')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 3;
+        return 0;
+    }
+
+    //Depois da aplicação de todas as estratégias implementadas acima, o BOT jogará aleatoriamente, o que seria necessário numa penúltima ou última rodada, uma vez que, no mínimo, o empate foi assegurado pelas estratégias
     // Jogada aleatória quando sobram duas ou uma casa, situação em que o empate já foi assegurado em rodadas anteriores
     srand(time(NULL));
     int linha1 = (int)(rand() % 3) + 1;
