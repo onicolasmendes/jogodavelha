@@ -8,6 +8,16 @@ Matricula: 22.1.4028
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define ANSI_BG_COLOR_YELLOW  "\x1b[43m"
+#define YELLOW(string)     ANSI_COLOR_YELLOW     string ANSI_RESET
+#define ANSI_RESET            "\x1b[0m" 
+#define ANSI_COLOR_YELLOW     "\x1b[33m"
+#define ANSI_COLOR_BLUE       "\x1b[34m"
+#define BLUE(string)       ANSI_COLOR_BLUE       string ANSI_RESET
+#define ANSI_COLOR_RED        "\x1b[31m"
+#define RED(string)        ANSI_COLOR_RED        string ANSI_RESET
+#define ANSI_COLOR_GREEN      "\x1b[32m"
+#define GREEN(string)      ANSI_COLOR_GREEN      string ANSI_RESET
 
 void printNomeDoJogo();
 void printMenu();
