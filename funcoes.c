@@ -25,6 +25,8 @@ Matricula: 22.1.4028
 #define YELLOW(string) ANSI_COLOR_YELLOW string ANSI_RESET
 #define RED(string) ANSI_COLOR_RED string ANSI_RESET
 #define BLUE(string) ANSI_COLOR_BLUE string ANSI_RESET
+#define ANSI_COLOR_MAGENTA    "\x1b[35m"
+#define MAGENTA(string)    ANSI_COLOR_MAGENTA    string ANSI_RESET
 #define TAB_HOR "\u2501" // ━ (horizontal)
 #define TAB_VER "\u2503" // ┃ (vertical)
 #define TAB_TL "\u250F"  // ┏ (top-left)
@@ -736,7 +738,7 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
         }
         else if (verificaVitoria(matriz, 3, 3) == 0 && contRodada == 10) // Jogo deu velha
         {
-            printf(BLUE("O game deu velha! Ambos empataram!\n\n"));
+            printf(MAGENTA("O game deu velha! Ambos empataram!\n\n"));
             printEmpate();
             jogadores[posicaoPlayer1].empates++;
             jogadores[posicaoPlayer2].empates++;
@@ -898,7 +900,7 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
         }
         else if (verificaVitoria(matriz, 3, 3) == 0 && contRodadaNew == 10) // Jogo deu velha
         {
-            printf(BLUE("O game deu velha! Ambos empataram!\n\n"));
+            printf(MAGENTA("O game deu velha! Ambos empataram!\n\n"));
             printEmpate();
             jogadoresNovoIni[0].empates++;
             jogadoresNovoIni[1].empates++;

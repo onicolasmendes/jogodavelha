@@ -18,6 +18,8 @@ Matricula: 22.1.4028
 #define RED(string)        ANSI_COLOR_RED        string ANSI_RESET
 #define ANSI_COLOR_GREEN      "\x1b[32m"
 #define GREEN(string)      ANSI_COLOR_GREEN      string ANSI_RESET
+#define ANSI_COLOR_MAGENTA    "\x1b[35m"
+#define MAGENTA(string)    ANSI_COLOR_MAGENTA    string ANSI_RESET
 
 void printNomeDoJogo();
 void printMenu();

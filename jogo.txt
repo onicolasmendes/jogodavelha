@@ -1,7 +1,0 @@
-2
-Nix
-Computador
-X O X 
-X O - 
-O - - 
-2
