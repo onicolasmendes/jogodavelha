@@ -1375,7 +1375,7 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int c
         *coordenadaColuna = 3;
         return 0;
     }
-    
+
     // A segunda prioridade do bot é impedir uma vitória nítida do outro jogador, portanto, esses primeiros IFs vão atuar nesse tipo de situação
     // Linha 1
     if (matriz[0][0] == 'X')
@@ -1607,34 +1607,68 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int c
         return 0;
     }
 
-    if (matriz[0][2] == 'X' && contRodada == 4 && matriz[1][2] == '-')
+    
+    //Usuário faz a segunda jogada em um canto
+    //A segunda jogada do bot irá em uma borda
+    if (matriz[0][2] == 'X' && contRodada == 4 && matriz[1][2] == '-' && (matriz[0][0] == 'X' || matriz[2][0] == 'X' || matriz[2][2] == 'X'))
     {
         *coordenadaLinha = 2;
         *coordenadaColuna = 3;
         return 0;
     }
 
-    if (matriz[0][0] == 'X' && contRodada == 4 && matriz[1][0] == '-')
+    if (matriz[0][0] == 'X' && contRodada == 4 && matriz[1][0] == '-' && (matriz[2][0] == 'X' || matriz[2][2] == 'X' || matriz[0][2] == 'X'))
     {
         *coordenadaLinha = 2;
         *coordenadaColuna = 1;
         return 0;
     }
 
-    if (matriz[2][0] == 'X' && contRodada == 4 && matriz[1][0] == '-')
+    if (matriz[2][0] == 'X' && contRodada == 4 && matriz[1][0] == '-' && (matriz[0][0] == 'X' || matriz[2][2] == 'X' || matriz[0][2] == 'X'))
     {
         *coordenadaLinha = 2;
         *coordenadaColuna = 1;
         return 0;
     }
 
-    if (matriz[2][2] == 'X' && contRodada == 4 && matriz[1][2] == '-')
+    if (matriz[2][2] == 'X' && contRodada == 4 && matriz[1][2] == '-' && (matriz[0][0] == 'X' || matriz[2][0] == 'X' || matriz[0][2] == 'X'))
     {
         *coordenadaLinha = 2;
         *coordenadaColuna = 3;
         return 0;
     }
 
+    //Usuário faz a segunda jogada em uma borda longe do primeiro X
+    if (matriz[0][0] == 'X' && contRodada == 4 && matriz[2][2] == '-' && (matriz[2][1] == 'X' || matriz[1][2] == 'X'))
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 3;
+        return 0;
+    }
+
+    if (matriz[2][0] == 'X' && contRodada == 4 && matriz[0][2] == '-' && (matriz[0][1] == 'X' || matriz[1][2] == 'X'))
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 3;
+        return 0;
+    }
+
+    if (matriz[2][2] == 'X' && contRodada == 4 && matriz[0][0] == '-' && (matriz[0][1] == 'X' || matriz[1][0] == 'X'))
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    if (matriz[0][2] == 'X' && contRodada == 4 && matriz[2][0] == '-' && (matriz[1][0] == 'X' || matriz[2][1] == 'X'))
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+    
+
+/*
     if (matriz[0][2] == 'X' && contRodada == 4 && matriz[0][1] == '-')
     {
         *coordenadaLinha = 1;
@@ -1662,6 +1696,15 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int c
         *coordenadaColuna = 2;
         return 0;
     }
+*/
+    //Caso o usuário responda com um X na borda longe do primeiro X, o bot jogará perto desse segundo X
+    //if (matriz[0][0] == 'X' && contRodada == 4 && matriz[1][2] == 'X' && matriz[])
+    //{
+        
+    //}
+    
+
+
 
     // Estratégia 3
 
