@@ -1569,11 +1569,19 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int c
         return 0;
     }
     // Estratégia 1
-    // Se o jogador jogar primeiro no meio, o bot jogara em um canto([2][2]), destinando o jogo a dar velha, impedindo a vitória do adversário
+    // Se o jogador jogar primeiro no meio, o bot jogara em um canto([0][0]), destinando o jogo a dar velha, impedindo a vitória do adversário
     if (matriz[1][1] == 'X' && contRodada == 2)
     {
         *coordenadaLinha = 1;
         *coordenadaColuna = 1;
+        return 0;
+    }
+
+    //Se o usuário jogar no canto [2][0] ou no canto [2][2], o bot joga no canto [0][2], impedindo-o de tomar um x
+    if (matriz[1][1] == 'X' && contRodada == 4 && matriz[0][2] == '-' && (matriz[2][0] == 'X' || matriz[2][2] == 'X'))
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 3;
         return 0;
     }
 
@@ -1607,9 +1615,8 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int c
         return 0;
     }
 
-    
-    //Usuário faz a segunda jogada em um canto
-    //A segunda jogada do bot irá em uma borda
+    // Usuário faz a segunda jogada em um canto
+    // A segunda jogada do bot irá em uma borda
     if (matriz[0][2] == 'X' && contRodada == 4 && matriz[1][2] == '-' && (matriz[0][0] == 'X' || matriz[2][0] == 'X' || matriz[2][2] == 'X'))
     {
         *coordenadaLinha = 2;
@@ -1638,7 +1645,8 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int c
         return 0;
     }
 
-    //Usuário faz a segunda jogada em uma borda longe do primeiro X
+    // Usuário faz a segunda jogada em uma borda longe do primeiro X
+    // BOT joga no canto para bloquear o susuário
     if (matriz[0][0] == 'X' && contRodada == 4 && matriz[2][2] == '-' && (matriz[2][1] == 'X' || matriz[1][2] == 'X'))
     {
         *coordenadaLinha = 3;
@@ -1666,47 +1674,10 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int c
         *coordenadaColuna = 1;
         return 0;
     }
-    
-
-/*
-    if (matriz[0][2] == 'X' && contRodada == 4 && matriz[0][1] == '-')
-    {
-        *coordenadaLinha = 1;
-        *coordenadaColuna = 2;
-        return 0;
-    }
-
-    if (matriz[0][0] == 'X' && contRodada == 4 && matriz[0][1] == '-')
-    {
-        *coordenadaLinha = 1;
-        *coordenadaColuna = 2;
-        return 0;
-    }
-
-    if (matriz[2][0] == 'X' && contRodada == 4 && matriz[2][1] == '-')
-    {
-        *coordenadaLinha = 3;
-        *coordenadaColuna = 2;
-        return 0;
-    }
-
-    if (matriz[2][2] == 'X' && contRodada == 4 && matriz[2][1] == '-')
-    {
-        *coordenadaLinha = 3;
-        *coordenadaColuna = 2;
-        return 0;
-    }
-*/
-    //Caso o usuário responda com um X na borda longe do primeiro X, o bot jogará perto desse segundo X
-    //if (matriz[0][0] == 'X' && contRodada == 4 && matriz[1][2] == 'X' && matriz[])
-    //{
-        
-    //}
-    
-
-
 
     // Estratégia 3
+
+    // Estratégia 4
 
     // Jogada aleatória quando sobram duas ou uma casa, situação em que o empate já foi assegurado em rodadas anteriores
     srand(time(NULL));
