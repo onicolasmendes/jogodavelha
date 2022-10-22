@@ -7,6 +7,7 @@ Matricula: 22.1.4028
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #define ANSI_RESET "\x1b[0m"
 #define ANSI_BG_COLOR_CYAN "\x1b[46m"
 #define ANSI_COLOR_CYAN "\x1b[36m"
@@ -771,13 +772,13 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
         }
         else // Vez do player 2
         {
-            if (strcmp(jogadoresNovoIni[1].nome, "Computador") == 0) //Jogador contra o BOT
+            if (strcmp(jogadoresNovoIni[1].nome, "Computador") == 0) // Jogador contra o BOT
             {
                 botJogador(matriz, &coordenadaLinhaNew, &coordenadaColunaNew, contRodadaNew);
                 marcarPosicao(&matriz, coordenadaLinhaNew, coordenadaColunaNew, contRodadaNew);
                 contRodadaNew++;
             }
-            else //Jogador contra jogador
+            else // Jogador contra jogador
             {
 
                 printf("%s, digite o comando: ", jogadoresNovoIni[1].nome);
@@ -1181,8 +1182,27 @@ void atualizaIni(Jogador *jogadores, int nJogadores)
 
 int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int contRodada)
 {
+    //Prioridade máxima do bot - Ganhar a rodada
 
-    // A prioridade máxima do bot é impedir uma vitória nítida do outro jogador, portanto, esses primeiros IFs vão atuar nesse tipo de situação
+    //Linha 1
+    if(matriz[0][0] == 'O')
+    {
+        if(matriz[0][1] == 'O' && matriz[0][2] == '-')
+        {
+            *coordenadaLinha = 1;
+            *coordenadaColuna = 3;
+            return 0;
+        }
+        else if(matriz[0][2] == 'O' && matriz[0][1] == '-')
+        {
+            *coordenadaLinha = 1;
+            *coordenadaColuna = 2;
+            return 0;
+        }
+    }
+    
+    
+    // A segunda prioridade do bot é impedir uma vitória nítida do outro jogador, portanto, esses primeiros IFs vão atuar nesse tipo de situação
     // Linha 1
     if (matriz[0][0] == 'X')
     {
@@ -1378,8 +1398,111 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int c
     // Se o jogador jogar primeiro no meio, o bot jogara em um canto([2][2]), destinando o jogo a dar velha, impedindo a vitória do adversário
     if (matriz[1][1] == 'X' && contRodada == 2)
     {
-        *coordenadaLinha = 3;
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    // Estratégia 2
+    // Se o jogador jogar no canto, o bot jogará no meio
+    if (matriz[0][0] == 'X' && contRodada == 2)
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    if (matriz[2][0] == 'X' && contRodada == 2)
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    if (matriz[2][2] == 'X' && contRodada == 2)
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    if (matriz[0][2] == 'X' && contRodada == 2)
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    if (matriz[0][2] == 'X' && contRodada == 4 && matriz[1][2] == '-')
+    {
+        *coordenadaLinha = 2;
         *coordenadaColuna = 3;
         return 0;
     }
+
+    if (matriz[0][0] == 'X' && contRodada == 4 && matriz[1][0] == '-')
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    if (matriz[2][0] == 'X' && contRodada == 4 && matriz[1][0] == '-')
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    if (matriz[2][2] == 'X' && contRodada == 4 && matriz[1][2] == '-')
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 3;
+        return 0;
+    }
+
+    if (matriz[0][2] == 'X' && contRodada == 4 && matriz[0][1] == '-')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    if (matriz[0][0] == 'X' && contRodada == 4 && matriz[0][1] == '-')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    if (matriz[2][0] == 'X' && contRodada == 4 && matriz[2][1] == '-')
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    if (matriz[2][2] == 'X' && contRodada == 4 && matriz[2][1] == '-')
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    //Estratégia 3
+
+
+    // Jogada aleatória quando sobram duas ou uma casa, situação em que o empate já foi assegurado em rodadas anteriores
+    srand(time(NULL));
+    int linha1 = (int)(rand() % 3) + 1;
+    int coluna1 = (int)(rand() % 3) + 1;
+    while (!verificaPosicaoDisponivel(matriz, linha1, coluna1))
+    {
+        linha1 = (int)(rand() % 3) + 1;
+        coluna1 = (int)(rand() % 3) + 1;
+    }
+
+    *coordenadaLinha = linha1;
+    *coordenadaColuna = coluna1;
+    return 0;
 }
