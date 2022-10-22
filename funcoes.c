@@ -636,28 +636,39 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
                 }
             }
         }
-        else // Vez do player 2 //HEREEEE BOT
+        else // Vez do player 2
         {
-            printf("%s, digite o comando: ", jogadoresTemp[1].nome);
-            fgets(comandoGeral, 64, stdin);
-            captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
-
-            if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresTemp, 1) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinha, &coordenadaColuna, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
+            if (strcmp(jogadoresTemp[1].nome, "Computador") == 0) // Jogador contra o BOT
             {
-                if (strcmp(comandoPrincipal, "marcar") == 0) // Comando marcar
+                botJogador(matriz, &coordenadaLinha, &coordenadaColuna, contRodada);
+                marcarPosicao(&matriz, coordenadaLinha, coordenadaColuna, contRodada);
+                contRodada++;
+                imprimeMatriz(matriz, 3, 3);
+            }
+            else // Jogador contra outro Jogador
+            {
+
+                printf("%s, digite o comando: ", jogadoresTemp[1].nome);
+                fgets(comandoGeral, 64, stdin);
+                captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
+
+                if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresTemp, 1) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinha, &coordenadaColuna, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
                 {
-                    marcarPosicao(&matriz, coordenadaLinha, coordenadaColuna, contRodada); // Marca a posição na matriz, cuja a validação da disponibilidade foi feita no if anterior
-                    imprimeMatriz(matriz, 3, 3);
-                    contRodada++; // Incrementa a rodada
-                }
-                else if (strcmp(comandoPrincipal, "voltar") == 0) // Comando voltar
-                {
-                    break; // Volta ao menu
-                }
-                else if (strcmp(comandoPrincipal, "salvar") == 0) // Comando salvar
-                {
-                    salvarJogo(matriz, nJogadores, jogadoresTemp, contRodada, parametroDoComandoPrincipal);
-                    printf(BOLD(GREEN("Arquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
+                    if (strcmp(comandoPrincipal, "marcar") == 0) // Comando marcar
+                    {
+                        marcarPosicao(&matriz, coordenadaLinha, coordenadaColuna, contRodada); // Marca a posição na matriz, cuja a validação da disponibilidade foi feita no if anterior
+                        imprimeMatriz(matriz, 3, 3);
+                        contRodada++; // Incrementa a rodada
+                    }
+                    else if (strcmp(comandoPrincipal, "voltar") == 0) // Comando voltar
+                    {
+                        break; // Volta ao menu
+                    }
+                    else if (strcmp(comandoPrincipal, "salvar") == 0) // Comando salvar
+                    {
+                        salvarJogo(matriz, nJogadores, jogadoresTemp, contRodada, parametroDoComandoPrincipal);
+                        printf(BOLD(GREEN("Arquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
+                    }
                 }
             }
         }
@@ -758,28 +769,38 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                 }
             }
         }
-        else // Vez do player 2 //HEEREEE BOT
+        else // Vez do player 2
         {
-            printf("%s, digite o comando: ", jogadoresNovoIni[1].nome);
-            fgets(comandoGeral, 64, stdin);
-            captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
-
-            if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresNovoIni, 1) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinhaNew, &coordenadaColunaNew, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
+            if (strcmp(jogadoresNovoIni[1].nome, "Computador") == 0) //Jogador contra o BOT
             {
-                if (strcmp(comandoPrincipal, "marcar") == 0) // Comando marcar
+                botJogador(matriz, &coordenadaLinhaNew, &coordenadaColunaNew, contRodadaNew);
+                marcarPosicao(&matriz, coordenadaLinhaNew, coordenadaColunaNew, contRodadaNew);
+                contRodadaNew++;
+            }
+            else //Jogador contra jogador
+            {
+
+                printf("%s, digite o comando: ", jogadoresNovoIni[1].nome);
+                fgets(comandoGeral, 64, stdin);
+                captaComando(comandoGeral, comandoPrincipal, parametroDoComandoPrincipal);
+
+                if (validaComando(comandoPrincipal, parametroDoComandoPrincipal, comandoGeral, jogadoresNovoIni, 1) && (validaParametroDoMarcar(parametroDoComandoPrincipal, &coordenadaLinhaNew, &coordenadaColunaNew, comandoPrincipal, matriz) || validaParametroDoSalvar(parametroDoComandoPrincipal, comandoPrincipal) || validaParametroDoVoltar(parametroDoComandoPrincipal, comandoPrincipal))) // Valida comando principal - marcar, voltar e salvar
                 {
-                    marcarPosicao(&matriz, coordenadaLinhaNew, coordenadaColunaNew, contRodadaNew); // Marca a posição na matriz, cuja a validação da disponibilidade foi feita no if anterior
-                    imprimeMatriz(matriz, 3, 3);
-                    contRodadaNew++; // Incrementa a rodada
-                }
-                else if (strcmp(comandoPrincipal, "voltar") == 0) // Comando voltar
-                {
-                    break; // Volta ao menu
-                }
-                else if (strcmp(comandoPrincipal, "salvar") == 0) // Comando salvar
-                {
-                    salvarJogo(matriz, nJogadoresNovos, jogadoresNovoIni, contRodadaNew, parametroDoComandoPrincipal);
-                    printf(BOLD(GREEN("Arquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
+                    if (strcmp(comandoPrincipal, "marcar") == 0) // Comando marcar
+                    {
+                        marcarPosicao(&matriz, coordenadaLinhaNew, coordenadaColunaNew, contRodadaNew); // Marca a posição na matriz, cuja a validação da disponibilidade foi feita no if anterior
+                        imprimeMatriz(matriz, 3, 3);
+                        contRodadaNew++; // Incrementa a rodada
+                    }
+                    else if (strcmp(comandoPrincipal, "voltar") == 0) // Comando voltar
+                    {
+                        break; // Volta ao menu
+                    }
+                    else if (strcmp(comandoPrincipal, "salvar") == 0) // Comando salvar
+                    {
+                        salvarJogo(matriz, nJogadoresNovos, jogadoresNovoIni, contRodadaNew, parametroDoComandoPrincipal);
+                        printf(BOLD(GREEN("Arquivo \"%s\" salvo com sucesso!\n")) "\n", parametroDoComandoPrincipal);
+                    }
                 }
             }
         }
@@ -1158,20 +1179,20 @@ void atualizaIni(Jogador *jogadores, int nJogadores)
     }
 }
 
-int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
+int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int contRodada)
 {
 
     // A prioridade máxima do bot é impedir uma vitória nítida do outro jogador, portanto, esses primeiros IFs vão atuar nesse tipo de situação
     // Linha 1
-    if (matriz[1][1] == 'X')
+    if (matriz[0][0] == 'X')
     {
-        if (matriz[1][2] == 'X')
+        if (matriz[0][1] == 'X' && matriz[0][2] == '-')
         {
             *coordenadaLinha = 1;
             *coordenadaColuna = 3;
             return 0;
         }
-        else if (matriz[1][3] == 'X')
+        else if (matriz[0][2] == 'X' && matriz[0][1] == '-')
         {
             *coordenadaLinha = 1;
             *coordenadaColuna = 2;
@@ -1179,7 +1200,7 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
         }
     }
 
-    if (matriz[1][2] == 'X' && matriz[1][3] == 'X')
+    if (matriz[0][1] == 'X' && matriz[0][2] == 'X' && matriz[0][0] == '-')
     {
         *coordenadaLinha = 1;
         *coordenadaColuna = 1;
@@ -1187,15 +1208,15 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
     }
 
     // Linha 2
-    if (matriz[2][1] == 'X')
+    if (matriz[1][0] == 'X')
     {
-        if (matriz[2][2] == 'X')
+        if (matriz[1][1] == 'X' && matriz[1][2] == '-')
         {
             *coordenadaLinha = 2;
             *coordenadaColuna = 3;
             return 0;
         }
-        else if (matriz[2][3] == 'X')
+        else if (matriz[1][2] == 'X' && matriz[1][1] == '-')
         {
             *coordenadaLinha = 2;
             *coordenadaColuna = 2;
@@ -1203,7 +1224,7 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
         }
     }
 
-    if (matriz[2][2] == 'X' && matriz[2][3] == 'X')
+    if (matriz[1][1] == 'X' && matriz[1][2] == 'X' && matriz[1][0] == '-')
     {
         *coordenadaLinha = 2;
         *coordenadaColuna = 1;
@@ -1211,15 +1232,15 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
     }
 
     // Linha 3
-    if (matriz[3][1] == 'X')
+    if (matriz[2][0] == 'X')
     {
-        if (matriz[3][2] == 'X')
+        if (matriz[2][1] == 'X' && matriz[2][2] == '-')
         {
             *coordenadaLinha = 3;
             *coordenadaColuna = 3;
             return 0;
         }
-        else if (matriz[3][3] == 'X')
+        else if (matriz[2][2] == 'X' && matriz[2][1] == '-')
         {
             *coordenadaLinha = 3;
             *coordenadaColuna = 2;
@@ -1227,7 +1248,7 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
         }
     }
 
-    if (matriz[3][2] == 'X' && matriz[3][3] == 'X')
+    if (matriz[2][1] == 'X' && matriz[2][2] == 'X' && matriz[2][0] == '-')
     {
         *coordenadaLinha = 3;
         *coordenadaColuna = 1;
@@ -1235,16 +1256,15 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
     }
 
     // Coluna 1
-    if (matriz[1][1] == 'X')
+    if (matriz[0][0] == 'X')
     {
-        if (matriz[2][1] == 'X')
-
+        if (matriz[1][0] == 'X' && matriz[2][0] == '-')
         {
             *coordenadaLinha = 3;
             *coordenadaColuna = 1;
             return 0;
         }
-        else if (matriz[3][1] == 'X')
+        else if (matriz[2][0] == 'X' && matriz[1][0] == '-')
         {
             *coordenadaLinha = 2;
             *coordenadaColuna = 1;
@@ -1252,7 +1272,7 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
         }
     }
 
-    if (matriz[2][1] == 'X' && matriz[3][1] == 'X')
+    if (matriz[1][0] == 'X' && matriz[2][0] == 'X' && matriz[0][0] == '-')
     {
         *coordenadaLinha = 1;
         *coordenadaColuna = 1;
@@ -1260,15 +1280,15 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
     }
 
     // Coluna 2
-    if (matriz[1][2] == 'X')
+    if (matriz[0][1] == 'X')
     {
-        if (matriz[2][2] == 'X')
+        if (matriz[1][1] == 'X' && matriz[2][1] == '-')
         {
             *coordenadaLinha = 3;
             *coordenadaColuna = 2;
             return 0;
         }
-        else if (matriz[3][2] == 'X')
+        else if (matriz[2][1] == 'X' && matriz[1][1] == '-')
         {
             *coordenadaLinha = 2;
             *coordenadaColuna = 2;
@@ -1276,7 +1296,7 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
         }
     }
 
-    if (matriz[2][2] == 'X' && matriz[3][2] == 'X')
+    if (matriz[1][1] == 'X' && matriz[2][1] == 'X' && matriz[0][1] == '-')
     {
         *coordenadaLinha = 1;
         *coordenadaColuna = 2;
@@ -1284,15 +1304,15 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
     }
 
     // Coluna 3
-    if (matriz[1][3] == 'X')
+    if (matriz[0][2] == 'X')
     {
-        if (matriz[2][3] == 'X')
+        if (matriz[1][2] == 'X' && matriz[2][2] == '-')
         {
             *coordenadaLinha = 3;
             *coordenadaColuna = 3;
             return 0;
         }
-        else if (matriz[3][3] == 'X')
+        else if (matriz[2][2] == 'X' && matriz[1][2] == '-')
         {
             *coordenadaLinha = 2;
             *coordenadaColuna = 3;
@@ -1300,7 +1320,7 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
         }
     }
 
-    if (matriz[2][3] == 'X' && matriz[3][3] == 'X')
+    if (matriz[1][2] == 'X' && matriz[2][2] == 'X' && matriz[0][2] == '-')
     {
         *coordenadaLinha = 1;
         *coordenadaColuna = 3;
@@ -1308,15 +1328,15 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
     }
 
     // Diagonal principal
-    if (matriz[1][1] == 'X')
+    if (matriz[0][0] == 'X')
     {
-        if (matriz[2][2] == 'X')
+        if (matriz[1][1] == 'X' && matriz[2][2] == '-')
         {
             *coordenadaLinha = 3;
             *coordenadaColuna = 3;
             return 0;
         }
-        else if (matriz[3][3] == 'X')
+        else if (matriz[2][2] == 'X' && matriz[1][1] == '-')
         {
             *coordenadaLinha = 2;
             *coordenadaColuna = 2;
@@ -1324,7 +1344,7 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
         }
     }
 
-    if (matriz[2][2] == 'X' && matriz[3][3] == 'X')
+    if (matriz[1][1] == 'X' && matriz[2][2] == 'X' && matriz[0][0] == '-')
     {
         *coordenadaLinha = 1;
         *coordenadaColuna = 1;
@@ -1332,25 +1352,33 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna)
     }
 
     // Diagonal secundária
-    if (matriz[1][3] == 'X')
+    if (matriz[0][2] == 'X')
     {
-        if (matriz[2][2] == 'X')
+        if (matriz[1][1] == 'X' && matriz[2][0] == '-')
         {
             *coordenadaLinha = 3;
             *coordenadaColuna = 1;
             return 0;
         }
-        else if (matriz[3][1] == 'X')
+        else if (matriz[2][0] == 'X' && matriz[1][1] == '-')
         {
             *coordenadaLinha = 2;
             *coordenadaColuna = 2;
             return 0;
         }
     }
-    
-    if (matriz[2][2] == 'X' && matriz[3][1] == 'X')
+
+    if (matriz[1][1] == 'X' && matriz[2][0] == 'X' && matriz[0][2] == '-')
     {
         *coordenadaLinha = 1;
+        *coordenadaColuna = 3;
+        return 0;
+    }
+    // Estratégia 1
+    // Se o jogador jogar primeiro no meio, o bot jogara em um canto([2][2]), destinando o jogo a dar velha, impedindo a vitória do adversário
+    if (matriz[1][1] == 'X' && contRodada == 2)
+    {
+        *coordenadaLinha = 3;
         *coordenadaColuna = 3;
         return 0;
     }

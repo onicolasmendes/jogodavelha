@@ -47,6 +47,6 @@ int verificaNomeNoVetorPrincipal(Jogador *jogadores, char *nomePlayer, int nJoga
 int atualizaRanking(Jogador *jogadores, int nJogadores);
 void exibeRanking(Jogador *jogadores, int nJogadores);
 void atualizaIni(Jogador *jogadores, int nJogadores);
-int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna);
+int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int contRodada);
 
 #endif
