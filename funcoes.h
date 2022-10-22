@@ -48,5 +48,8 @@ int atualizaRanking(Jogador *jogadores, int nJogadores);
 void exibeRanking(Jogador *jogadores, int nJogadores);
 void atualizaIni(Jogador *jogadores, int nJogadores);
 int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int contRodada);
+void printVitoriaP1();
+void printVitoriaP2();
+void printEmpate();
 
 #endif
