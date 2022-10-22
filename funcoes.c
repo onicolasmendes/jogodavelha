@@ -14,6 +14,7 @@ Matricula: 22.1.4028
 #define ANSI_COLOR_GREEN "\x1b[32m"
 #define ANSI_COLOR_YELLOW "\x1b[33m"
 #define ANSI_COLOR_RED        "\x1b[31m"
+#define ANSI_COLOR_BLUE       "\x1b[34m"
 #define ANSI_BOLD "\x1b[1m"
 #define ANSI_BG_COLOR_BLUE    "\x1b[44m"
 #define BG_CYAN(string) ANSI_BG_COLOR_CYAN string ANSI_RESET
@@ -23,6 +24,7 @@ Matricula: 22.1.4028
 #define BOLD(string) ANSI_BOLD string ANSI_RESET
 #define YELLOW(string) ANSI_COLOR_YELLOW string ANSI_RESET
 #define RED(string)        ANSI_COLOR_RED        string ANSI_RESET
+#define BLUE(string)       ANSI_COLOR_BLUE       string ANSI_RESET
 #define TAB_HOR "\u2501" // ━ (horizontal)
 #define TAB_VER "\u2503" // ┃ (vertical)
 #define TAB_TL "\u250F"  // ┏ (top-left)
@@ -1123,14 +1125,16 @@ int atualizaRanking(Jogador *jogadores, int nJogadores)
 void exibeRanking(Jogador *jogadores, int nJogadores)
 {
     printf(BG_CYAN(BOLD(" .:RANKING:. ")) "\n");
-    printf(" +-------------+-----------------------+---------------+--------------------------+\n");
-    printf(" | Posição\tNome\t\t\tVitorias\tEmpates\t\tDerrotas  |\n");
+    printf(RED(TAB_TL TAB_HOR TAB_HOR  TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR  TAB_HOR TAB_HOR   TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR  TAB_HOR TAB_HOR TAB_TR "\n"));
+    printf(RED(TAB_VER)); printf(BLUE("POSIÇÃO\t\t\t\t     NOME\t\tVITÓRIAS\tEMPATES\t\tDERROTAS"));printf(RED("   "TAB_VER "\n"));  
+
     atualizaRanking(jogadores, nJogadores);
+
     for (int i = 0; i < nJogadores; i++) // Imprime de trás pra frente pois a ordenação foi feita em ordem crescente
     {
-        printf(" |\t%d\t%s\t\t\t %d\t\t %d\t\t %d\t  |\n", i + 1, jogadores[i].nome, jogadores[i].vitorias, jogadores[i].empates, jogadores[i].derrotas);
+        printf(RED(TAB_VER)); printf(GREEN("%5d%45s\t\t   %3d\t\t %3d\t\t%7d "), i+1, jogadores[i].nome, jogadores[i].vitorias, jogadores[i].empates, jogadores[i].derrotas);printf(RED("   "TAB_VER "\n")); 
     }
-    printf(" +-------------+-----------------------+---------------+--------------------------+\n");
+    printf(RED(TAB_BL TAB_HOR TAB_HOR  TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR  TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR  TAB_HOR TAB_HOR TAB_BR "\n"));
 }
 
 void atualizaIni(Jogador *jogadores, int nJogadores)
