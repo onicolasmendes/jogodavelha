@@ -13,18 +13,18 @@ Matricula: 22.1.4028
 #define ANSI_COLOR_CYAN "\x1b[36m"
 #define ANSI_COLOR_GREEN "\x1b[32m"
 #define ANSI_COLOR_YELLOW "\x1b[33m"
-#define ANSI_COLOR_RED        "\x1b[31m"
-#define ANSI_COLOR_BLUE       "\x1b[34m"
+#define ANSI_COLOR_RED "\x1b[31m"
+#define ANSI_COLOR_BLUE "\x1b[34m"
 #define ANSI_BOLD "\x1b[1m"
-#define ANSI_BG_COLOR_BLUE    "\x1b[44m"
+#define ANSI_BG_COLOR_BLUE "\x1b[44m"
 #define BG_CYAN(string) ANSI_BG_COLOR_CYAN string ANSI_RESET
 #define BG_BLUE(string) ANSI_BG_COLOR_BLUE string ANSI_RESET
 #define WHITE(string) ANSI_COLOR_WHITE string ANSI_RESET
 #define GREEN(string) ANSI_COLOR_GREEN string ANSI_RESET
 #define BOLD(string) ANSI_BOLD string ANSI_RESET
 #define YELLOW(string) ANSI_COLOR_YELLOW string ANSI_RESET
-#define RED(string)        ANSI_COLOR_RED        string ANSI_RESET
-#define BLUE(string)       ANSI_COLOR_BLUE       string ANSI_RESET
+#define RED(string) ANSI_COLOR_RED string ANSI_RESET
+#define BLUE(string) ANSI_COLOR_BLUE string ANSI_RESET
 #define TAB_HOR "\u2501" // ━ (horizontal)
 #define TAB_VER "\u2503" // ┃ (vertical)
 #define TAB_TL "\u250F"  // ┏ (top-left)
@@ -350,15 +350,39 @@ void imprimeMatriz(char **matriz, int n, int m)
 
     printf("\n");
     printf(BOLD(GREEN("\t          1  2  3")) "\n");
-    printf(BOLD(RED("\t\t ")));  printf(TAB_TL TAB_HOR TAB_HOR TAB_TJ TAB_HOR TAB_HOR TAB_TJ TAB_HOR TAB_HOR TAB_TR "\n");
-    printf(BOLD(RED("\t\t1"))); printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 0, 0));printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 0, 1)); printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 0, 2)); printf( TAB_VER "\n");
-    printf(BOLD(RED("\t\t "))); printf( TAB_ML TAB_HOR TAB_HOR TAB_MJ TAB_HOR TAB_HOR TAB_MJ TAB_HOR TAB_HOR TAB_MR "\n");
-    printf(BOLD(RED("\t\t2"))); printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 1, 0));printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 1, 1)); printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 1, 2)); printf( TAB_VER "\n");
-    printf(BOLD(RED("\t\t "))); printf( TAB_ML TAB_HOR TAB_HOR TAB_MJ TAB_HOR TAB_HOR TAB_MJ TAB_HOR TAB_HOR TAB_MR "\n");
-    printf(BOLD(RED("\t\t3"))); printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 2, 0));printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 2, 1)); printf( TAB_VER); printf(BG_BLUE("%c "), imprimeElemento(matriz, 2, 2)); printf( TAB_VER "\n");
-    printf(BOLD(RED("\t\t "))); printf( TAB_BL TAB_HOR  TAB_HOR TAB_BJ TAB_HOR TAB_HOR TAB_BJ TAB_HOR TAB_HOR TAB_BR "\n");
+    printf(BOLD(RED("\t\t ")));
+    printf(TAB_TL TAB_HOR TAB_HOR TAB_TJ TAB_HOR TAB_HOR TAB_TJ TAB_HOR TAB_HOR TAB_TR "\n");
+    printf(BOLD(RED("\t\t1")));
+    printf(TAB_VER);
+    printf(BG_BLUE("%c "), imprimeElemento(matriz, 0, 0));
+    printf(TAB_VER);
+    printf(BG_BLUE("%c "), imprimeElemento(matriz, 0, 1));
+    printf(TAB_VER);
+    printf(BG_BLUE("%c "), imprimeElemento(matriz, 0, 2));
+    printf(TAB_VER "\n");
+    printf(BOLD(RED("\t\t ")));
+    printf(TAB_ML TAB_HOR TAB_HOR TAB_MJ TAB_HOR TAB_HOR TAB_MJ TAB_HOR TAB_HOR TAB_MR "\n");
+    printf(BOLD(RED("\t\t2")));
+    printf(TAB_VER);
+    printf(BG_BLUE("%c "), imprimeElemento(matriz, 1, 0));
+    printf(TAB_VER);
+    printf(BG_BLUE("%c "), imprimeElemento(matriz, 1, 1));
+    printf(TAB_VER);
+    printf(BG_BLUE("%c "), imprimeElemento(matriz, 1, 2));
+    printf(TAB_VER "\n");
+    printf(BOLD(RED("\t\t ")));
+    printf(TAB_ML TAB_HOR TAB_HOR TAB_MJ TAB_HOR TAB_HOR TAB_MJ TAB_HOR TAB_HOR TAB_MR "\n");
+    printf(BOLD(RED("\t\t3")));
+    printf(TAB_VER);
+    printf(BG_BLUE("%c "), imprimeElemento(matriz, 2, 0));
+    printf(TAB_VER);
+    printf(BG_BLUE("%c "), imprimeElemento(matriz, 2, 1));
+    printf(TAB_VER);
+    printf(BG_BLUE("%c "), imprimeElemento(matriz, 2, 2));
+    printf(TAB_VER "\n");
+    printf(BOLD(RED("\t\t ")));
+    printf(TAB_BL TAB_HOR TAB_HOR TAB_BJ TAB_HOR TAB_HOR TAB_BJ TAB_HOR TAB_HOR TAB_BR "\n");
     printf("\n");
-
 }
 char imprimeElemento(char **matriz, int linha, int coluna)
 {
@@ -693,8 +717,15 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
         }
         else if (verificaVitoria(matriz, 3, 3) == 2) // Vitória do player 2
         {
-            printf(GREEN("Parabens, %s ! Você ganhou a rodada!\n"), jogadores[posicaoPlayer2].nome);
-            printVitoriaP2();
+            if (strcmp(jogadores[posicaoPlayer2].nome, "Computador") == 0)
+            {
+                printVitoriaBot();
+            }
+            else
+            {
+                printf(GREEN("Parabens, %s ! Você ganhou a rodada!\n"), jogadores[posicaoPlayer2].nome);
+                printVitoriaP2();
+            }
             jogadores[posicaoPlayer2].vitorias++;
             jogadores[posicaoPlayer1].derrotas++;
             vitoria = 1;
@@ -704,7 +735,8 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
         }
         else if (verificaVitoria(matriz, 3, 3) == 0 && contRodada == 10) // Jogo deu velha
         {
-            printf("O game deu velha! Ambos empataram!\n");
+            printf(BLUE("O game deu velha! Ambos empataram!\n\n"));
+            printEmpate();
             jogadores[posicaoPlayer1].empates++;
             jogadores[posicaoPlayer2].empates++;
             empate = 1;
@@ -784,6 +816,7 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                 botJogador(matriz, &coordenadaLinhaNew, &coordenadaColunaNew, contRodadaNew);
                 marcarPosicao(&matriz, coordenadaLinhaNew, coordenadaColunaNew, contRodadaNew);
                 contRodadaNew++;
+                imprimeMatriz(matriz, 3, 3);
             }
             else // Jogador contra jogador
             {
@@ -836,8 +869,15 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
         }
         else if (verificaVitoria(matriz, 3, 3) == 2) // Vitória do player 2
         {
-            printf(GREEN("Parabens, %s ! Você ganhou a rodada!\n"), jogadoresNovoIni[1].nome);
-            printVitoriaP2();
+            if (strcmp(jogadoresNovoIni[1].nome, "Computador") == 0)
+            {
+                printVitoriaBot();
+            }
+            else
+            {
+                printf(GREEN("Parabens, %s ! Você ganhou a rodada!\n"), jogadoresNovoIni[1].nome);
+                printVitoriaP2();
+            }
             jogadoresNovoIni[1].vitorias++;
             jogadoresNovoIni[0].derrotas++;
             vitoriaNew = 1;
@@ -857,7 +897,8 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
         }
         else if (verificaVitoria(matriz, 3, 3) == 0 && contRodadaNew == 10) // Jogo deu velha
         {
-            printf("O game deu velha! Ambos empataram!\n");
+            printf(BLUE("O game deu velha! Ambos empataram!\n\n"));
+            printEmpate();
             jogadoresNovoIni[0].empates++;
             jogadoresNovoIni[1].empates++;
             empateNew = 1;
@@ -891,14 +932,14 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
 
 void printVitoriaP1()
 {
- printf("\n🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈\n\n");
- printf(BLUE("██╗   ██╗██╗████████╗ ██████╗ ██████╗ ██╗ █████╗     ██████╗  ██████╗     ██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗      ██╗") "\n");
- printf(BLUE("██║   ██║██║╚══██╔══╝██╔═══██╗██╔══██╗██║██╔══██╗    ██╔══██╗██╔═══██╗    ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗    ███║") "\n");
- printf(BLUE("██║   ██║██║   ██║   ██║   ██║██████╔╝██║███████║    ██║  ██║██║   ██║    ██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝    ╚██║") "\n");
- printf(BLUE("╚██╗ ██╔╝██║   ██║   ██║   ██║██╔══██╗██║██╔══██║    ██║  ██║██║   ██║    ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗     ██║") "\n");
- printf(BLUE(" ╚████╔╝ ██║   ██║   ╚██████╔╝██║  ██║██║██║  ██║    ██████╔╝╚██████╔╝    ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║     ██║") "\n");
- printf(BLUE("  ╚═══╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝    ╚═════╝  ╚═════╝     ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝     ╚═╝") "\n\n");
- printf("🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 \n\n");
+    printf("\n🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈\n\n");
+    printf(BLUE("██╗   ██╗██╗████████╗ ██████╗ ██████╗ ██╗ █████╗     ██████╗  ██████╗     ██████╗ ██╗      █████╗ ██╗   ██╗███████╗██████╗      ██╗") "\n");
+    printf(BLUE("██║   ██║██║╚══██╔══╝██╔═══██╗██╔══██╗██║██╔══██╗    ██╔══██╗██╔═══██╗    ██╔══██╗██║     ██╔══██╗╚██╗ ██╔╝██╔════╝██╔══██╗    ███║") "\n");
+    printf(BLUE("██║   ██║██║   ██║   ██║   ██║██████╔╝██║███████║    ██║  ██║██║   ██║    ██████╔╝██║     ███████║ ╚████╔╝ █████╗  ██████╔╝    ╚██║") "\n");
+    printf(BLUE("╚██╗ ██╔╝██║   ██║   ██║   ██║██╔══██╗██║██╔══██║    ██║  ██║██║   ██║    ██╔═══╝ ██║     ██╔══██║  ╚██╔╝  ██╔══╝  ██╔══██╗     ██║") "\n");
+    printf(BLUE(" ╚████╔╝ ██║   ██║   ╚██████╔╝██║  ██║██║██║  ██║    ██████╔╝╚██████╔╝    ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║     ██║") "\n");
+    printf(BLUE("  ╚═══╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝    ╚═════╝  ╚═════╝     ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝     ╚═╝") "\n\n");
+    printf("🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 \n\n");
 }
 void printVitoriaP2()
 {
@@ -910,9 +951,30 @@ void printVitoriaP2()
     printf(GREEN(" ╚████╔╝ ██║   ██║   ╚██████╔╝██║  ██║██║██║  ██║    ██████╔╝╚██████╔╝    ██║     ███████╗██║  ██║   ██║   ███████╗██║  ██║    ███████╗") "\n");
     printf(GREEN("  ╚═══╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝    ╚═════╝  ╚═════╝     ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝  ╚═╝    ╚══════╝") "\n");
     printf("\n🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈 🎉🥳🪅🎈\n\n");
-
 }
-void printEmpate();
+void printEmpate()
+{
+    printf("❎❎❎❎ ❎❎❎❎ ❎❎❎❎ ❎❎❎❎ ❎❎❎❎ ❎❎❎❎ ❎❎❎❎\n\n");
+    printf(YELLOW("███████╗███╗   ███╗██████╗  █████╗ ████████╗███████╗██╗") "\n");
+    printf(YELLOW("██╔════╝████╗ ████║██╔══██╗██╔══██╗╚══██╔══╝██╔════╝██║") "\n");
+    printf(YELLOW("█████╗  ██╔████╔██║██████╔╝███████║   ██║   █████╗  ██║") "\n");
+    printf(YELLOW("██╔══╝  ██║╚██╔╝██║██╔═══╝ ██╔══██║   ██║   ██╔══╝  ╚═╝") "\n");
+    printf(YELLOW("███████╗██║ ╚═╝ ██║██║     ██║  ██║   ██║   ███████╗██╗") "\n");
+    printf(YELLOW("╚══════╝╚═╝     ╚═╝╚═╝     ╚═╝  ╚═╝   ╚═╝   ╚══════╝╚═╝") "\n");
+    printf("❎❎❎❎ ❎❎❎❎ ❎❎❎❎ ❎❎❎❎ ❎❎❎❎ ❎❎❎❎ ❎❎❎❎\n\n");
+}
+
+void printVitoriaBot()
+{
+    printf("\n🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 \n\n");
+    printf(GREEN("██╗   ██╗██╗████████╗ ██████╗ ██████╗ ██╗ █████╗     ██████╗  ██████╗     ██████╗  ██████╗ ████████") "\n");
+    printf(GREEN("██║   ██║██║╚══██╔══╝██╔═══██╗██╔══██╗██║██╔══██╗    ██╔══██╗██╔═══██╗    ██╔══██╗██╔═══██╗╚══██╔══╝") "\n");
+    printf(GREEN("██║   ██║██║   ██║   ██║   ██║██████╔╝██║███████║    ██║  ██║██║   ██║    ██████╔╝██║   ██║   ██║   ") "\n");
+    printf(GREEN("╚██╗ ██╔╝██║   ██║   ██║   ██║██╔══██╗██║██╔══██║    ██║  ██║██║   ██║    ██╔══██╗██║   ██║   ██║   ") "\n");
+    printf(GREEN(" ╚████╔╝ ██║   ██║   ╚██████╔╝██║  ██║██║██║  ██║    ██████╔╝╚██████╔╝    ██████╔╝╚██████╔╝   ██║   ") "\n");
+    printf(GREEN("  ╚═══╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝    ╚═════╝  ╚═════╝     ╚═════╝  ╚═════╝    ╚═╝   ") "\n");
+    printf("\n🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 🤖🤖🤖🤖 \n\n");
+}
 
 void copiaMatriz(char ***A, char **B)
 {
@@ -1154,16 +1216,20 @@ int atualizaRanking(Jogador *jogadores, int nJogadores)
 void exibeRanking(Jogador *jogadores, int nJogadores)
 {
     printf(BG_CYAN(BOLD(" .:RANKING:. ")) "\n");
-    printf(RED(TAB_TL TAB_HOR TAB_HOR  TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR  TAB_HOR TAB_HOR   TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR  TAB_HOR TAB_HOR TAB_TR "\n"));
-    printf(RED(TAB_VER)); printf(BLUE("POSIÇÃO\t\t\t\t     NOME\t\tVITÓRIAS\tEMPATES\t\tDERROTAS"));printf(RED("   "TAB_VER "\n"));  
+    printf(RED(TAB_TL TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_TR "\n"));
+    printf(RED(TAB_VER));
+    printf(BLUE("POSIÇÃO\t\t\t\t     NOME\t\tVITÓRIAS\tEMPATES\t\tDERROTAS"));
+    printf(RED("   " TAB_VER "\n"));
 
     atualizaRanking(jogadores, nJogadores);
 
     for (int i = 0; i < nJogadores; i++) // Imprime de trás pra frente pois a ordenação foi feita em ordem crescente
     {
-        printf(RED(TAB_VER)); printf(GREEN("%5d%45s\t\t   %3d\t\t %3d\t\t%7d "), i+1, jogadores[i].nome, jogadores[i].vitorias, jogadores[i].empates, jogadores[i].derrotas);printf(RED("   "TAB_VER "\n")); 
+        printf(RED(TAB_VER));
+        printf(GREEN("%5d%45s\t\t   %3d\t\t %3d\t\t%7d "), i + 1, jogadores[i].nome, jogadores[i].vitorias, jogadores[i].empates, jogadores[i].derrotas);
+        printf(RED("   " TAB_VER "\n"));
     }
-    printf(RED(TAB_BL TAB_HOR TAB_HOR  TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR  TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR  TAB_HOR TAB_HOR TAB_BR "\n"));
+    printf(RED(TAB_BL TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_BR "\n"));
 }
 
 void atualizaIni(Jogador *jogadores, int nJogadores)

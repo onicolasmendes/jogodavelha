@@ -51,5 +51,6 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int c
 void printVitoriaP1();
 void printVitoriaP2();
 void printEmpate();
+void printVitoriaBot();
 
 #endif
