@@ -1182,25 +1182,199 @@ void atualizaIni(Jogador *jogadores, int nJogadores)
 
 int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int contRodada)
 {
-    //Prioridade máxima do bot - Ganhar a rodada
+    // Prioridade máxima do bot - Ganhar a rodada
 
-    //Linha 1
-    if(matriz[0][0] == 'O')
+    // Linha 1
+    if (matriz[0][0] == 'O')
     {
-        if(matriz[0][1] == 'O' && matriz[0][2] == '-')
+        if (matriz[0][1] == 'O' && matriz[0][2] == '-')
         {
             *coordenadaLinha = 1;
             *coordenadaColuna = 3;
             return 0;
         }
-        else if(matriz[0][2] == 'O' && matriz[0][1] == '-')
+        else if (matriz[0][2] == 'O' && matriz[0][1] == '-')
         {
             *coordenadaLinha = 1;
             *coordenadaColuna = 2;
             return 0;
         }
     }
-    
+
+    if (matriz[0][1] == 'O' && matriz[0][2] == 'O' && matriz[0][0] == '-')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    // Linha 2
+    if (matriz[1][0] == 'O')
+    {
+        if (matriz[1][1] == 'O' && matriz[1][2] == '-')
+        {
+            *coordenadaLinha = 2;
+            *coordenadaColuna = 3;
+            return 0;
+        }
+        else if (matriz[1][2] == 'O' && matriz[1][1] == '-')
+        {
+            *coordenadaLinha = 2;
+            *coordenadaColuna = 2;
+            return 0;
+        }
+    }
+
+    if (matriz[1][1] == 'O' && matriz[1][2] == 'O' && matriz[1][0] == '-')
+    {
+        *coordenadaLinha = 2;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    // Linha 3
+    if (matriz[2][0] == 'O')
+    {
+        if (matriz[2][1] == 'O' && matriz[2][2] == '-')
+        {
+            *coordenadaLinha = 3;
+            *coordenadaColuna = 3;
+            return 0;
+        }
+        else if (matriz[2][2] == 'O' && matriz[2][1] == '-')
+        {
+            *coordenadaLinha = 3;
+            *coordenadaColuna = 2;
+            return 0;
+        }
+    }
+
+    if (matriz[2][1] == 'O' && matriz[2][2] == 'O' && matriz[2][0] == '-')
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    // Coluna 1
+    if (matriz[0][0] == 'O')
+    {
+        if (matriz[1][0] == 'O' && matriz[2][0] == '-')
+        {
+            *coordenadaLinha = 3;
+            *coordenadaColuna = 1;
+            return 0;
+        }
+        else if (matriz[2][0] == 'O' && matriz[1][0] == '-')
+        {
+            *coordenadaLinha = 2;
+            *coordenadaColuna = 1;
+            return 0;
+        }
+    }
+
+    if (matriz[1][0] == 'O' && matriz[2][0] == 'O' && matriz[0][0] == '-')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    // Coluna 2
+    if (matriz[0][1] == 'O')
+    {
+        if (matriz[1][1] == 'O' && matriz[2][1] == '-')
+        {
+            *coordenadaLinha = 3;
+            *coordenadaColuna = 2;
+            return 0;
+        }
+        else if (matriz[2][1] == 'O' && matriz[1][1] == '-')
+        {
+            *coordenadaLinha = 2;
+            *coordenadaColuna = 2;
+            return 0;
+        }
+    }
+
+    if (matriz[1][1] == 'O' && matriz[2][1] == 'O' && matriz[0][1] == '-')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 2;
+        return 0;
+    }
+
+    // Coluna 3
+    if (matriz[0][2] == 'O')
+    {
+        if (matriz[1][2] == 'O' && matriz[2][2] == '-')
+        {
+            *coordenadaLinha = 3;
+            *coordenadaColuna = 3;
+            return 0;
+        }
+        else if (matriz[2][2] == 'O' && matriz[1][2] == '-')
+        {
+            *coordenadaLinha = 2;
+            *coordenadaColuna = 3;
+            return 0;
+        }
+    }
+
+    if (matriz[1][2] == 'O' && matriz[2][2] == 'O' && matriz[0][2] == '-')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 3;
+        return 0;
+    }
+
+    // Diagonal principal
+    if (matriz[0][0] == 'O')
+    {
+        if (matriz[1][1] == 'O' && matriz[2][2] == '-')
+        {
+            *coordenadaLinha = 3;
+            *coordenadaColuna = 3;
+            return 0;
+        }
+        else if (matriz[2][2] == 'O' && matriz[1][1] == '-')
+        {
+            *coordenadaLinha = 2;
+            *coordenadaColuna = 2;
+            return 0;
+        }
+    }
+
+    if (matriz[2][2] == 'O' && matriz[1][1] == 'O' && matriz[0][0] == '-')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 1;
+        return 0;
+    }
+
+    // Diagonal secundária
+    if (matriz[0][2] == 'O')
+    {
+        if (matriz[1][1] == 'O' && matriz[2][0] == '-')
+        {
+            *coordenadaLinha = 3;
+            *coordenadaColuna = 1;
+            return 0;
+        }
+        else if (matriz[2][0] == 'O' && matriz[1][1] == '-')
+        {
+            *coordenadaLinha = 2;
+            *coordenadaColuna = 2;
+            return 0;
+        }
+    }
+
+    if (matriz[1][1] == 'O' && matriz[2][0] == 'O' && matriz[0][2] == '-')
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 3;
+        return 0;
+    }
     
     // A segunda prioridade do bot é impedir uma vitória nítida do outro jogador, portanto, esses primeiros IFs vão atuar nesse tipo de situação
     // Linha 1
@@ -1489,8 +1663,7 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int c
         return 0;
     }
 
-    //Estratégia 3
-
+    // Estratégia 3
 
     // Jogada aleatória quando sobram duas ou uma casa, situação em que o empate já foi assegurado em rodadas anteriores
     srand(time(NULL));
