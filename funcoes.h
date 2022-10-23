@@ -65,7 +65,7 @@ void copiaMatriz(char ***A, char **B);
 void captaComando(char *comandoGeral, char *comandoPrincipal, char *parametroDoComandoPrincipal);
 void adicionaNovoPlayer(Jogador*jogadores, Jogador *jogadoresTemp, int *nJogadores, int *posicaoPlayer, int nPlayer);
 void marcarPosicao(char ***matriz, int linha, int coluna, int contRodada);
-int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, int posicaoPlayer1, int posicaoPlayer2, int contRodada, int nJogadores, char ***matrizJogoAtual, Jogador *jogadoresTempJogoAtual, int *posicaoPlayer1JogoAtual, int *posicaoPlayer2JogoAtual, int *contRodadaJogoAtual, int *nJogadoresJogoAtual);
+int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, int posicaoPlayer1, int posicaoPlayer2, int contRodada, int nJogadores, char ***matrizJogoAtual, Jogador *jogadoresTempJogoAtual, int *posicaoPlayer1JogoAtual, int *posicaoPlayer2JogoAtual, int *contRodadaJogoAtual, int *nJogadoresJogoAtual, int nJogadoresTotal);
 int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int contRodadaNew, int nJogadoresNovos, char ***matrizJogoAtual, Jogador *jogadoresTempJogoAtual, int *posicaoPlayer1JogoAtual, int *posicaoPlayer2JogoAtual, int *contRodadaJogoAtual, int *nJogadoresJogoAtual);
 int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int contRodada);
 
@@ -73,8 +73,9 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int c
 void atualizaIni(Jogador *jogadores, int nJogadores);
 int lerArquivo(char *nomeArquivo, char ***matrizJogoCarregado, Jogador *jogadoresTempJogoCarregado, int *contRodadaJogoCarregado, int *nJogadoresJogoCarregado);
 
-//Função de ordenação do ranking
+//Funções do ranking
 int atualizaRanking(Jogador *jogadores, int nJogadores);
+int exibePosicaoRanking(Jogador *jogadores, char *nome, int nJogadores);
 
 //Função de limpar o buffer
 void limpaBuffer();

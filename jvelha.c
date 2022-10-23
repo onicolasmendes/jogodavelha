@@ -193,7 +193,7 @@ int main(int argc, char const *argv[])
 
                 int contRodadaNew = 1;                                                                                                                                                                                                             // Contará o número de rodadas e servirá para determinar quem joga
                 jogoMultiplayerArquivoIniNovo(matriz, jogadoresNovoIni, contRodadaNew, nJogadoresNovos, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual); // Função que roda o game
-                
+
                 liberaMatriz(matriz, 3);
                 free(jogadoresNovoIni);
             }
@@ -252,9 +252,9 @@ int main(int argc, char const *argv[])
                 inicializaMatriz(&matriz, 3, 3);
                 imprimeMatriz(matriz, 3, 3);
 
-                int contRodada = 1;                                                                                                                                                                                                                                                  // Contará o número de rodadas e servirá para determinar quem joga
-                jogoMultiplayer(matriz, jogadoresTemp, jogadores, posicaoPlayer1, posicaoPlayer2, contRodada, nJogadoresRodadaConvertido, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual); // Função que roda o game
-                
+                int contRodada = 1;                                                                                                                                                                                                                                                              // Contará o número de rodadas e servirá para determinar quem joga
+                jogoMultiplayer(matriz, jogadoresTemp, jogadores, posicaoPlayer1, posicaoPlayer2, contRodada, nJogadoresRodadaConvertido, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual, nJogadores); // Função que roda o game
+
                 liberaMatriz(matriz, 3);
                 free(jogadoresTemp);
             }
@@ -267,6 +267,12 @@ int main(int argc, char const *argv[])
             int tamanhoNomeArquivo = strlen(nomeArquivo);
             nomeArquivo[tamanhoNomeArquivo - 1] = '\0';
 
+            // Comando voltar
+            if (strcmp(nomeArquivo, "voltar") == 0)
+            {
+                break;
+            }
+
             // Validação do nome do arquivo
             while (!validaNomeArquivo(nomeArquivo))
             {
@@ -275,7 +281,7 @@ int main(int argc, char const *argv[])
                 int tamanhoNomeArquivo1 = strlen(nomeArquivo);
                 nomeArquivo[tamanhoNomeArquivo1 - 1] = '\0';
             }
-
+            
             // Variáveis que serão extraídas do arquivo
             char **matrizJogoCarregado;
             matrizJogoCarregado = criaMatriz(3, 3);
@@ -299,8 +305,8 @@ int main(int argc, char const *argv[])
             }
 
             imprimeMatriz(matrizJogoCarregado, 3, 3);
-            jogoMultiplayer(matrizJogoCarregado, jogadoresTempJogoCarregado, jogadores, posicaoPlayer1JogoCarregado, posicaoPlayer2JogoCarregado, contRodadaJogoCarregado, nJogadoresJogoCarregado, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual);
-            
+            jogoMultiplayer(matrizJogoCarregado, jogadoresTempJogoCarregado, jogadores, posicaoPlayer1JogoCarregado, posicaoPlayer2JogoCarregado, contRodadaJogoCarregado, nJogadoresJogoCarregado, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual, nJogadores);
+
             liberaMatriz(matrizJogoCarregado, 3);
             free(jogadoresTempJogoCarregado);
             break;
@@ -310,7 +316,7 @@ int main(int argc, char const *argv[])
             if (posicaoPlayer2JogoAtual != -1) // Caso em que algum jogo foi iniciado, ou seja, o valor da variável posicaoPlayer2JogoAtual é diferente de -1, que é o valor que foi atribuido no início do programa
             {
                 imprimeMatriz(matrizJogoAtual, 3, 3);
-                jogoMultiplayer(matrizJogoAtual, jogadoresTempJogoAtual, jogadores, posicaoPlayer1JogoAtual, posicaoPlayer2JogoAtual, contRodadaJogoAtual, nJogadoresJogoAtual, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual);
+                jogoMultiplayer(matrizJogoAtual, jogadoresTempJogoAtual, jogadores, posicaoPlayer1JogoAtual, posicaoPlayer2JogoAtual, contRodadaJogoAtual, nJogadoresJogoAtual, &matrizJogoAtual, jogadoresTempJogoAtual, &posicaoPlayer1JogoAtual, &posicaoPlayer2JogoAtual, &contRodadaJogoAtual, &nJogadoresJogoAtual, nJogadores);
             }
             else // Caso em que nenhum jogo foi iniciado
             {
@@ -321,6 +327,8 @@ int main(int argc, char const *argv[])
         case '4': // Exibir o ranking
 
             exibeRanking(jogadores, nJogadores);
+            printf("Digite qualquer tecla para voltar!");
+            capturaTecla();
             break;
         default:
             break;

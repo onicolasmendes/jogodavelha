@@ -626,7 +626,7 @@ int salvarJogo(char **matriz, int nJogadores, Jogador *jogadoresTemp, int contRo
     fclose(arquivo);
 }
 
-int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, int posicaoPlayer1, int posicaoPlayer2, int contRodada, int nJogadores, char ***matrizJogoAtual, Jogador *jogadoresTempJogoAtual, int *posicaoPlayer1JogoAtual, int *posicaoPlayer2JogoAtual, int *contRodadaJogoAtual, int *nJogadoresJogoAtual)
+int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, int posicaoPlayer1, int posicaoPlayer2, int contRodada, int nJogadores, char ***matrizJogoAtual, Jogador *jogadoresTempJogoAtual, int *posicaoPlayer1JogoAtual, int *posicaoPlayer2JogoAtual, int *contRodadaJogoAtual, int *nJogadoresJogoAtual, int nJogadoresTotal)
 {
     int vitoria = 0; // Variável que determinará se houve vitória ou não
     int empate = 0;  // Variável que determinará se houve empate ou não
@@ -720,8 +720,16 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
             jogadores[posicaoPlayer1].vitorias++; // Incrementa o número de vitórias do player
             jogadores[posicaoPlayer2].derrotas++;
             vitoria = 1;
-            *posicaoPlayer2JogoAtual = -1;          // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
-            atualizaRanking(jogadores, nJogadores); // Atualiza o ranking ao final da rodada
+            *posicaoPlayer2JogoAtual = -1;               // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
+            atualizaRanking(jogadores, nJogadoresTotal); // Atualiza o ranking ao final da rodada
+
+            exibePosicaoRanking(jogadores, jogadoresTemp[0].nome, nJogadoresTotal);
+            exibePosicaoRanking(jogadores, jogadoresTemp[1].nome, nJogadoresTotal);
+
+            printf("\n\n");
+
+            atualizaRanking(jogadores, nJogadoresTotal);
+
             printf("Digite qualquer tecla para continuar!");
             capturaTecla();
             break;
@@ -740,8 +748,16 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
             jogadores[posicaoPlayer2].vitorias++;
             jogadores[posicaoPlayer1].derrotas++;
             vitoria = 1;
-            *posicaoPlayer2JogoAtual = -1;          // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
-            atualizaRanking(jogadores, nJogadores); // Atualiza o ranking ao final da rodada
+            *posicaoPlayer2JogoAtual = -1;               // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
+            atualizaRanking(jogadores, nJogadoresTotal); // Atualiza o ranking ao final da rodada
+
+            exibePosicaoRanking(jogadores, jogadoresTemp[0].nome, nJogadoresTotal);
+            exibePosicaoRanking(jogadores, jogadoresTemp[1].nome, nJogadoresTotal);
+
+            atualizaRanking(jogadores, nJogadoresTotal);
+
+            printf("\n\n");
+
             printf("Digite qualquer tecla para continuar!");
             capturaTecla();
             break;
@@ -753,8 +769,16 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
             jogadores[posicaoPlayer1].empates++;
             jogadores[posicaoPlayer2].empates++;
             empate = 1;
-            *posicaoPlayer2JogoAtual = -1;          // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
-            atualizaRanking(jogadores, nJogadores); // Atualiza o ranking ao final da rodada
+            *posicaoPlayer2JogoAtual = -1;               // Volta a variável para que o jogo finalizado não seja carregado na opção 3 do menu
+            atualizaRanking(jogadores, nJogadoresTotal); // Atualiza o ranking ao final da rodada
+
+            exibePosicaoRanking(jogadores, jogadoresTemp[0].nome, nJogadoresTotal);
+            exibePosicaoRanking(jogadores, jogadoresTemp[1].nome, nJogadoresTotal);
+
+            printf("\n\n");
+
+            atualizaRanking(jogadores, nJogadoresTotal);
+
             printf("Digite qualquer tecla para continuar!");
             capturaTecla();
             break;
@@ -879,6 +903,12 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                 fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
             }
             fclose(arquivoIni);
+
+            atualizaRanking(jogadoresNovoIni, nJogadoresNovos);
+            exibePosicaoRanking(jogadoresNovoIni, jogadoresNovoIni[0].nome, nJogadoresNovos);
+            exibePosicaoRanking(jogadoresNovoIni, jogadoresNovoIni[1].nome, nJogadoresNovos);
+            printf("\n\n");
+
             printf("Digite qualquer tecla para continuar!");
             capturaTecla();
 
@@ -909,6 +939,12 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                 fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
             }
             fclose(arquivoIni);
+
+            atualizaRanking(jogadoresNovoIni, nJogadoresNovos);
+            exibePosicaoRanking(jogadoresNovoIni, jogadoresNovoIni[0].nome, nJogadoresNovos);
+            exibePosicaoRanking(jogadoresNovoIni, jogadoresNovoIni[1].nome, nJogadoresNovos);
+            printf("\n\n");
+
             printf("Digite qualquer tecla para continuar!");
             capturaTecla();
             break;
@@ -931,6 +967,12 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
                 fprintf(arquivoIni, "%d %d %d\n", jogadoresNovoIni[i].vitorias, jogadoresNovoIni[i].empates, jogadoresNovoIni[i].derrotas);
             }
             fclose(arquivoIni);
+
+            atualizaRanking(jogadoresNovoIni, nJogadoresNovos);
+            exibePosicaoRanking(jogadoresNovoIni, jogadoresNovoIni[0].nome, nJogadoresNovos);
+            exibePosicaoRanking(jogadoresNovoIni, jogadoresNovoIni[1].nome, nJogadoresNovos);
+            printf("\n\n");
+
             printf("Digite qualquer tecla para continuar!");
             capturaTecla();
             break;
@@ -1004,6 +1046,22 @@ void copiaMatriz(char ***A, char **B)
             (*A)[i][j] = B[i][j];
         }
     }
+}
+
+int exibePosicaoRanking(Jogador *jogadores, char *nome, int nJogadores) // Compara o nome do jogador com os do vetor da struct para a obtenção da posição / Soma-se um porque inicia-se do 0
+{
+    int posicao = -1;
+
+    for (int i = 0; i < nJogadores; i++)
+    {
+        if (strcmp(jogadores[i].nome, nome) == 0)
+        {
+            posicao = i + 1;
+        }
+    }
+
+    printf(YELLOW("O jogador %s está na posição %d no ranking\n"), nome, posicao);
+    return 0;
 }
 
 int validaNomeArquivo(char *nomeArquivo)
@@ -1144,15 +1202,16 @@ int atualizaRanking(Jogador *jogadores, int nJogadores)
 
 void exibeRanking(Jogador *jogadores, int nJogadores)
 {
+    atualizaRanking(jogadores, nJogadores);
     printf(BG_CYAN(BOLD(" .:RANKING:. ")) "\n");
     printf(RED(TAB_TL TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_TR "\n"));
     printf(RED(TAB_VER));
     printf(BLUE("POSIÇÃO\t\t\t\t     NOME\t\tVITÓRIAS\tEMPATES\t\tDERROTAS"));
     printf(RED("   " TAB_VER "\n"));
 
-    atualizaRanking(jogadores, nJogadores);
+    
 
-    for (int i = 0; i < nJogadores; i++) // Imprime de trás pra frente pois a ordenação foi feita em ordem crescente
+    for (int i = 0; i < nJogadores; i++) // Imprime
     {
         printf(RED(TAB_VER));
         printf(GREEN("%5d%45s\t\t   %3d\t\t %3d\t\t%7d "), i + 1, jogadores[i].nome, jogadores[i].vitorias, jogadores[i].empates, jogadores[i].derrotas);
