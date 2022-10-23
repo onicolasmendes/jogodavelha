@@ -728,7 +728,7 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
 
             printf("\n\n");
 
-            atualizaRanking(jogadores, nJogadoresTotal);
+            //atualizaRanking(jogadores, nJogadoresTotal);
 
             printf("Digite qualquer tecla para continuar!");
             capturaTecla();
@@ -754,7 +754,7 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
             exibePosicaoRanking(jogadores, jogadoresTemp[0].nome, nJogadoresTotal);
             exibePosicaoRanking(jogadores, jogadoresTemp[1].nome, nJogadoresTotal);
 
-            atualizaRanking(jogadores, nJogadoresTotal);
+            //atualizaRanking(jogadores, nJogadoresTotal);
 
             printf("\n\n");
 
@@ -777,7 +777,7 @@ int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, i
 
             printf("\n\n");
 
-            atualizaRanking(jogadores, nJogadoresTotal);
+            //atualizaRanking(jogadores, nJogadoresTotal);
 
             printf("Digite qualquer tecla para continuar!");
             capturaTecla();
@@ -1202,7 +1202,7 @@ int atualizaRanking(Jogador *jogadores, int nJogadores)
 
 void exibeRanking(Jogador *jogadores, int nJogadores)
 {
-    atualizaRanking(jogadores, nJogadores);
+    //atualizaRanking(jogadores, nJogadores);
     printf(BG_CYAN(BOLD(" .:RANKING:. ")) "\n");
     printf(RED(TAB_TL TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_HOR TAB_TR "\n"));
     printf(RED(TAB_VER));
@@ -1222,7 +1222,7 @@ void exibeRanking(Jogador *jogadores, int nJogadores)
 
 void atualizaIni(Jogador *jogadores, int nJogadores)
 {
-    atualizaRanking(jogadores, nJogadores);
+    //atualizaRanking(jogadores, nJogadores);
 
     if (nJogadores <= 10) // 10 ou menos player no vetor
     {

@@ -2,6 +2,7 @@
 Discente: Nicolas Expedito Lana Mendes
 Matricula: 22.1.4028
 */
+//Comando utilizado na compilação: gcc jvelha.c funcoes.c -lm -o exe -W
 #include "funcoes.h"
 
 int main(int argc, char const *argv[])
