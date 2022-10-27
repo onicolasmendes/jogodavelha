@@ -87,7 +87,7 @@ void capturaTecla()
 int verificaArquivoExistente(char *nomeArquivo)
 {
     FILE *arquivo;
-    if (arquivo = fopen(nomeArquivo, "r"))
+    if ((arquivo = fopen(nomeArquivo, "r")))
     {
         fclose(arquivo);
         return 1;
@@ -572,17 +572,19 @@ int validaNJogadoresRodada(char *comandoNJogadores, char *nJogadoresRodada)
 int validaOp(char *comandoOp, char *op)
 {
     int tamanhoComando = strlen(comandoOp);
-    char comandoTamanhoCorreto;
+    //char comandoTamanhoCorreto;
 
     if (tamanhoComando == 1)
     {
         *op = comandoOp[0];
+        return 1;
     }
     else
     {
         printf(RED("\nErro - Opção inválida\n\n"));
         return 0;
     }
+
 }
 
 int salvarJogo(char **matriz, int nJogadores, Jogador *jogadoresTemp, int contRodada, char *parametroDoComandoPrincipal)
@@ -624,6 +626,7 @@ int salvarJogo(char **matriz, int nJogadores, Jogador *jogadoresTemp, int contRo
     }
 
     fclose(arquivo);
+    return 1;
 }
 
 int jogoMultiplayer(char **matriz, Jogador *jogadoresTemp, Jogador *jogadores, int posicaoPlayer1, int posicaoPlayer2, int contRodada, int nJogadores, char ***matrizJogoAtual, Jogador *jogadoresTempJogoAtual, int *posicaoPlayer1JogoAtual, int *posicaoPlayer2JogoAtual, int *contRodadaJogoAtual, int *nJogadoresJogoAtual, int nJogadoresTotal)
@@ -989,6 +992,7 @@ int jogoMultiplayerArquivoIniNovo(char **matriz, Jogador *jogadoresNovoIni, int 
         *contRodadaJogoAtual = contRodadaNew;
         *nJogadoresJogoAtual = nJogadoresNovos;
     }
+    return 1;
 }
 
 void printVitoriaP1()
@@ -1088,6 +1092,7 @@ int validaNomeArquivo(char *nomeArquivo)
         {
             fclose(arquivo);
             printf(RED("Erro - Arquivo inválido\n\n"));
+            return 0;
         }
     }
     else
@@ -1095,6 +1100,7 @@ int validaNomeArquivo(char *nomeArquivo)
         printf(RED("\nErro - O arquivo não existe\n\n"));
         return 0;
     }
+    return 0;
 }
 
 int lerArquivo(char *nomeArquivo, char ***matrizJogoCarregado, Jogador *jogadoresTempJogoCarregado, int *contRodadaJogoCarregado, int *nJogadoresJogoCarregado)

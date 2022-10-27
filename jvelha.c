@@ -183,9 +183,9 @@ int main(int argc, char const *argv[])
 
                 // Rodada do game
 
-                int vitoriaNew = 0; // Variável que determinará se houve vitória ou não
-                int empateNew = 0;  // Variável que determinará se houve empate ou não
-                int coordenadaLinhaNew, coordenadaColunaNew;
+                //int vitoriaNew = 0; // Variável que determinará se houve vitória ou não
+                //int empateNew = 0;  // Variável que determinará se houve empate ou não
+                //int coordenadaLinhaNew, coordenadaColunaNew;
 
                 char **matriz;
                 matriz = criaMatriz(3, 3);
