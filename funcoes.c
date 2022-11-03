@@ -1708,6 +1708,35 @@ int botJogador(char **matriz, int *coordenadaLinha, int *coordenadaColuna, int c
         return 0;
     }
 
+    //Evita que o robô tome um L
+    if(matriz[1][0] == 'X' && matriz[2][1] == 'X' && matriz[2][0] == '-' && contRodada == 4)
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 1;
+        return 0;  
+    }
+
+    if(matriz[1][0] == 'X' && matriz[0][1] == 'X' && matriz[0][0] == '-' && contRodada == 4)
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 1;
+        return 0;  
+    }
+
+    if(matriz[1][2] == 'X' && matriz[0][1] == 'X' && matriz[0][2] == '-' && contRodada == 4)
+    {
+        *coordenadaLinha = 1;
+        *coordenadaColuna = 3;
+        return 0;  
+    }
+
+    if(matriz[1][2] == 'X' && matriz[2][1] == 'X' && matriz[2][2] == '-' && contRodada == 4)
+    {
+        *coordenadaLinha = 3;
+        *coordenadaColuna = 3;
+        return 0;  
+    }
+    
     // Usuário faz a segunda jogada em um canto
     // A segunda jogada do bot irá em uma borda
     if (matriz[0][2] == 'X' && contRodada == 4 && matriz[1][2] == '-' && (matriz[0][0] == 'X' || matriz[2][0] == 'X' || matriz[2][2] == 'X'))
