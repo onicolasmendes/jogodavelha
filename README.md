@@ -8,5 +8,5 @@ Multiplayer mode.<br>
 Ranking.<br>
 Save a game and load a game.<br>
 
-If you have any additional questions, send me an email: <p>nicolasmela312@gmail.com</p>
-----------------------------------------------------------------------------------------------------
+If you have any additional questions, send me an email: nicolasmela312@gmail.com
+<p>----------------------------------------------------------------------------------------------------</p>
