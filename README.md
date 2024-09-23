@@ -1,5 +1,5 @@
 # Jogo da Velha (Tic-Tac-Toe)
-Um jogo da velha desenvolvido em C com diversas funcionalidades e modos de jogo.
+Um jogo da velha desenvolvido em C com diversas funcionalidades e modos de jogo para a Disciplina de Introdução a Programação.
 
 ## Funcionalidades
 Modo Single-player: Jogue contra um algoritmo.
