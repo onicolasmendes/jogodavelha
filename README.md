@@ -1,12 +1,19 @@
-------------------------------------JOGO DA VELHA (TIC-TAC-TOE)------------------------------------
+# Jogo da Velha (Tic-Tac-Toe)
+Um jogo da velha desenvolvido em C com diversas funcionalidades e modos de jogo.
 
-Tic-tac-toe coded in C with multiple features and game modes.
+## Funcionalidades
+Modo Single-player: Jogue contra um algoritmo.
+Modo Multiplayer: Jogue contra outra pessoa.
+Ranking: Sistema de pontuação dos jogadores.
+Salvar e Carregar Jogo: Possibilidade de salvar o estado do jogo e continuar mais tarde.
+Armazenamento de Dados: O jogo e o ranking são salvos em arquivos .txt.
+## Modo de Jogo
+Single-player:
+Enfrente um algoritmo que controla as jogadas do adversário.
 
-Features:
-Single-player mode (against a algorithm).<br>
-Multiplayer mode.<br>
-Ranking.<br>
-Save a game and load a game.<br>
+Multiplayer
+Dois jogadores podem se revezar no mesmo dispositivo.
 
-If you have any additional questions, send me an email: nicolasmela312@gmail.com
-<p>----------------------------------------------------------------------------------------------------</p>
+## Salvamento de Dados
+O jogo permite que você salve a partida em andamento e retome posteriormente.
+O ranking dos jogadores é salvo em um arquivo .txt, permitindo visualização futura das pontuações.
